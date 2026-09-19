@@ -4,194 +4,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Спортивные соревнования и мероприятия Федерации Street Workout.">
+    <meta name="description" content="Информация о мероприятии Федерации Street Workout.">
 
-    <title>Мероприятия — Street Workout Federation</title>
+    <title>Мероприятие | Федерация Street Workout</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <header>
+<header>
+    <div class="logo">
+        <div class="logo-mark">SW</div>
+        <div class="logo-text">
+            <strong>STREET WORKOUT</strong>
+            <span>FEDERATION</span>
+        </div>
+    </div>
 
-        <div class="logo">
+    <nav>
+        <a href="index.html">Главная</a>
+        <a href="index.html#about">О федерации</a>
+        <a href="index.html#news">Новости</a>
+        <a href="index.html#events">Мероприятия</a>
+        <a href="index.html#contacts">Контакты</a>
+    </nav>
+</header>
 
-            <div class="logo-mark">
-                SW
-            </div>
-
-            <div class="logo-text">
-                <strong>STREET WORKOUT</strong>
-                <span>FEDERATION</span>
-            </div>
-
+<main>
+    <article class="single-news">
+        <!-- Статус мероприятия (например: ПРЕДСТОЯЩЕЕ) -->
+        <div class="news-date" id="event-status">
+            ПРЕДСТОЯЩЕЕ
         </div>
 
-        <nav>
+        <!-- Название мероприятия -->
+        <h1 id="event-title">
+            Загрузка мероприятия...
+        </h1>
 
-            <a href="index.html">
-                Главная
-            </a>
-
-            <a href="index.html#about">
-                О федерации
-            </a>
-
-            <a href="index.html#news">
-                Новости
-            </a>
-
-            <a href="events.html">
-                Мероприятия
-            </a>
-
-            <a href="index.html#contacts">
-                Контакты
-            </a>
-
-        </nav>
-
-    </header>
-
-
-    <main>
-
-        <section>
-
-            <h2>
-                Все мероприятия
-            </h2>
-
-            <p class="section-description">
-                Спортивные соревнования и мероприятия федерации
-            </p>
-
-
-            <div class="event-list">
-
-                <article class="event-card">
-
-                    <div class="event-icon">
-                        🏆
-                    </div>
-
-                    <div class="event-content">
-
-                        <span class="event-status">
-                            ПРЕДСТОЯЩЕЕ
-                        </span>
-
-                        <h3>
-                            Street Workout Championship
-                        </h3>
-
-                        <p>
-                            Спортивное соревнование по Street Workout.
-                            Подробная информация о программе,
-                            участниках и условиях проведения.
-                        </p>
-
-                        <a href="event1.html">
-                            Подробнее →
-                        </a>
-
-                    </div>
-
-                </article>
-
-
-                <article class="event-card">
-
-                    <div class="event-icon">
-                        💪
-                    </div>
-
-                    <div class="event-content">
-
-                        <span class="event-status">
-                            МЕРОПРИЯТИЕ
-                        </span>
-
-                        <h3>
-                            Открытая тренировка
-                        </h3>
-
-                        <p>
-                            Открытая спортивная тренировка
-                            для спортсменов и любителей
-                            Street Workout.
-                        </p>
-
-                        <a href="event2.html">
-                            Подробнее →
-                        </a>
-
-                    </div>
-
-                </article>
-
-            </div>
-
-        </section>
-
-    </main>
-
-
-    <footer>
-
-        <div class="footer-content">
-
-            <div class="footer-logo">
-
-                <strong>
-                    STREET WORKOUT
-                </strong>
-
-                <span>
-                    FEDERATION
-                </span>
-
-            </div>
-
-            <div class="footer-links">
-
-                <a href="index.html">
-                    Главная
-                </a>
-
-                <a href="index.html#about">
-                    О федерации
-                </a>
-
-                <a href="index.html#news">
-                    Новости
-                </a>
-
-                <a href="events.html">
-                    Мероприятия
-                </a>
-
-                <a href="index.html#contacts">
-                    Контакты
-                </a>
-
-            </div>
-
+        <!-- Полное описание -->
+        <div class="news-content" id="event-content-box">
+            <p>Пожалуйста, подождите, идет загрузка информации...</p>
         </div>
 
-        <div class="footer-bottom">
+        <a class="back-button" href="index.html#events">
+            ← Вернуться к мероприятиям
+        </a>
+    </article>
+</main>
 
-            <p>
-                © 2026 Федерация Street Workout
-            </p>
+<footer>
+    <div class="footer-bottom">
+        <p>© 2026 Федерация Street Workout</p>
+    </div>
+</footer>
 
-        </div>
-
-    </footer>
-
-    <script src="script.js"></script>
+<script src="script.js"></script>
 
 </body>
-
 </html>
