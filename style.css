@@ -95,19 +95,24 @@ section {
   transform: translateY(-1px);
 }
 
-/* Скрытие кнопок админа для обычных пользователей */
+/* Переключатели отображения элементов администрирования */
 .admin-only {
   display: none !important;
 }
 
-/* Показ кнопок админа только авторизованным пользователям */
 body.is-admin .admin-only {
   display: inline-block !important;
 }
 
+.news-admin-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .edit-btn {
-  margin-left: 8px;
-  padding: 3px 8px;
+  padding: 4px 10px;
   font-size: 11px;
   background: var(--orange);
   color: var(--black);
@@ -115,12 +120,25 @@ body.is-admin .admin-only {
   border-radius: 3px;
   cursor: pointer;
   font-weight: bold;
-  vertical-align: middle;
 }
 
 .edit-btn:hover {
+  background: var(--orange-light);
+}
+
+.delete-btn {
   background: var(--red);
   color: var(--white);
+  border: none;
+  padding: 4px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+.delete-btn:hover {
+  opacity: 0.85;
 }
 
 .add-btn {
@@ -210,6 +228,7 @@ body.is-admin .admin-only {
   color: var(--red);
   font-size: 12px;
   margin-bottom: 10px;
+  display: none;
 }
 
 /* ========================================
@@ -511,7 +530,7 @@ section h2::after,
 }
 
 /* ========================================
-ABOUT & FACTS
+ABOUT
 ======================================== */
 
 #about {
@@ -614,7 +633,7 @@ STATISTICS
 }
 
 /* ========================================
-NEWS & EVENTS GRID
+NEWS & EVENTS
 ======================================== */
 
 #news {
@@ -637,6 +656,8 @@ NEWS & EVENTS GRID
   border: 1px solid #ddd;
   border-radius: 5px;
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 .news-card:hover {
@@ -646,6 +667,7 @@ NEWS & EVENTS GRID
 
 .news-date {
   display: inline-block;
+  align-self: flex-start;
   padding: 5px 9px;
   background: var(--black);
   color: var(--orange);
@@ -664,6 +686,13 @@ NEWS & EVENTS GRID
 .news-card p {
   color: #666;
   margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.news-card a {
+  color: var(--orange);
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .events-section,
@@ -709,6 +738,10 @@ NEWS & EVENTS GRID
   letter-spacing: 1px;
 }
 
+.event-content {
+  width: 100%;
+}
+
 .event-content h3 {
   font-size: 23px;
   text-transform: uppercase;
@@ -720,19 +753,10 @@ NEWS & EVENTS GRID
   margin-bottom: 12px;
 }
 
-.delete-btn {
-  background: var(--red);
-  color: var(--white);
-  border: none;
-  padding: 5px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 12px;
+.event-content a {
+  color: var(--orange);
   font-weight: bold;
-}
-
-.delete-btn:hover {
-  opacity: 0.8;
+  font-size: 14px;
 }
 
 /* ========================================
@@ -784,6 +808,7 @@ CONTACTS & QUESTION FORM
 .question-form {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 
 .question-form input,
@@ -808,6 +833,17 @@ CONTACTS & QUESTION FORM
 
 .question-form textarea {
   resize: vertical;
+}
+
+.question-success {
+  margin-top: 15px;
+  padding: 12px;
+  background: rgba(255, 106, 0, 0.15);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
 }
 
 /* ========================================
@@ -839,6 +875,11 @@ footer,
     grid-template-columns: 1fr;
   }
 
+  .event-card {
+    flex-direction: column;
+    gap: 10px;
+  }
+
   section {
     padding: 60px 5%;
   }
@@ -847,4 +888,5 @@ footer,
   .hero-section h1 {
     font-size: 36px;
   }
-}
+    }
+  
