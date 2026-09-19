@@ -1,416 +1,220 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Официальный сайт Федерации Street Workout. Новости, соревнования и мероприятия.">
-
-    <title>Федерация Street Workout</title>
-
+    <title>Федерация Street Workout Казахстана</title>
+    
+    <!-- Подключение стилей -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Firebase SDK (v9/v10 Compatibility Mode) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Шрифты и иконки FontAwesome (опционально) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Подключение Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-
 <body>
 
-    <!-- ==================== ADMIN BAR & MODAL ==================== -->
-    <div id="admin-bar" class="admin-bar-container">
-        <div id="admin-logged-in" style="display: none;">
-            <span>👑 Режим администратора включен</span>
-            <button onclick="adminLogout()" class="admin-btn logout">Выйти</button>
-        </div>
-        <div id="admin-logged-out">
-            <button onclick="openLoginModal()" class="admin-btn login">🔑 Вход для админа</button>
-        </div>
+    <!-- ВЕРХНЯЯ ПАНЕЛЬ АДМИНИСТРАТОРА -->
+    <div id="admin-logged-out" class="admin-bar">
+        <span>Режим гостя</span>
+        <button class="admin-btn" onclick="openLoginModal()">Войти как админ</button>
     </div>
 
-    <!-- Модальное окно входа -->
-    <div id="login-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-card">
-            <h3>Вход в панель администратора</h3>
-            <form id="admin-login-form">
-                <input type="email" id="admin-email" placeholder="Email админа" required>
-                <input type="password" id="admin-password" placeholder="Пароль" required>
-                <div class="modal-actions">
-                    <button type="submit" class="admin-btn primary">Войти</button>
-                    <button type="button" onclick="closeLoginModal()" class="admin-btn secondary">Отмена</button>
-                </div>
-            </form>
-            <p id="login-error" style="color: red; display: none; margin-top: 10px; font-size: 14px;"></p>
-        </div>
+    <div id="admin-logged-in" class="admin-bar admin-bar-active" style="display: none;">
+        <span>Вы вошли как <strong>Администратор</strong></span>
+        <button class="admin-btn logout-btn" onclick="adminLogout()">Выйти</button>
     </div>
 
-    <!-- ==================== HEADER ==================== -->
-    <header>
-        <div class="logo">
-            <div class="logo-mark">SW</div>
-            <div class="logo-text">
-                <strong>STREET WORKOUT</strong>
-                <span>FEDERATION</span>
+    <!-- ШАПКА / НАВИГАЦИЯ -->
+    <header class="header">
+        <div class="container header-container">
+            <div class="logo">
+                <span class="logo-icon">🏋️‍♂️</span>
+                <span class="logo-text">STREET WORKOUT KAZAKHSTAN</span>
             </div>
-        </div>
-
-        <nav>
-            <a href="#about">О федерации</a>
-            <a href="#news">Новости</a>
-            <a href="#events">Мероприятия</a>
-            <a href="#contacts">Контакты</a>
-            <a href="#questions">Задать вопрос</a>
-        </nav>
-    </header>
-
-    <!-- ==================== MAIN ==================== -->
-    <main>
-
-        <!-- ==================== HERO ==================== -->
-        <section class="hero">
-            <p class="hero-label">ФЕДЕРАЦИЯ STREET WORKOUT</p>
-
-            <h1 id="hero-title-text">Сила. Движение. Сообщество.</h1>
-            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'hero', 'title', 'hero-title-text')">✏️ Изменить заголовок</button>
-
-            <p class="hero-text" id="hero-desc-text">
-                Развитие Street Workout, поддержка спортсменов и проведение спортивных мероприятий.
-            </p>
-            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'hero', 'description', 'hero-desc-text')">✏️ Изменить описание</button>
-
-            <a class="hero-button" href="#about">
-                Узнать больше
-            </a>
-        </section>
-
-
-        <!-- ==================== БЫСТРЫЕ КАРТОЧКИ ==================== -->
-        <section class="quick-cards">
-            <div class="cards">
-
-                <div class="card">
-                    <div class="card-icon">🏆</div>
-                    <h3>Соревнования</h3>
-                    <p>Информация о соревнованиях, участниках и результатах.</p>
-                    <a href="#events">Смотреть мероприятия →</a>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">📰</div>
-                    <h3>Новости</h3>
-                    <p>Последние новости и обновления федерации.</p>
-                    <a href="#news">Читать новости →</a>
-                </div>
-
-                <div class="card">
-                    <div class="card-icon">📅</div>
-                    <h3>Мероприятия</h3>
-                    <p>Предстоящие события, тренировки и спортивные мероприятия.</p>
-                    <a href="#events">Все мероприятия →</a>
-                </div>
-
-            </div>
-        </section>
-
-
-        <!-- ==================== О ФЕДЕРАЦИИ ==================== -->
-        <section id="about">
-
-            <h2>О федерации</h2>
-
-            <p class="section-description">
-                Информация о федерации Street Workout
-            </p>
-
-            <div class="about-content">
-
-                <div class="about-text">
-
-                    <h3 id="about-title-text">Развиваем Street Workout</h3>
-                    <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'title', 'about-title-text')">✏️ Изменить заголовок</button>
-
-                    <p id="about-p1-text">
-                        Федерация объединяет спортсменов и любителей Street Workout,
-                        способствует развитию этого спортивного направления и организует различные мероприятия.
-                    </p>
-                    <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p1', 'about-p1-text')">✏️ Изменить текст 1</button>
-
-                    <p id="about-p2-text">
-                        Здесь можно узнать о соревнованиях, новостях, мероприятиях и деятельности федерации.
-                    </p>
-                    <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p2', 'about-p2-text')">✏️ Изменить текст 2</button>
-
-                </div>
-
-
-                <div class="about-facts">
-
-                    <div class="fact">
-                        <strong>🏆</strong>
-                        <span>Соревнования</span>
-                    </div>
-
-                    <div class="fact">
-                        <strong>💪</strong>
-                        <span>Развитие спортсменов</span>
-                    </div>
-
-                    <div class="fact">
-                        <strong>🤝</strong>
-                        <span>Спортивное сообщество</span>
-                    </div>
-
-                    <div class="fact">
-                        <strong>📅</strong>
-                        <span>Спортивные мероприятия</span>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <!-- ==================== СТАТИСТИКА ==================== -->
-
-            <div class="stats">
-
-                <div class="stat-card">
-                    <span class="stat-number" id="stat1-num">15+</span>
-                    <span class="stat-label" id="stat1-label">Соревнований</span>
-                    <button class="admin-only edit-btn" onclick="editStat('stat1', 'stat1-num', 'stat1-label')">✏️</button>
-                </div>
-
-                <div class="stat-card">
-                    <span class="stat-number" id="stat2-num">100+</span>
-                    <span class="stat-label" id="stat2-label">Спортсменов</span>
-                    <button class="admin-only edit-btn" onclick="editStat('stat2', 'stat2-num', 'stat2-label')">✏️</button>
-                </div>
-
-                <div class="stat-card">
-                    <span class="stat-number" id="stat3-num">30+</span>
-                    <span class="stat-label" id="stat3-label">Мероприятий</span>
-                    <button class="admin-only edit-btn" onclick="editStat('stat3', 'stat3-num', 'stat3-label')">✏️</button>
-                </div>
-
-                <div class="stat-card">
-                    <span class="stat-number" id="stat4-num">200+</span>
-                    <span class="stat-label" id="stat4-label">Участников сообщества</span>
-                    <button class="admin-only edit-btn" onclick="editStat('stat4', 'stat4-num', 'stat4-label')">✏️</button>
-                </div>
-
-            </div>
-
-
-            <p class="stats-note">
-                * Демонстрационные значения.
-                Реальные показатели будут добавлены после получения данных федерации.
-            </p>
-
-        </section>
-
-
-        <!-- ==================== НАПРАВЛЕНИЯ ==================== -->
-
-        <section class="directions">
-
-            <div class="container">
-
-                <h2>Наши направления</h2>
-
-                <p class="section-subtitle">
-                    Развиваем Street Workout и поддерживаем спортивное сообщество
-                </p>
-
-
-                <div class="direction-grid">
-
-                    <div class="direction-card">
-                        <div class="direction-icon">🏆</div>
-                        <h3>Соревнования</h3>
-                        <p>Проведение спортивных соревнований и турниров по Street Workout.</p>
-                    </div>
-
-                    <div class="direction-card">
-                        <div class="direction-icon">💪</div>
-                        <h3>Тренировки</h3>
-                        <p>Популяризация тренировок с собственным весом и здорового образа жизни.</p>
-                    </div>
-
-                    <div class="direction-card">
-                        <div class="direction-icon">🎓</div>
-                        <h3>Развитие спортсменов</h3>
-                        <p>Поддержка спортсменов, тренеров и спортивных инициатив.</p>
-                    </div>
-
-                    <div class="direction-card">
-                        <div class="direction-icon">🤝</div>
-                        <h3>Сообщество</h3>
-                        <p>Объединение спортсменов и людей, заинтересованных в Street Workout.</p>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==================== НОВОСТИ ==================== -->
-
-        <section id="news">
-
-            <h2>Последние новости 
-                <button class="admin-only add-card-btn" onclick="addNewsItem()">+ Добавить новость</button>
-            </h2>
-
-            <p class="section-description">
-                Новости и обновления федерации
-            </p>
-
-            <div class="news-list" id="news-container">
-                <!-- Динамически загружается из Firebase -->
-            </div>
-
-        </section>
-
-
-        <!-- ==================== МЕРОПРИЯТИЯ ==================== -->
-
-        <section id="events">
-
-            <h2>Соревнования и мероприятия 
-                <button class="admin-only add-card-btn" onclick="addEventItem()">+ Добавить мероприятие</button>
-            </h2>
-
-            <p class="section-description">
-                Следите за спортивными событиями федерации
-            </p>
-
-            <div class="event-list" id="events-container">
-                <!-- Динамически загружается из Firebase -->
-            </div>
-
-        </section>
-
-
-        <!-- ==================== КОНТАКТЫ ==================== -->
-
-        <section id="contacts">
-
-            <h2>Контакты</h2>
-
-            <p class="section-description">
-                Свяжитесь с федерацией
-            </p>
-
-            <div class="contacts-list">
-
-                <div class="contact-item">
-                    <div class="contact-icon">📍</div>
-                    <div>
-                        <h3>Адрес</h3>
-                        <p id="contact-address-text">Адрес федерации будет указан здесь.</p>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'address', 'contact-address-text')">✏️ Изменить адрес</button>
-                    </div>
-                </div>
-
-                <div class="contact-item">
-                    <div class="contact-icon">📞</div>
-                    <div>
-                        <h3>Телефон</h3>
-                        <p id="contact-phone-text">Номер телефона будет указан здесь.</p>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'phone', 'contact-phone-text')">✏️ Изменить телефон</button>
-                    </div>
-                </div>
-
-                <div class="contact-item">
-                    <div class="contact-icon">✉️</div>
-                    <div>
-                        <h3>Email</h3>
-                        <p id="contact-email-text">Email федерации будет указан здесь.</p>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'email', 'contact-email-text')">✏️ Изменить email</button>
-                    </div>
-                </div>
-
-                <div class="contact-item">
-                    <div class="contact-icon">📱</div>
-                    <div>
-                        <h3>Социальные сети</h3>
-                        <p id="contact-social-text">Ссылки на социальные сети будут указаны здесь.</p>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'social', 'contact-social-text')">✏️ Изменить соцсети</button>
-                    </div>
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- ==================== ЗАДАТЬ ВОПРОС ==================== -->
-
-        <section id="questions">
-
-            <h2>Задать вопрос</h2>
-
-            <p class="section-description">
-                Если у вас есть вопрос о федерации, соревнованиях или мероприятиях — напишите его здесь.
-            </p>
-
-            <form class="question-form" action="https://formspree.io/f/xbgldrbk" method="POST">
-
-                <label for="name">Ваше имя</label>
-                <input type="text" id="name" name="name" placeholder="Введите ваше имя" required>
-
-                <label for="email">Ваш Email</label>
-                <input type="email" id="email" name="email" placeholder="Введите ваш email для ответа" required>
-
-                <label for="question">Ваш вопрос</label>
-                <textarea id="question" name="question" rows="5" placeholder="Напишите ваш вопрос..." required></textarea>
-
-                <button type="submit">Отправить вопрос</button>
-
-            </form>
-
-        </section>
-
-    </main>
-
-
-    <!-- ==================== FOOTER ==================== -->
-
-    <footer>
-
-        <div class="footer-content">
-
-            <div class="footer-logo">
-                <strong>STREET WORKOUT</strong>
-                <span>FEDERATION</span>
-            </div>
-
-            <div class="footer-links">
-                <a href="#about">О федерации</a>
+            <nav class="nav">
+                <a href="#hero">Главная</a>
+                <a href="#about">О нас</a>
+                <a href="#stats">Статистика</a>
                 <a href="#news">Новости</a>
                 <a href="#events">Мероприятия</a>
                 <a href="#contacts">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 1. ГЛАВНЫЙ БАННЕР (HERO) -->
+    <section id="hero" class="hero-section">
+        <div class="container hero-container">
+            <h1 id="hero-title-text">Федерация Street Workout Казахстана</h1>
+            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'hero', 'title', 'hero-title-text')">✏️ Изменить заголовок</button>
+            
+            <p id="hero-desc-text" class="hero-description">Развиваем уличный спорт, объединяем атлетов и проводим турниры по всей стране!</p>
+            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'hero', 'description', 'hero-desc-text')">✏️ Изменить описание</button>
+            
+            <div class="hero-buttons">
+                <a href="#events" class="btn btn-primary">Ближайшие события</a>
+                <a href="#contacts" class="btn btn-secondary">Задать вопрос</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. О НАС (ABOUT) -->
+    <section id="about" class="section">
+        <div class="container">
+            <h2 id="about-title-text" class="section-title">О Нашей Федерации</h2>
+            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'title', 'about-title-text')">✏️ Изменить заголовок</button>
+
+            <div class="about-content">
+                <p id="about-p1-text">Казахстанская Федерация Street Workout занимается популяризацией здорового образа жизни, воркаута и силовых дисциплин среди молодежи и взрослых.</p>
+                <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p1', 'about-p1-text')">✏️ Изменить текст 1</button>
+
+                <p id="about-p2-text">Наша цель — строительство доступных спортивных площадок и организация профессиональных чемпионатов международно уровня.</p>
+                <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p2', 'about-p2-text')">✏️ Изменить текст 2</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. СТАТИСТИКА (STATS) -->
+    <section id="stats" class="section stats-section">
+        <div class="container">
+            <h2 class="section-title">Наши Достижения</h2>
+            <div class="stats-grid">
+                
+                <div class="stat-card">
+                    <div id="stat1-num" class="stat-num">15+</div>
+                    <div id="stat1-label" class="stat-label">Городов участников</div>
+                    <button class="admin-only edit-btn" onclick="editStat('stat1', 'stat1-num', 'stat1-label')">✏️ Изменить</button>
+                </div>
+
+                <div class="stat-card">
+                    <div id="stat2-num" class="stat-num">5000+</div>
+                    <div id="stat2-label" class="stat-label">Атлетов по стране</div>
+                    <button class="admin-only edit-btn" onclick="editStat('stat2', 'stat2-num', 'stat2-label')">✏️ Изменить</button>
+                </div>
+
+                <div class="stat-card">
+                    <div id="stat3-num" class="stat-num">50+</div>
+                    <div id="stat3-label" class="stat-label">Проведенных кубков</div>
+                    <button class="admin-only edit-btn" onclick="editStat('stat3', 'stat3-num', 'stat3-label')">✏️ Изменить</button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. НОВОСТИ (NEWS) -->
+    <section id="news" class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Последние Новости</h2>
+                <button class="admin-only add-btn" onclick="addNewsItem()">➕ Добавить новость</button>
+            </div>
+            
+            <div id="news-container" class="news-grid">
+                <!-- Динамически загружается из Firebase JS -->
+                <p class="section-description">Загрузка новостей...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. МЕРОПРИЯТИЯ (EVENTS) -->
+    <section id="events" class="section events-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Мероприятия и Турниры</h2>
+                <button class="admin-only add-btn" onclick="addEventItem()">➕ Добавить событие</button>
             </div>
 
-            <div class="footer-social">
-                <span>Социальные сети</span>
-                <p>Ссылки будут добавлены позже.</p>
+            <div id="events-container" class="events-grid">
+                <!-- Динамически загружается из Firebase JS -->
+                <p class="section-description">Загрузка событий...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. КОНТАКТЫ И ФОРМА ВОПРОСА (CONTACTS) -->
+    <section id="contacts" class="section">
+        <div class="container contacts-grid">
+            
+            <div class="contact-info">
+                <h2>Контакты</h2>
+                <p> Свяжитесь с нами по любым вопросам сотрудничества и мероприятий.</p>
+                
+                <ul class="contact-list">
+                    <li>
+                        <strong>📍 Адрес:</strong> 
+                        <span id="contact-address-text">Республика Казахстан, г. Уральск</span>
+                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'address', 'contact-address-text')">✏️</button>
+                    </li>
+                    <li>
+                        <strong>📞 Телефон:</strong> 
+                        <span id="contact-phone-text">+7 (700) 000-00-00</span>
+                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'phone', 'contact-phone-text')">✏️</button>
+                    </li>
+                    <li>
+                        <strong>✉️ Email:</strong> 
+                        <span id="contact-email-text">info@streetworkout.kz</span>
+                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'email', 'contact-email-text')">✏️</button>
+                    </li>
+                    <li>
+                        <strong>🌐 Соцсети:</strong> 
+                        <span id="contact-social-text">@streetworkout_kz</span>
+                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'social', 'contact-social-text')">✏️</button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="contact-form-container">
+                <h3>Задать вопрос</h3>
+                <!-- Форма отправки на Formspree -->
+                <form action="https://formspree.io/f/xyzggrpr" method="POST" class="question-form">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Ваш Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" rows="4" placeholder="Ваш вопрос..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Отправить сообщение</button>
+                </form>
             </div>
 
         </div>
+    </section>
 
-        <div class="footer-bottom">
-            <p>© 2026 Федерация Street Workout</p>
+    <!-- ПОДВАЛ (FOOTER) -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Street Workout Federation Kazakhstan. Все права защищены.</p>
         </div>
-
     </footer>
 
+    <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ АДМИНА -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeLoginModal()">&times;</span>
+            <h3>Вход для Администратора</h3>
+            <form id="admin-login-form">
+                <div class="form-group">
+                    <input type="email" id="admin-email" placeholder="Email админа" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="admin-password" placeholder="Пароль" required>
+                </div>
+                <div id="login-error" class="error-msg" style="display:none;"></div>
+                <button type="submit" class="btn btn-primary full-width">Войти</button>
+            </form>
+        </div>
+    </div>
 
-    <!-- ==================== JAVASCRIPT ==================== -->
+    <!-- Скрипт логики -->
     <script src="script.js"></script>
-
 </body>
 </html>
