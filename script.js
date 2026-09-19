@@ -407,7 +407,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     });
-
+   
     // Обработка формы «Задать вопрос» (Formspree + Ajax)
     const questionForm = document.querySelector(".question-form");
 
@@ -415,9 +415,9 @@ document.addEventListener("DOMContentLoaded", () => {
         questionForm.addEventListener("submit", function(event) {
             event.preventDefault();
 
-            const nameInput = document.querySelector("#name");
-            const emailInput = document.querySelector("#email");
-            const questionInput = document.querySelector("#question");
+            const nameInput = questionForm.querySelector("[name='name']");
+            const emailInput = questionForm.querySelector("[name='email']");
+            const questionInput = questionForm.querySelector("[name='message'], #question");
 
             const name = nameInput ? nameInput.value.trim() : "";
             const email = emailInput ? emailInput.value.trim() : "";
@@ -458,8 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-});
-
+   
 // Вспомогательная функция безопасности для строк
 function escapeHtml(text) {
     if (!text) return '';
