@@ -4,12 +4,13 @@
 
 // ==================== 1. FIREBASE CONFIG & INITIALIZATION ====================
 const firebaseConfig = {
-    apiKey: "AIzaSyD-G2S46zP-s3dG0mB11S-...", // Вставь сюда свой apiKey
-    authDomain: "streetworkout-federation.firebaseapp.com",
-    projectId: "streetworkout-federation",
-    storageBucket: "streetworkout-federation.appspot.com",
-    messagingSenderId: "1234567890",
-    appId: "1:1234567890:web:abcdef123456"
+    apiKey: "AIzaSyAbIUmK6OS7Sd5jcDygCtxMgXi_Tznc56o",
+    authDomain: "street-workout-federation.firebaseapp.com",
+    projectId: "street-workout-federation",
+    storageBucket: "street-workout-federation.firebasestorage.app",
+    messagingSenderId: "281767473596",
+    appId: "1:281767473596:web:71c290af7a5fac1472fbb9",
+    measurementId: "G-ZEZBRRHKHJ"
 };
 
 // Инициализация Firebase SDK
@@ -423,4 +424,4 @@ function escapeHtml(text) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-                             }
+}
