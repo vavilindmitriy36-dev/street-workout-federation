@@ -213,7 +213,7 @@ function loadNews() {
                 <div class="news-date">${item.tag || 'НОВОСТИ'}</div>
                 <h3>${item.title}</h3>
                 <p>${item.text}</p>
-                <a href="${item.link || '#'}">Подробнее →</a>
+                <a href="news.html?id=${id}">Подробнее →</a>
                 
                 <div class="admin-only news-admin-actions">
                     <button class="edit-btn" onclick="editNews('${id}', '${escapeHtml(item.title)}', '${escapeHtml(item.text)}', '${escapeHtml(item.tag || '')}')">✏️ Редактировать</button>
@@ -288,7 +288,7 @@ function loadEvents() {
                     <span class="event-status">${item.status || 'ПРЕДСТОЯЩЕЕ'}</span>
                     <h3>${item.title}</h3>
                     <p>${item.text}</p>
-                    <a href="${item.link || '#'}">Подробнее →</a>
+                    <a href="event.html?id=${id}">Подробнее →</a>
                     
                     <div class="admin-only news-admin-actions">
                         <button class="edit-btn" onclick="editEvent('${id}', '${escapeHtml(item.title)}', '${escapeHtml(item.text)}', '${escapeHtml(item.status || '')}')">✏️ Редактировать</button>
@@ -338,11 +338,56 @@ function deleteEvent(id) {
 }
 
 
-// ==================== 7. ИНТЕРАКТИВНОСТЬ КНОПОК И НАВИГАЦИИ ====================
+// ==================== 7. ИНТЕРАКТИВНОСТЬ И АВТОЗАГРУЗКА ДЕТАЛЕЙ ====================
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Загрузка контента из базы данных
+    // Загрузка контента из базы данных на главной
     loadSiteContent();
+
+    // Автоматическая загрузка конкретной новости на странице news.html
+    const urlParams = new URLSearchParams(window.location.search);
+    const newsId = urlParams.get('id');
+    if (newsId && db) {
+        db.collection('news').doc(newsId).get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                const titleEl = document.getElementById('news-title');
+                const tagEl = document.getElementById('news-tag');
+                const contentBox = document.getElementById('news-content-box');
+
+                if (titleEl) titleEl.innerText = data.title;
+                if (tagEl) tagEl.innerText = data.tag || 'НОВОСТИ';
+                if (contentBox) {
+                    contentBox.innerHTML = `<p style="color: #ccc; line-height: 1.7; font-size: 16px;">${data.text}</p>`;
+                }
+            } else {
+                const titleEl = document.getElementById('news-title');
+                if (titleEl) titleEl.innerText = 'Новость не найдена';
+            }
+        }).catch(err => console.error("Ошибка загрузки новости:", err));
+    }
+
+    // Автоматическая загрузка конкретного мероприятия на странице event.html
+    const eventId = urlParams.get('id');
+    if (eventId && db) {
+        db.collection('events').doc(eventId).get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                const titleEl = document.getElementById('event-title');
+                const statusEl = document.getElementById('event-status');
+                const contentBox = document.getElementById('event-content-box');
+
+                if (titleEl) titleEl.innerText = data.title;
+                if (statusEl) statusEl.innerText = data.status || 'ПРЕДСТОЯЩЕЕ';
+                if (contentBox) {
+                    contentBox.innerHTML = `<p style="color: #ccc; line-height: 1.7; font-size: 16px;">${data.text}</p>`;
+                }
+            } else {
+                const titleEl = document.getElementById('event-title');
+                if (titleEl) titleEl.innerText = 'Мероприятие не найдено';
+            }
+        }).catch(err => console.error("Ошибка загрузки мероприятия:", err));
+    }
 
     // Плавный скролл по навигационным ссылкам
     const navLinks = document.querySelectorAll('nav a[href^="#"], .footer-links a[href^="#"], .hero-button[href^="#"], .card a[href^="#"]');
