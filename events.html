@@ -1,66 +1,52 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Информация о мероприятии Федерации Street Workout.">
-
-    <title>Мероприятие | Федерация Street Workout</title>
-
+    <title>Мероприятие | Федерация Street Workout Казахстан</title>
     <link rel="stylesheet" href="style.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-
 <body>
 
-<header>
-    <div class="logo">
-        <div class="logo-mark">SW</div>
-        <div class="logo-text">
-            <strong>STREET WORKOUT</strong>
-            <span>FEDERATION</span>
+<header class="header">
+    <div class="container header-container" style="flex-direction: row; justify-content: space-between;">
+        <div class="logo">
+            <span class="logo-icon">🏋️‍♂️</span>
+            <span class="logo-text">
+                <strong>STREET WORKOUT</strong>
+                <span>KAZAKHSTAN</span>
+            </span>
         </div>
+        <nav class="nav" style="margin-top:0;">
+            <a href="index.html">Главная</a>
+            <a href="index.html#events">Мероприятия</a>
+        </nav>
     </div>
-
-    <nav>
-        <a href="index.html">Главная</a>
-        <a href="index.html#about">О федерации</a>
-        <a href="index.html#news">Новости</a>
-        <a href="index.html#events">Мероприятия</a>
-        <a href="index.html#contacts">Контакты</a>
-    </nav>
 </header>
 
-<main>
+<main class="container">
     <article class="single-news">
-        <!-- Статус мероприятия (например: ПРЕДСТОЯЩЕЕ) -->
-        <div class="news-date" id="event-status">
-            ПРЕДСТОЯЩЕЕ
-        </div>
-
-        <!-- Название мероприятия -->
-        <h1 id="event-title">
-            Загрузка мероприятия...
-        </h1>
-
-        <!-- Полное описание -->
-        <div class="news-content" id="event-content-box">
+        <div id="event-status" class="news-date" style="background: var(--red); color: white;">ПРЕДСТОЯЩЕЕ</div>
+        <h1 id="event-title" style="font-size: 28px; margin-bottom: 20px;">Загрузка мероприятия...</h1>
+        <div id="event-image-container" style="margin-bottom: 20px;"></div>
+        <div id="event-content-box" class="news-content">
             <p>Пожалуйста, подождите, идет загрузка информации...</p>
         </div>
-
-        <a class="back-button" href="index.html#events">
-            ← Вернуться к мероприятиям
-        </a>
+        <a class="back-button" href="index.html#events">← Вернуться к мероприятиям</a>
     </article>
 </main>
 
-<footer>
-    <div class="footer-bottom">
-        <p>© 2026 Федерация Street Workout</p>
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2026 Street Workout Federation Kazakhstan. Все права защищены.</p>
     </div>
 </footer>
 
 <script src="script.js"></script>
-
 </body>
 </html>
+
