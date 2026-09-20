@@ -1,5 +1,5 @@
 /* ========================================
-STREET WORKOUT FEDERATION
+STREET WORKOUT FEDERATION KAZAKHSTAN
 BLACK / ORANGE / WHITE / RED
 ======================================== */
 
@@ -62,6 +62,9 @@ section {
   align-items: center;
   font-size: 13px;
   border-bottom: 2px solid var(--orange);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .admin-bar-active {
@@ -95,58 +98,36 @@ section {
   display: none !important;
 }
 
-body.is-admin .admin-only {
-  display: inline-block !important;
-}
-
-.news-admin-actions {
-  margin-top: 15px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
+/* Кнопки редактирования прямо на элементах */
 .edit-btn {
-  padding: 4px 10px;
-  font-size: 11px;
+  display: inline-block;
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 12px;
   background: var(--orange);
   color: var(--black);
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
+  transition: 0.2s;
 }
 
 .edit-btn:hover {
   background: var(--orange-light);
-}
-
-.delete-btn {
-  background: var(--red);
-  color: var(--white);
-  border: none;
-  padding: 4px 10px;
-  border-radius: 3px;
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: bold;
-}
-
-.delete-btn:hover {
-  opacity: 0.85;
+  transform: translateY(-1px);
 }
 
 .add-btn {
-  padding: 6px 12px;
+  padding: 8px 16px;
   font-size: 13px;
   background: var(--orange);
   color: var(--black);
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  margin-left: 15px;
-  vertical-align: middle;
+  transition: 0.2s;
 }
 
 .add-btn:hover {
@@ -157,7 +138,7 @@ body.is-admin .admin-only {
 .modal {
   display: none;
   position: fixed;
-  z-index: 1000;
+  z-index: 2000;
   left: 0;
   top: 0;
   width: 100%;
@@ -174,15 +155,16 @@ body.is-admin .admin-only {
   width: 90%;
   max-width: 400px;
   color: var(--white);
-  border-radius: 6px;
+  border-radius: 8px;
   position: relative;
-  box-shadow: 0 10px 30px rgba(255, 106, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(255, 106, 0, 0.3);
 }
 
 .modal-content h3 {
   margin-bottom: 20px;
   color: var(--orange);
   text-transform: uppercase;
+  font-size: 18px;
 }
 
 .close-modal {
@@ -211,6 +193,8 @@ body.is-admin .admin-only {
   color: var(--white);
   border-radius: 4px;
   outline: none;
+  font-family: inherit;
+  font-size: 14px;
 }
 
 .form-group input:focus,
@@ -222,7 +206,6 @@ body.is-admin .admin-only {
   color: var(--red);
   font-size: 12px;
   margin-bottom: 10px;
-  display: none;
 }
 
 /* ========================================
@@ -277,7 +260,6 @@ header::after,
   gap: 14px;
 }
 
-.logo-mark,
 .logo-icon {
   width: 55px;
   height: 55px;
@@ -354,7 +336,7 @@ nav a:hover::after,
 }
 
 /* ========================================
-HERO
+HERO SECTION
 ======================================== */
 
 .hero,
@@ -367,6 +349,7 @@ HERO
   padding: 80px 8%;
   overflow: hidden;
   background: linear-gradient(110deg, #080808 0%, #080808 52%, #151515 100%);
+  color: var(--white);
 }
 
 .hero::before,
@@ -405,15 +388,13 @@ HERO
   max-width: 850px;
   margin: 0 0 25px;
   color: var(--white);
-  font-size: clamp(42px, 7vw, 82px);
-  line-height: 0.95;
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1.05;
   font-weight: 900;
   text-transform: uppercase;
-  letter-spacing: -2px;
-  overflow-wrap: break-word;
+  letter-spacing: -1px;
 }
 
-.hero-text,
 .hero-description {
   max-width: 620px;
   margin: 0 0 35px;
@@ -480,11 +461,10 @@ section h2,
 .section-title {
   position: relative;
   text-align: center;
-  font-size: 40px;
+  font-size: 36px;
   font-weight: 900;
   text-transform: uppercase;
   margin-bottom: 14px;
-  overflow-wrap: break-word;
 }
 
 section h2::after,
@@ -499,8 +479,12 @@ section h2::after,
 }
 
 .section-header {
-  text-align: center;
-  margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 40px;
 }
 
 .section-description {
@@ -511,7 +495,7 @@ section h2::after,
 }
 
 /* ========================================
-ABOUT
+ABOUT SECTION
 ======================================== */
 
 #about {
@@ -521,15 +505,21 @@ ABOUT
 
 .about-content {
   max-width: 1150px;
-  margin: 0 auto 50px;
+  margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 50px;
   align-items: center;
 }
 
+.about-text-wrapper p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #333;
+}
+
 /* ========================================
-STATISTICS
+STATISTICS SECTION
 ======================================== */
 
 .stats-section {
@@ -543,10 +533,10 @@ STATISTICS
 
 .stats-grid {
   max-width: 1150px;
-  margin: 50px auto 0;
+  margin: 40px auto 0;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
+  gap: 20px;
 }
 
 .stat-card {
@@ -556,7 +546,7 @@ STATISTICS
   background: var(--black-2);
   color: var(--white);
   border: 1px solid #292929;
-  border-radius: 4px;
+  border-radius: 6px;
   overflow: hidden;
   transition: 0.25s ease;
 }
@@ -572,16 +562,16 @@ STATISTICS
 }
 
 .stat-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
   border-color: var(--orange);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 10px 25px rgba(255, 106, 0, 0.15);
 }
 
 .stat-num {
   display: block;
   margin-bottom: 8px;
   color: var(--orange);
-  font-size: 38px;
+  font-size: 42px;
   font-weight: 900;
   line-height: 1;
 }
@@ -589,168 +579,21 @@ STATISTICS
 .stat-label {
   display: block;
   color: #cccccc;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 /* ========================================
-НОВЫЕ СТИЛЬНЫЕ БАННЕРНЫЕ КАРТОЧКИ (НОВОСТИ И МЕРОПРИЯТИЯ)
+НОВОСТИ И МЕРОПРИЯТИЯ (БАННЕРНЫЕ КАРТОЧКИ)
 ======================================== */
 
 #news {
   background: var(--white);
 }
 
-.news-grid {
-  max-width: 1150px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 25px;
-}
-
-/* Эффект баннера с фоновым фото, градиентом и плавным нажатием */
-.banner-card {
-  position: relative;
-  width: 100%;
-  height: 400px;
-  border-radius: 20px;
-  overflow: hidden;
-  cursor: pointer;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background-size: cover;
-  background-position: center;
-  background-color: #151515; /* Умный темный фон по умолчанию если нет фото */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-/* Фирменный узор-заглушка с логотипом на флаге, если картинка не задана */
-.banner-card.default-bg {
-  background: linear-gradient(135deg, #111111 0%, #1f1208 100%);
-  border: 2px solid rgba(255, 106, 0, 0.3);
-}
-
-/* Плавная пружинка при нажатии на карточку */
-.banner-card:active {
-  transform: scale(0.97);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.25);
-}
-
-.banner-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(255, 106, 0, 0.2);
-}
-
-/* Затемняющий градиент снизу для идеальной читаемости текста */
-.banner-card::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: linear-gradient(to top, rgba(8, 8, 8, 0.96) 20%, rgba(8, 8, 8, 0.5) 60%, rgba(8, 8, 8, 0.15) 100%);
-  z-index: 1;
-}
-
-/* Бейдж сверху (НОВОСТЬ / ТУРНИР) */
-.banner-badge {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  background: rgba(17, 17, 17, 0.85);
-  backdrop-filter: blur(8px);
-  padding: 6px 14px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 900;
-  color: var(--orange);
-  z-index: 2;
-  letter-spacing: 1px;
-  border: 1px solid rgba(255, 106, 0, 0.4);
-}
-
-/* Контент внутри баннера */
-.banner-content {
-  position: relative;
-  z-index: 2;
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: flex-end;
-}
-
-/* Если нет картинки, выводим мини-логотип с флага по центру карточки */
-.banner-logo-placeholder {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -60%);
-  width: 90px;
-  height: 90px;
-  background: rgba(255, 106, 0, 0.15);
-  border: 2px dashed var(--orange);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  font-size: 32px;
-}
-
-.banner-title {
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--white);
-  line-height: 1.25;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.banner-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 8px;
-}
-
-.banner-meta {
-  font-size: 12px;
-  color: var(--gray);
-  font-weight: bold;
-}
-
-.banner-arrow {
-  width: 38px;
-  height: 38px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--white);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: 0.2s;
-}
-
-.banner-card:hover .banner-arrow {
-  background: var(--orange);
-  color: var(--black);
-  border-color: var(--orange);
-}
-
-.events-section,
-#events {
-  background: var(--light);
-}
-
+.news-grid,
 .events-grid {
   max-width: 1150px;
   margin: 0 auto;
@@ -759,8 +602,37 @@ STATISTICS
   gap: 25px;
 }
 
+/* Стили карточек для новостей и событий */
+.news-card,
+.event-card {
+  position: relative;
+  width: 100%;
+  min-height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: #151515;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid #e0e0e0;
+}
+
+.news-card:hover,
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(255, 106, 0, 0.25);
+  border-color: var(--orange);
+}
+
+.events-section,
+#events {
+  background: var(--light);
+}
+
 /* ========================================
-CONTACTS & QUESTION FORM
+CONTACTS SECTION
 ======================================== */
 
 #contacts {
@@ -776,6 +648,12 @@ CONTACTS & QUESTION FORM
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
+  align-items: start;
+}
+
+.contact-info p {
+  color: var(--gray);
+  margin-top: 10px;
 }
 
 .contact-list {
@@ -785,7 +663,11 @@ CONTACTS & QUESTION FORM
 
 .contact-list li {
   margin-bottom: 20px;
-  font-size: 16px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .contact-list strong {
@@ -795,7 +677,7 @@ CONTACTS & QUESTION FORM
 .contact-form-container {
   background: var(--black-2);
   padding: 30px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: 1px solid #292929;
 }
 
@@ -803,6 +685,7 @@ CONTACTS & QUESTION FORM
   color: var(--orange);
   margin-bottom: 20px;
   text-transform: uppercase;
+  font-size: 18px;
 }
 
 .question-form {
@@ -816,7 +699,7 @@ CONTACTS & QUESTION FORM
   width: 100%;
   padding: 14px;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 14px;
   color: var(--white);
   background: #181818;
   border: 1px solid #333;
@@ -844,16 +727,18 @@ footer,
   position: relative;
   background: #050505;
   color: var(--white);
-  padding: 40px 7% 20px;
+  padding: 40px 7% 25px;
   border-top: 5px solid var(--orange);
   text-align: center;
+  font-size: 14px;
+  color: var(--gray);
 }
 
 /* ========================================
-МОБИЛЬНАЯ АДАПТАЦИЯ
+МОБИЛЬНАЯ АДАПТАЦИЯ (RESPONSIVE)
 ======================================== */
 
-@media (max-width: 850px) {
+@media (max-width: 900px) {
   .about-content,
   .contacts-grid {
     grid-template-columns: 1fr;
@@ -871,6 +756,11 @@ footer,
 
   .hero h1,
   .hero-section h1 {
-    font-size: 36px;
+    font-size: 32px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
