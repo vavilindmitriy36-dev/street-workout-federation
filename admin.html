@@ -3,213 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель управления — Федерация Street Workout</title>
+    <title>Админ-панель — Федерация Street Workout Казахстан</title>
+    
+    <!-- Подключение стилей -->
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --accent-hover: #0284c7;
-            --text-color: #f8fafc;
-            --text-muted: #94a3b8;
-            --danger-color: #ef4444;
-            --success-color: #22c55e;
-            --border-color: #334155;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            background-color: var(--card-bg);
-            padding: 1rem 2rem;
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header h1 {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            width: 100%;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            border: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-        }
-
-        .card h2 {
-            margin-bottom: 1rem;
-            font-size: 1.25rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-muted);
-        }
-
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-color);
-            font-size: 1rem;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
-
-        .btn {
-            background-color: var(--accent-color);
-            color: #000;
-            font-weight: bold;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: #fff;
-        }
-
-        .btn-danger:hover {
-            background-color: #dc2626;
-        }
-
-        .auth-container {
-            max-width: 400px;
-            margin: 5rem auto;
-        }
-
-        #admin-panel {
-            display: none;
-        }
-
-        .news-list {
-            list-style: none;
-        }
-
-        .news-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .news-item:last-child {
-            border-bottom: none;
-        }
-
-        .news-info h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .news-info p {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Экран авторизации -->
-    <div id="auth-panel" class="container auth-container">
-        <div class="card">
-            <h2>Вход в панель управления</h2>
-            <form id="login-form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="password">Пароль</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit" class="btn" style="width: 100%;">Войти</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Основная панель управления -->
-    <div id="admin-panel">
-        <header>
-            <h1>Админ-панель Street Workout</h1>
-            <button id="logout-btn" class="btn btn-danger">Выйти</button>
-        </header>
-
-        <div class="container">
-            <!-- Добавление новости -->
-            <div class="card">
-                <h2>Добавить новость / событие</h2>
-                <form id="add-news-form">
-                    <div class="form-group">
-                        <label for="title">Заголовок</label>
-                        <input type="text" id="title" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="content">Текст новости</label>
-                        <textarea id="content" rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Опубликовать</button>
-                </form>
-            </div>
-
-            <!-- Список опубликованных новостей -->
-            <div class="card">
-                <h2>Управление новостями</h2>
-                <ul id="news-list" class="news-list">
-                    <!-- Загружаемые новости появятся здесь -->
-                </ul>
-            </div>
-        </div>
-    </div>
 
     <!-- Подключение Firebase SDK (Модули v10+) -->
     <script type="module">
@@ -223,112 +21,308 @@
             projectId: "street-workout-federation",
             storageBucket: "street-workout-federation.firebasestorage.app",
             messagingSenderId: "281767473596",
-            appId: "1:281767473596:web:e4c39eb06ae0f05372fbb9"
+            appId: "1:281767473596:web:71c290af7a5fac1472fbb9",
+            measurementId: "G-ZEZBRRHKHJ"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
 
-        const authPanel = document.getElementById('auth-panel');
-        const adminPanel = document.getElementById('admin-panel');
-        const loginForm = document.getElementById('login-form');
-        const logoutBtn = document.getElementById('logout-btn');
-        const addNewsForm = document.getElementById('add-news-form');
-        const newsList = document.getElementById('news-list');
+        document.addEventListener("DOMContentLoaded", () => {
+            const authPanel = document.getElementById('auth-panel');
+            const adminPanel = document.getElementById('admin-panel');
+            const loginForm = document.getElementById('login-form');
+            const logoutBtn = document.getElementById('logout-btn');
+            const addNewsForm = document.getElementById('add-news-form');
+            const addEventForm = document.getElementById('add-event-form');
+            const newsList = document.getElementById('news-list');
+            const eventsList = document.getElementById('events-list');
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                authPanel.style.display = 'none';
-                adminPanel.style.display = 'block';
-                loadNews();
-            } else {
-                authPanel.style.display = 'block';
-                adminPanel.style.display = 'none';
-            }
-        });
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    authPanel.style.display = 'none';
+                    adminPanel.style.display = 'block';
+                    loadNewsAdmin();
+                    loadEventsAdmin();
+                } else {
+                    authPanel.style.display = 'block';
+                    adminPanel.style.display = 'none';
+                }
+            });
 
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
 
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                alert('Ошибка входа: ' + error.message);
-            }
-        });
+                try {
+                    await signInWithEmailAndPassword(auth, email, password);
+                } catch (error) {
+                    alert('Ошибка входа: ' + error.message);
+                }
+            });
 
-        logoutBtn.addEventListener('click', () => {
-            signOut(auth);
-        });
+            logoutBtn.addEventListener('click', () => {
+                signOut(auth);
+            });
 
-        addNewsForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const title = document.getElementById('title').value;
-            const content = document.getElementById('content').value;
+            // Добавление новости
+            addNewsForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const title = document.getElementById('news-title').value;
+                const text = document.getElementById('news-text').value;
+                const tag = document.getElementById('news-tag').value;
+                const image = document.getElementById('news-image').value;
 
-            try {
-                await addDoc(collection(db, "news"), {
-                    title: title,
-                    content: content,
-                    createdAt: serverTimestamp()
-                });
-                addNewsForm.reset();
-                loadNews();
-            } catch (error) {
-                alert('Ошибка при публикации новости: ' + error.message);
-            }
-        });
-
-        async function loadNews() {
-            newsList.innerHTML = '';
-            try {
-                const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
-                const querySnapshot = await getDocs(q);
-                
-                querySnapshot.forEach((document) => {
-                    const data = document.data();
-                    const li = document.createElement('li');
-                    li.className = 'news-item';
-                    
-                    const infoDiv = document.createElement('div');
-                    infoDiv.className = 'news-info';
-                    infoDiv.innerHTML = `<h3>${escapeHtml(data.title)}</h3><p>${escapeHtml(data.content)}</p>`;
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'btn btn-danger';
-                    deleteBtn.textContent = 'Удалить';
-                    deleteBtn.addEventListener('click', async () => {
-                        if (confirm("Вы уверены, что хотите удалить эту новость?")) {
-                            try {
-                                await deleteDoc(doc(db, "news", document.id));
-                                loadNews();
-                            } catch (error) {
-                                alert('Ошибка при удалении: ' + error.message);
-                            }
-                        }
+                try {
+                    await addDoc(collection(db, "news"), {
+                        title: title.trim(),
+                        text: text.trim(),
+                        tag: tag ? tag.trim() : 'НОВОСТИ',
+                        image: image ? image.trim() : '',
+                        createdAt: serverTimestamp()
                     });
+                    addNewsForm.reset();
+                    alert('Новость успешно добавлена!');
+                    loadNewsAdmin();
+                } catch (error) {
+                    alert('Ошибка при публикации новости: ' + error.message);
+                }
+            });
 
-                    li.appendChild(infoDiv);
-                    li.appendChild(deleteBtn);
-                    newsList.appendChild(li);
-                });
-            } catch (error) {
-                console.error("Ошибка при загрузке новостей: ", error);
+            // Добавление мероприятия
+            addEventForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const title = document.getElementById('event-title').value;
+                const text = document.getElementById('event-text').value;
+                const status = document.getElementById('event-status').value;
+                const image = document.getElementById('event-image').value;
+
+                try {
+                    await addDoc(collection(db, "events"), {
+                        title: title.trim(),
+                        text: text.trim(),
+                        status: status ? status.trim() : 'ПРЕДСТОЯЩЕЕ',
+                        image: image ? image.trim() : '',
+                        createdAt: serverTimestamp()
+                    });
+                    addEventForm.reset();
+                    alert('Мероприятие успешно добавлено!');
+                    loadEventsAdmin();
+                } catch (error) {
+                    alert('Ошибка при публикации мероприятия: ' + error.message);
+                }
+            });
+
+            // Загрузка списка новостей для админки
+            async function loadNewsAdmin() {
+                newsList.innerHTML = '<p style="color: #888;">Загрузка...</p>';
+                try {
+                    const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
+                    const querySnapshot = await getDocs(q);
+                    
+                    newsList.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        newsList.innerHTML = '<p style="color: #888;">Нет добавленных новостей.</p>';
+                        return;
+                    }
+
+                    querySnapshot.forEach((document) => {
+                        const data = document.data();
+                        const li = document.createElement('li');
+                        li.className = 'news-item';
+                        li.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222;";
+                        
+                        li.innerHTML = `
+                            <div>
+                                <strong style="color: var(--orange);">${escapeHtml(data.title)}</strong>
+                                <p style="font-size: 13px; color: #aaa; margin-top: 4px;">Тег: ${escapeHtml(data.tag || 'НОВОСТИ')}</p>
+                            </div>
+                        `;
+                        
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.className = 'delete-btn';
+                        deleteBtn.textContent = 'Удалить';
+                        deleteBtn.style.cssText = "background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;";
+                        
+                        deleteBtn.addEventListener('click', async () => {
+                            if (confirm("Удалить эту новость?")) {
+                                try {
+                                    await deleteDoc(doc(db, "news", document.id));
+                                    loadNewsAdmin();
+                                } catch (error) {
+                                    alert('Ошибка при удалении: ' + error.message);
+                                }
+                            }
+                        });
+
+                        li.appendChild(deleteBtn);
+                        newsList.appendChild(li);
+                    });
+                } catch (error) {
+                    console.error("Ошибка загрузки новостей: ", error);
+                }
             }
-        }
 
-        function escapeHtml(text) {
-            if (!text) return '';
-            return text
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
+            // Загрузка списка мероприятий для админки
+            async function loadEventsAdmin() {
+                eventsList.innerHTML = '<p style="color: #888;">Загрузка...</p>';
+                try {
+                    const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
+                    const querySnapshot = await getDocs(q);
+                    
+                    eventsList.innerHTML = '';
+                    if (querySnapshot.empty) {
+                        eventsList.innerHTML = '<p style="color: #888;">Нет добавленных мероприятий.</p>';
+                        return;
+                    }
+
+                    querySnapshot.forEach((document) => {
+                        const data = document.data();
+                        const li = document.createElement('li');
+                        li.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222;";
+                        
+                        li.innerHTML = `
+                            <div>
+                                <strong style="color: var(--orange);">${escapeHtml(data.title)}</strong>
+                                <p style="font-size: 13px; color: #aaa; margin-top: 4px;">Статус: ${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</p>
+                            </div>
+                        `;
+                        
+                        const deleteBtn = document.createElement('button');
+                        deleteBtn.textContent = 'Удалить';
+                        deleteBtn.style.cssText = "background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;";
+                        
+                        deleteBtn.addEventListener('click', async () => {
+                            if (confirm("Удалить это мероприятие?")) {
+                                try {
+                                    await deleteDoc(doc(db, "events", document.id));
+                                    loadEventsAdmin();
+                                } catch (error) {
+                                    alert('Ошибка при удалении: ' + error.message);
+                                }
+                            }
+                        });
+
+                        li.appendChild(deleteBtn);
+                        eventsList.appendChild(li);
+                    });
+                } catch (error) {
+                    console.error("Ошибка загрузки мероприятий: ", error);
+                }
+            }
+
+            function escapeHtml(text) {
+                if (!text) return '';
+                return text
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+            }
+        });
     </script>
+</head>
+<body style="background: var(--black); color: var(--white);">
+
+    <!-- ЭКРАН АВТОРИЗАЦИИ -->
+    <div id="auth-panel" class="container" style="max-width: 400px; margin: 100px auto; padding: 20px;">
+        <div class="contact-form-container" style="background: var(--black-2); border: 2px solid var(--orange); padding: 30px; border-radius: 6px;">
+            <h3 style="color: var(--orange); margin-bottom: 20px; text-transform: uppercase; text-align: center;">Вход в админ-панель</h3>
+            <form id="login-form" class="question-form">
+                <div class="form-group">
+                    <label style="display:block; margin-bottom:5px; color:#aaa;">Email администратора</label>
+                    <input type="email" id="email" required style="width:100%; padding:12px; background:#181818; border:1px solid #333; color:white; border-radius:4px;">
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label style="display:block; margin-bottom:5px; color:#aaa;">Пароль</label>
+                    <input type="password" id="password" required style="width:100%; padding:12px; background:#181818; border:1px solid #333; color:white; border-radius:4px;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:20px;">Войти в систему</button>
+            </form>
+            <div style="text-align: center; margin-top: 15px;">
+                <a href="index.html" style="color: var(--gray); font-size: 13px;">← На главную страницу сайта</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОСНОВНАЯ ПАНЕЛЬ УПРАВЛЕНИЯ -->
+    <div id="admin-panel" style="display: none;">
+        <!-- Шапка панели -->
+        <header class="header" style="padding: 20px 7%; display: flex; justify-content: space-between; align-items: center; background: var(--black-2); border-bottom: 3px solid var(--orange);">
+            <div class="logo">
+                <span class="logo-icon" style="background:var(--orange); color:black; padding:8px 12px; font-weight:bold; border-radius:4px;">🇰🇿</span>
+                <span class="logo-text" style="margin-left: 10px; font-weight: bold; font-size: 16px;">УПРАВЛЕНИЕ САЙТОМ</span>
+            </div>
+            <div>
+                <a href="index.html" class="btn btn-secondary" style="margin-right: 10px; padding: 8px 16px; font-size: 13px;">На сайт</a>
+                <button id="logout-btn" class="delete-btn" style="background: var(--red); color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer;">Выйти</button>
+            </div>
+        </header>
+
+        <div class="container" style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
+            
+            <!-- БЛОК ДОБАВЛЕНИЯ НОВОСТИ -->
+            <div class="contact-form-container" style="background: var(--black-2); border: 1px solid #333; padding: 30px; border-radius: 6px; margin-bottom: 30px;">
+                <h3 style="color: var(--orange); margin-bottom: 20px; text-transform: uppercase;">Добавить новость (Баннер)</h3>
+                <form id="add-news-form" class="question-form">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="news-title" placeholder="Заголовок новости" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <textarea id="news-text" rows="3" placeholder="Полный текст новости..." required></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="news-tag" placeholder="Тег (например: НОВОСТИ, СОРЕВНОВАНИЯ)" value="НОВОСТИ">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="news-image" placeholder="Ссылка на картинку (оставьте пустой для фирменной заглушки)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Опубликовать новость</button>
+                </form>
+            </div>
+
+            <!-- БЛОК ДОБАВЛЕНИЯ МЕРОПРИЯТИЯ -->
+            <div class="contact-form-container" style="background: var(--black-2); border: 1px solid #333; padding: 30px; border-radius: 6px; margin-bottom: 40px;">
+                <h3 style="color: var(--orange); margin-bottom: 20px; text-transform: uppercase;">Добавить мероприятие / турнир</h3>
+                <form id="add-event-form" class="question-form">
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="event-title" placeholder="Название турнира / мероприятия" required>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <textarea id="event-text" rows="3" placeholder="Описание мероприятия..." required></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="event-status" placeholder="Статус (например: ПРЕДСТОЯЩЕЕ, СКОРО)" value="ПРЕДСТОЯЩЕЕ">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <input type="text" id="event-image" placeholder="Ссылка на картинку (оставьте пустой для фирменной заглушки)">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Опубликовать мероприятие</button>
+                </form>
+            </div>
+
+            <!-- УПРАВЛЕНИЕ СУЩЕСТВУЮЩИМИ ЗАПИСЯМИ -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                <div style="background: var(--black-2); padding: 25px; border-radius: 6px; border: 1px solid #333;">
+                    <h3 style="color: var(--white); margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid var(--orange); padding-bottom: 8px;">Список новостей</h3>
+                    <ul id="news-list" style="list-style: none; max-height: 350px; overflow-y: auto;">
+                        <!-- Загружается динамически -->
+                    </ul>
+                </div>
+
+                <div style="background: var(--black-2); padding: 25px; border-radius: 6px; border: 1px solid #333;">
+                    <h3 style="color: var(--white); margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid var(--orange); padding-bottom: 8px;">Список мероприятий</h3>
+                    <ul id="events-list" style="list-style: none; max-height: 350px; overflow-y: auto;">
+                        <!-- Загружается динамически -->
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </body>
 </html>
