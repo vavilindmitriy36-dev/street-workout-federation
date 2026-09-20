@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadNewsPublic();
     loadEventsPublic();
     setupAuthListeners();
+    loadSingleItemPage();
 });
 
 // ==========================================
@@ -105,14 +106,15 @@ async function loadNewsPublic() {
             const card = document.createElement('div');
             card.className = 'news-card';
             card.innerHTML = `
-                <div class="news-img-wrap" style="position: relative; overflow: hidden; border-radius: 6px 6px 0 0;">
-                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:200px; object-fit:cover;">
-                    <span class="news-tag" style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.tag || 'НОВОСТИ')}</span>
+                <div style="position: relative; overflow: hidden; height: 200px; cursor: pointer;" onclick="location.href='news.html?id=${docId}'">
+                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:100%; object-fit:cover;">
+                    <span style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.tag || 'НОВОСТИ')}</span>
                 </div>
-                <div class="news-content" style="padding: 20px; background: var(--black-2, #181818); border-radius: 0 0 6px 6px;">
-                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px;">${escapeHtml(data.title)}</h3>
-                    <p style="color: #aaa; font-size: 14px; line-height: 1.5;">${escapeHtml(data.text)}</p>
-                    <button class="admin-only edit-btn delete-news-btn" data-id="${docId}" style="margin-top: 15px; background: var(--red, #e74c3c); display: none;">🗑️ Удалить новость</button>
+                <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px; cursor: pointer;" onclick="location.href='news.html?id=${docId}'">${escapeHtml(data.title)}</h3>
+                    <p style="color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">${escapeHtml(data.text)}</p>
+                    <a href="news.html?id=${docId}" style="color: var(--orange); font-size: 14px; font-weight: bold; margin-bottom: 10px; display: inline-block;">Читать далее →</a>
+                    <button class="admin-only edit-btn delete-news-btn" data-id="${docId}" style="background: var(--red, #e74c3c); display: none;">🗑️ Удалить новость</button>
                 </div>
             `;
             container.appendChild(card);
@@ -164,14 +166,15 @@ async function loadEventsPublic() {
             const card = document.createElement('div');
             card.className = 'event-card';
             card.innerHTML = `
-                <div class="event-img-wrap" style="position: relative; overflow: hidden; border-radius: 6px 6px 0 0;">
-                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:200px; object-fit:cover;">
+                <div style="position: relative; overflow: hidden; height: 200px; cursor: pointer;" onclick="location.href='events.html?id=${docId}'">
+                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:100%; object-fit:cover;">
                     <span style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</span>
                 </div>
-                <div class="event-content" style="padding: 20px; background: var(--black-2, #181818); border-radius: 0 0 6px 6px;">
-                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px;">${escapeHtml(data.title)}</h3>
-                    <p style="color: #aaa; font-size: 14px; line-height: 1.5;">${escapeHtml(data.text)}</p>
-                    <button class="admin-only edit-btn delete-event-btn" data-id="${docId}" style="margin-top: 15px; background: var(--red, #e74c3c); display: none;">🗑️ Удалить событие</button>
+                <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
+                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px; cursor: pointer;" onclick="location.href='events.html?id=${docId}'">${escapeHtml(data.title)}</h3>
+                    <p style="color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">${escapeHtml(data.text)}</p>
+                    <a href="events.html?id=${docId}" style="color: var(--orange); font-size: 14px; font-weight: bold; margin-bottom: 10px; display: inline-block;">Подробнее →</a>
+                    <button class="admin-only edit-btn delete-event-btn" data-id="${docId}" style="background: var(--red, #e74c3c); display: none;">🗑️ Удалить событие</button>
                 </div>
             `;
             container.appendChild(card);
@@ -200,7 +203,54 @@ async function loadEventsPublic() {
 }
 
 // ==========================================
-// 4. ДОБАВЛЕНИЕ НОВОСТЕЙ И СОБЫТИЙ (ЧЕРЕЗ ПРОМПТ)
+// 4. ЗАГРУЗКА ОТДЕЛЬНОЙ СТРАНИЦЫ (NEWS.HTML / EVENTS.HTML)
+// ==========================================
+async function loadSingleItemPage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    if (!id) return;
+
+    if (window.location.pathname.includes('news.html')) {
+        try {
+            const doc = await db.collection("news").doc(id).get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('news-title').innerText = data.title;
+                document.getElementById('news-tag').innerText = data.tag || 'НОВОСТИ';
+                document.getElementById('news-content-box').innerHTML = `<p>${escapeHtml(data.text).replace(/\n/g, '<br>')}</p>`;
+                if (data.image) {
+                    document.getElementById('news-image-container').innerHTML = `<img src="${escapeHtml(data.image)}" alt="${escapeHtml(data.title)}" style="width:100%; max-height:400px; object-fit:cover; border-radius:8px;">`;
+                }
+            } else {
+                document.getElementById('news-title').innerText = "Новость не найдена";
+                document.getElementById('news-content-box').innerHTML = "<p>Запрашиваемая новость была удалена или не существует.</p>";
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    } else if (window.location.pathname.includes('events.html')) {
+        try {
+            const doc = await db.collection("events").doc(id).get();
+            if (doc.exists) {
+                const data = doc.data();
+                document.getElementById('event-title').innerText = data.title;
+                document.getElementById('event-status').innerText = data.status || 'ПРЕДСТОЯЩЕЕ';
+                document.getElementById('event-content-box').innerHTML = `<p>${escapeHtml(data.text).replace(/\n/g, '<br>')}</p>`;
+                if (data.image) {
+                    document.getElementById('event-image-container').innerHTML = `<img src="${escapeHtml(data.image)}" alt="${escapeHtml(data.title)}" style="width:100%; max-height:400px; object-fit:cover; border-radius:8px;">`;
+                }
+            } else {
+                document.getElementById('event-title').innerText = "Мероприятие не найдено";
+                document.getElementById('event-content-box').innerHTML = "<p>Запрашиваемое мероприятие было удалено или не существует.</p>";
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+}
+
+// ==========================================
+// 5. ДОБАВЛЕНИЕ НОВОСТЕЙ И СОБЫТИЙ
 // ==========================================
 window.addNewsItem = async function() {
     const title = prompt("Введите заголовок новости:");
@@ -249,7 +299,7 @@ window.addEventItem = async function() {
 };
 
 // ==========================================
-// 5. РЕДАКТИРОВАНИЕ ТЕКСТОВ И СТАТИСТИКИ
+// 6. РЕДАКТИРОВАНИЕ ТЕКСТОВ И СТАТИСТИКИ
 // ==========================================
 window.editDocText = async function(collectionName, docId, fieldName, elementId) {
     const el = document.getElementById(elementId);
@@ -364,4 +414,4 @@ function escapeHtml(text) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-                                 }
+}
