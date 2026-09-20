@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const nameInput = questionForm.querySelector("[name='name']");
             const emailInput = questionForm.querySelector("[name='email']");
-            const questionInput = questionForm.querySelector("[name='message'], #question");
+            const questionInput = questionForm.querySelector("[name='message'], [name='question'], #question");
 
             const name = nameInput ? nameInput.value.trim() : "";
             const email = emailInput ? emailInput.value.trim() : "";
@@ -458,6 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
+});
    
 // Вспомогательная функция безопасности для строк
 function escapeHtml(text) {
