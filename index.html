@@ -5,20 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Федерация Street Workout Казахстана</title>
     
-    <!-- Подключение стилей -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- Шрифты и иконки FontAwesome (опционально) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Подключение Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
 <body>
 
-    <!-- ВЕРХНЯЯ ПАНЕЛЬ АДМИНИСТРАТОРА -->
     <div id="admin-logged-out" class="admin-bar">
         <span>Режим гостя</span>
         <button class="admin-btn" onclick="openLoginModal()">Войти как админ</button>
@@ -29,7 +25,6 @@
         <button class="admin-btn logout-btn" onclick="adminLogout()">Выйти</button>
     </div>
 
-    <!-- ШАПКА / НАВИГАЦИЯ -->
     <header class="header">
         <div class="container header-container">
             <div class="logo">
@@ -47,7 +42,6 @@
         </div>
     </header>
 
-    <!-- 1. ГЛАВНЫЙ БАННЕР (HERO) -->
     <section id="hero" class="hero-section">
         <div class="container hero-container">
             <h1 id="hero-title-text">Федерация Street Workout Казахстана</h1>
@@ -63,23 +57,31 @@
         </div>
     </section>
 
-    <!-- 2. О НАС (ABOUT) -->
     <section id="about" class="section">
         <div class="container">
             <h2 id="about-title-text" class="section-title">О Нашей Федерации</h2>
             <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'title', 'about-title-text')">✏️ Изменить заголовок</button>
 
             <div class="about-content">
-                <p id="about-p1-text">Казахстанская Федерация Street Workout занимается популяризацией здорового образа жизни, воркаута и силовых дисциплин среди молодежи и взрослых.</p>
-                <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p1', 'about-p1-text')">✏️ Изменить текст 1</button>
+                <div class="about-text-wrapper">
+                    <p id="about-p1-text">Казахстанская Федерация Street Workout занимается популяризацией здорового образа жизни, воркаута и силовых дисциплин среди молодежи и взрослых.</p>
+                    <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p1', 'about-p1-text')">✏️ Изменить текст 1</button>
 
-                <p id="about-p2-text">Наша цель — строительство доступных спортивных площадок и организация профессиональных чемпионатов международно уровня.</p>
-                <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p2', 'about-p2-text')">✏️ Изменить текст 2</button>
+                    <p id="about-p2-text" style="margin-top: 15px;">Наша цель — строительство доступных спортивных площадок и организация профессиональных чемпионатов международного уровня.</p>
+                    <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p2', 'about-p2-text')" style="margin-top: 10px;">✏️ Изменить текст 2</button>
+                </div>
+
+                <div class="about-photo-card" style="margin-top: 30px; border-radius: 16px; overflow: hidden; border: 2px solid var(--orange); box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative;">
+                    <img id="team-photo-img" src="IMG-20260918-WA0024(1).jpg" alt="Команда Федерации Street Workout Казахстан с флагом" style="width: 100%; height: auto; display: block; object-fit: cover;">
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 15px 20px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
+                        🇰🇿 Команда Федерации Street Workout Казахстан
+                    </div>
+                    <button class="admin-only edit-btn" style="position: absolute; top: 15px; right: 15px;" onclick="editTeamPhoto()">✏️ Изменить фото</button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- 3. СТАТИСТИКА (STATS) -->
     <section id="stats" class="section stats-section">
         <div class="container">
             <h2 class="section-title">Наши Достижения</h2>
@@ -107,7 +109,6 @@
         </div>
     </section>
 
-    <!-- 4. НОВОСТИ (NEWS) -->
     <section id="news" class="section">
         <div class="container">
             <div class="section-header">
@@ -116,13 +117,11 @@
             </div>
             
             <div id="news-container" class="news-grid">
-                <!-- Динамически загружается из Firebase JS -->
                 <p class="section-description">Загрузка новостей...</p>
             </div>
         </div>
     </section>
 
-    <!-- 5. МЕРОПРИЯТИЯ (EVENTS) -->
     <section id="events" class="section events-section">
         <div class="container">
             <div class="section-header">
@@ -131,13 +130,11 @@
             </div>
 
             <div id="events-container" class="events-grid">
-                <!-- Динамически загружается из Firebase JS -->
                 <p class="section-description">Загрузка событий...</p>
             </div>
         </div>
     </section>
 
-    <!-- 6. КОНТАКТЫ И ФОРМА ВОПРОСА (CONTACTS) -->
     <section id="contacts" class="section">
         <div class="container contacts-grid">
             
@@ -171,7 +168,6 @@
 
             <div class="contact-form-container">
                 <h3>Задать вопрос</h3>
-                <!-- Форма отправки на Formspree -->
                 <form action="https://formspree.io/f/xbgldrbk" method="POST" class="question-form">
                     <div class="form-group">
                         <input type="text" id="name" name="name" placeholder="Ваше имя" required>
@@ -189,14 +185,12 @@
         </div>
     </section>
 
-    <!-- ПОДВАЛ (FOOTER) -->
     <footer class="footer">
         <div class="container">
             <p>&copy; 2026 Street Workout Federation Kazakhstan. Все права защищены.</p>
         </div>
     </footer>
 
-    <!-- МОДАЛЬНОЕ ОКНО АВТОРИЗАЦИИ АДМИНА -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeLoginModal()">&times;</span>
@@ -206,7 +200,7 @@
                     <input type="email" id="admin-email" placeholder="Email админа" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="admin-password" placeholder="Пароль" required>
+                    <input type="password" id="admin-password" placeholder="Паਰол" required>
                 </div>
                 <div id="login-error" class="error-msg" style="display:none;"></div>
                 <button type="submit" class="btn btn-primary full-width">Войти</button>
@@ -214,7 +208,6 @@
         </div>
     </div>
 
-    <!-- Скрипт логики -->
     <script src="script.js"></script>
 </body>
 </html>
