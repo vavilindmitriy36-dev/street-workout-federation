@@ -1,4 +1,4 @@
-// Конфигурация Firebase (такая же, как в админке и index.html)
+// Конфигурация Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAbIUmK6OS7Sd5jcDygCtxMgXi_Tznc56o",
     authDomain: "street-workout-federation.firebaseapp.com",
@@ -9,98 +9,25 @@ const firebaseConfig = {
     measurementId: "G-ZEZBRRHKHJ"
 };
 
-// Инициализация Firebase
-firebase.initializeApp(firebaseConfig);
+// Инициализация Firebase 8.x
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Загрузка данных при открытии страницы
 document.addEventListener("DOMContentLoaded", () => {
+    loadSiteContent();
+    loadStats();
     loadNewsPublic();
     loadEventsPublic();
-    checkAdminAuth();
+    setupAuthListeners();
 });
 
-// 1. ЗАГРУЗКА НОВОСТЕЙ НА ГЛАВНУЮ СТРАНИЦУ
-async function loadNewsPublic() {
-    const container = document.getElementById('news-container');
-    if (!container) return;
-
-    try {
-        const q = firebase.firestore().collection("news").orderBy("createdAt", "desc");
-        const querySnapshot = await q.get();
-
-        if (querySnapshot.empty) {
-            container.innerHTML = '<p class="section-description">Пока нет добавленных новостей.</p>';
-            return;
-        }
-
-        container.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const imageUrl = data.image ? data.image : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80';
-            
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            card.innerHTML = `
-                <div class="news-img-wrap">
-                    <img src="${imageUrl}" alt="${escapeHtml(data.title)}" style="width:100%; height:200px; object-fit:cover;">
-                    <span class="news-tag">${escapeHtml(data.tag || 'НОВОСТИ')}</span>
-                </div>
-                <div class="news-content" style="padding: 20px;">
-                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px;">${escapeHtml(data.title)}</h3>
-                    <p style="color: #aaa; font-size: 14px; line-height: 1.5;">${escapeHtml(data.text)}</p>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    } catch (error) {
-        console.error("Ошибка загрузки новостей:", error);
-        container.innerHTML = '<p class="section-description">Ошибка загрузки новостей.</p>';
-    }
-}
-
-// 2. ЗАГРУЗКА МЕРОПРИЯТИЙ НА ГЛАВНУЮ СТРАНИЦУ
-async function loadEventsPublic() {
-    const container = document.getElementById('events-container');
-    if (!container) return;
-
-    try {
-        const q = firebase.firestore().collection("events").orderBy("createdAt", "desc");
-        const querySnapshot = await q.get();
-
-        if (querySnapshot.empty) {
-            container.innerHTML = '<p class="section-description">Пока нет предстоящих мероприятий.</p>';
-            return;
-        }
-
-        container.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const imageUrl = data.image ? data.image : 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80';
-
-            const card = document.createElement('div');
-            card.className = 'event-card';
-            card.innerHTML = `
-                <div class="event-img-wrap" style="position: relative;">
-                    <img src="${imageUrl}" alt="${escapeHtml(data.title)}" style="width:100%; height:200px; object-fit:cover;">
-                    <span style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</span>
-                </div>
-                <div class="event-content" style="padding: 20px;">
-                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px;">${escapeHtml(data.title)}</h3>
-                    <p style="color: #aaa; font-size: 14px; line-height: 1.5;">${escapeHtml(data.text)}</p>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-    } catch (error) {
-        console.error("Ошибка загрузки мероприятий:", error);
-        container.innerHTML = '<p class="section-description">Ошибка загрузки мероприятий.</p>';
-    }
-}
-
-// 3. УПРАВЛЕНИЕ АВТОРИЗАЦИЕЙ НА ГЛАВНОЙ
-function checkAdminAuth() {
+// ==========================================
+// 1. АВТОРИЗАЦИЯ И УПРАВЛЕНИЕ АДМИНКОЙ
+// ==========================================
+function setupAuthListeners() {
     auth.onAuthStateChanged((user) => {
         const loggedOutBar = document.getElementById('admin-logged-out');
         const loggedInBar = document.getElementById('admin-logged-in');
@@ -116,19 +43,7 @@ function checkAdminAuth() {
             adminElements.forEach(el => el.style.display = 'none');
         }
     });
-}
 
-// Модальное окно входа
-function openLoginModal() {
-    document.getElementById('login-modal').style.display = 'flex';
-}
-
-function closeLoginModal() {
-    document.getElementById('login-modal').style.display = 'none';
-}
-
-// Обработка формы входа в модалке
-document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('admin-login-form');
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
@@ -150,10 +65,295 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+}
 
-function adminLogout() {
+window.openLoginModal = function() {
+    const modal = document.getElementById('login-modal');
+    if (modal) modal.style.display = 'flex';
+};
+
+window.closeLoginModal = function() {
+    const modal = document.getElementById('login-modal');
+    if (modal) modal.style.display = 'none';
+};
+
+window.adminLogout = function() {
     auth.signOut();
+};
+
+// ==========================================
+// 2. ДИНАМИЧЕСКАЯ ЗАГРУЗКА НОВОСТЕЙ
+// ==========================================
+async function loadNewsPublic() {
+    const container = document.getElementById('news-container');
+    if (!container) return;
+
+    try {
+        const querySnapshot = await db.collection("news").orderBy("createdAt", "desc").get();
+
+        if (querySnapshot.empty) {
+            container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center;">Пока нет добавленных новостей.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const docId = doc.id;
+            const imageUrl = data.image ? data.image : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80';
+            
+            const card = document.createElement('div');
+            card.className = 'news-card';
+            card.innerHTML = `
+                <div class="news-img-wrap" style="position: relative; overflow: hidden; border-radius: 6px 6px 0 0;">
+                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:200px; object-fit:cover;">
+                    <span class="news-tag" style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.tag || 'НОВОСТИ')}</span>
+                </div>
+                <div class="news-content" style="padding: 20px; background: var(--black-2, #181818); border-radius: 0 0 6px 6px;">
+                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px;">${escapeHtml(data.title)}</h3>
+                    <p style="color: #aaa; font-size: 14px; line-height: 1.5;">${escapeHtml(data.text)}</p>
+                    <button class="admin-only edit-btn delete-news-btn" data-id="${docId}" style="margin-top: 15px; background: var(--red, #e74c3c); display: none;">🗑️ Удалить новость</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        document.querySelectorAll('.delete-news-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                if (confirm("Удалить эту новость?")) {
+                    const id = e.target.getAttribute('data-id');
+                    await db.collection("news").doc(id).delete();
+                    loadNewsPublic();
+                }
+            });
+        });
+
+        auth.onAuthStateChanged(user => {
+            document.querySelectorAll('.delete-news-btn').forEach(btn => {
+                btn.style.display = user ? 'inline-block' : 'none';
+            });
+        });
+
+    } catch (error) {
+        console.error("Ошибка загрузки новостей:", error);
+        container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center; color: var(--red);">Ошибка загрузки новостей.</p>';
+    }
+}
+
+// ==========================================
+// 3. ДИНАМИЧЕСКАЯ ЗАГРУЗКА МЕРОПРИЯТИЙ
+// ==========================================
+async function loadEventsPublic() {
+    const container = document.getElementById('events-container');
+    if (!container) return;
+
+    try {
+        const querySnapshot = await db.collection("events").orderBy("createdAt", "desc").get();
+
+        if (querySnapshot.empty) {
+            container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center;">Пока нет предстоящих мероприятий.</p>';
+            return;
+        }
+
+        container.innerHTML = '';
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            const docId = doc.id;
+            const imageUrl = data.image ? data.image : 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80';
+
+            const card = document.createElement('div');
+            card.className = 'event-card';
+            card.innerHTML = `
+                <div class="event-img-wrap" style="position: relative; overflow: hidden; border-radius: 6px 6px 0 0;">
+                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:200px; object-fit:cover;">
+                    <span style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</span>
+                </div>
+                <div class="event-content" style="padding: 20px; background: var(--black-2, #181818); border-radius: 0 0 6px 6px;">
+                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px;">${escapeHtml(data.title)}</h3>
+                    <p style="color: #aaa; font-size: 14px; line-height: 1.5;">${escapeHtml(data.text)}</p>
+                    <button class="admin-only edit-btn delete-event-btn" data-id="${docId}" style="margin-top: 15px; background: var(--red, #e74c3c); display: none;">🗑️ Удалить событие</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        document.querySelectorAll('.delete-event-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                if (confirm("Удалить это мероприятие?")) {
+                    const id = e.target.getAttribute('data-id');
+                    await db.collection("events").doc(id).delete();
+                    loadEventsPublic();
+                }
+            });
+        });
+
+        auth.onAuthStateChanged(user => {
+            document.querySelectorAll('.delete-event-btn').forEach(btn => {
+                btn.style.display = user ? 'inline-block' : 'none';
+            });
+        });
+
+    } catch (error) {
+        console.error("Ошибка загрузки мероприятий:", error);
+        container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center; color: var(--red);">Ошибка загрузки мероприятий.</p>';
+    }
+}
+
+// ==========================================
+// 4. ДОБАВЛЕНИЕ НОВОСТЕЙ И СОБЫТИЙ (ЧЕРЕЗ ПРОМПТ)
+// ==========================================
+window.addNewsItem = async function() {
+    const title = prompt("Введите заголовок новости:");
+    if (!title) return;
+    const text = prompt("Введите текст новости:");
+    if (!text) return;
+    const tag = prompt("Введите тег (например: НОВОСТИ, СОСТАВ):", "НОВОСТИ");
+    const image = prompt("Введите ссылку на картинку (можно оставить пустой):", "");
+
+    try {
+        await db.collection("news").add({
+            title,
+            text,
+            tag: tag || "НОВОСТИ",
+            image: image || "",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("Новость успешно добавлена!");
+        loadNewsPublic();
+    } catch (error) {
+        alert("Ошибка при добавлении: " + error.message);
+    }
+};
+
+window.addEventItem = async function() {
+    const title = prompt("Введите название мероприятия:");
+    if (!title) return;
+    const text = prompt("Введите описание мероприятия:");
+    if (!text) return;
+    const status = prompt("Введите статус (например: ПРЕДСТОЯЩЕЕ, СКОРО):", "ПРЕДСТОЯЩЕЕ");
+    const image = prompt("Введите ссылку на картинку (можно оставить пустой):", "");
+
+    try {
+        await db.collection("events").add({
+            title,
+            text,
+            status: status || "ПРЕДСТОЯЩЕЕ",
+            image: image || "",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("Мероприятие успешно добавлено!");
+        loadEventsPublic();
+    } catch (error) {
+        alert("Ошибка при добавлении: " + error.message);
+    }
+};
+
+// ==========================================
+// 5. РЕДАКТИРОВАНИЕ ТЕКСТОВ И СТАТИСТИКИ
+// ==========================================
+window.editDocText = async function(collectionName, docId, fieldName, elementId) {
+    const el = document.getElementById(elementId);
+    if (!el) return;
+    const newVal = prompt("Введите новый текст:", el.innerText);
+    if (newVal === null) return;
+
+    try {
+        await db.collection(collectionName).doc(docId).set({
+            [fieldName]: newVal
+        }, { merge: true });
+        el.innerText = newVal;
+        alert("Текст успешно обновлен!");
+    } catch (error) {
+        alert("Ошибка сохранения: " + error.message);
+    }
+};
+
+async function loadSiteContent() {
+    try {
+        const heroDoc = await db.collection("site_content").doc("hero").get();
+        if (heroDoc.exists) {
+            const data = heroDoc.data();
+            if (data.title) document.getElementById('hero-title-text').innerText = data.title;
+            if (data.description) document.getElementById('hero-desc-text').innerText = data.description;
+        }
+
+        const aboutDoc = await db.collection("site_content").doc("about").get();
+        if (aboutDoc.exists) {
+            const data = aboutDoc.data();
+            if (data.title) document.getElementById('about-title-text').innerText = data.title;
+            if (data.p1) document.getElementById('about-p1-text').innerText = data.p1;
+            if (data.p2) document.getElementById('about-p2-text').innerText = data.p2;
+        }
+
+        const contactsDoc = await db.collection("site_content").doc("contacts").get();
+        if (contactsDoc.exists) {
+            const data = contactsDoc.data();
+            if (data.address) document.getElementById('contact-address-text').innerText = data.address;
+            if (data.phone) document.getElementById('contact-phone-text').innerText = data.phone;
+            if (data.email) document.getElementById('contact-email-text').innerText = data.email;
+            if (data.social) document.getElementById('contact-social-text').innerText = data.social;
+        }
+
+        const photoDoc = await db.collection("site_content").doc("team_photo").get();
+        if (photoDoc.exists && photoDoc.data().url) {
+            document.getElementById('team-photo-img').src = photoDoc.data().url;
+        }
+    } catch (error) {
+        console.error("Ошибка загрузки контента сайта:", error);
+    }
+}
+
+window.editTeamPhoto = async function() {
+    const currentImg = document.getElementById('team-photo-img').src;
+    const newUrl = prompt("Введите прямую ссылку на новую фотографию команды:", currentImg);
+    if (!newUrl) return;
+
+    try {
+        await db.collection("site_content").doc("team_photo").set({
+            url: newUrl
+        }, { merge: true });
+        document.getElementById('team-photo-img').src = newUrl;
+        alert("Фотография команды успешно обновлена!");
+    } catch (error) {
+        alert("Ошибка при сохранении фото: " + error.message);
+    }
+};
+
+window.editStat = async function(statId, numElId, labelElId) {
+    const numEl = document.getElementById(numElId);
+    const labelEl = document.getElementById(labelElId);
+
+    const newNum = prompt("Введите новое число/значение (например, 20+):", numEl.innerText);
+    if (newNum === null) return;
+    const newLabel = prompt("Введите подпись (например, Городов участников):", labelEl.innerText);
+    if (newLabel === null) return;
+
+    try {
+        await db.collection("site_content").doc(statId).set({
+            num: newNum,
+            label: newLabel
+        }, { merge: true });
+        numEl.innerText = newNum;
+        labelEl.innerText = newLabel;
+        alert("Статистика обновлена!");
+    } catch (error) {
+        alert("Ошибка сохранения: " + error.message);
+    }
+};
+
+async function loadStats() {
+    for (let i = 1; i <= 3; i++) {
+        try {
+            const doc = await db.collection("site_content").doc(`stat${i}`).get();
+            if (doc.exists) {
+                const data = doc.data();
+                if (data.num) document.getElementById(`stat${i}-num`).innerText = data.num;
+                if (data.label) document.getElementById(`stat${i}-label`).innerText = data.label;
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }
 
 function escapeHtml(text) {
@@ -164,4 +364,4 @@ function escapeHtml(text) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
-}
+                                 }
