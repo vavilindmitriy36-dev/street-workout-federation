@@ -98,7 +98,6 @@ section {
   display: none !important;
 }
 
-/* Кнопки редактирования прямо на элементах */
 .edit-btn {
   display: inline-block;
   margin-top: 10px;
@@ -212,7 +211,6 @@ section {
 HEADER / LOGO / NAV
 ======================================== */
 
-header,
 .header {
   position: relative;
   overflow: hidden;
@@ -222,7 +220,6 @@ header,
   border-bottom: 5px solid var(--orange);
 }
 
-header::before,
 .header::before {
   content: "";
   position: absolute;
@@ -234,7 +231,6 @@ header::before,
   transform: rotate(45deg);
 }
 
-header::after,
 .header::after {
   content: "";
   position: absolute;
@@ -293,7 +289,6 @@ header::after,
   font-weight: bold;
 }
 
-nav,
 .nav {
   position: relative;
   z-index: 2;
@@ -304,7 +299,6 @@ nav,
   margin-top: 30px;
 }
 
-nav a,
 .nav a {
   position: relative;
   color: #eeeeee;
@@ -313,7 +307,6 @@ nav a,
   transition: 0.25s;
 }
 
-nav a::after,
 .nav a::after {
   content: "";
   position: absolute;
@@ -325,12 +318,10 @@ nav a::after,
   transition: 0.25s;
 }
 
-nav a:hover,
 .nav a:hover {
   color: var(--orange);
 }
 
-nav a:hover::after,
 .nav a:hover::after {
   width: 100%;
 }
@@ -339,7 +330,6 @@ nav a:hover::after,
 HERO SECTION
 ======================================== */
 
-.hero,
 .hero-section {
   position: relative;
   min-height: 520px;
@@ -352,7 +342,6 @@ HERO SECTION
   color: var(--white);
 }
 
-.hero::before,
 .hero-section::before {
   content: "";
   position: absolute;
@@ -364,7 +353,6 @@ HERO SECTION
   transform: rotate(45deg);
 }
 
-.hero::after,
 .hero-section::after {
   content: "";
   position: absolute;
@@ -377,13 +365,11 @@ HERO SECTION
   box-shadow: 0 0 25px rgba(227, 38, 38, 0.45);
 }
 
-.hero > *,
 .hero-section > * {
   position: relative;
   z-index: 2;
 }
 
-.hero h1,
 .hero-section h1 {
   max-width: 850px;
   margin: 0 0 25px;
@@ -457,7 +443,6 @@ HERO SECTION
 ЗАГОЛОВКИ СЕКЦИЙ
 ======================================== */
 
-section h2,
 .section-title {
   position: relative;
   text-align: center;
@@ -467,7 +452,6 @@ section h2,
   margin-bottom: 14px;
 }
 
-section h2::after,
 .section-title::after {
   content: "";
   display: block;
@@ -586,12 +570,8 @@ STATISTICS SECTION
 }
 
 /* ========================================
-НОВОСТИ И МЕРОПРИЯТИЯ (БАННЕРНЫЕ КАРТОЧКИ)
+НОВОСТИ И МЕРОПРИЯТИЯ
 ======================================== */
-
-#news {
-  background: var(--white);
-}
 
 .news-grid,
 .events-grid {
@@ -602,21 +582,18 @@ STATISTICS SECTION
   gap: 25px;
 }
 
-/* Стили карточек для новостей и событий */
 .news-card,
 .event-card {
   position: relative;
   width: 100%;
-  min-height: 380px;
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 10px 25px rgba(0,0,0,0.12);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background-color: #151515;
+  background-color: var(--black-2);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #333;
 }
 
 .news-card:hover,
@@ -626,13 +603,12 @@ STATISTICS SECTION
   border-color: var(--orange);
 }
 
-.events-section,
-#events {
+.events-section {
   background: var(--light);
 }
 
 /* ========================================
-CONTACTS SECTION
+CONTACTС SECTION
 ======================================== */
 
 #contacts {
@@ -719,24 +695,52 @@ CONTACTS SECTION
 }
 
 /* ========================================
-FOOTER
+FOOTER И СТРАНИЦЫ НОВОСТЕЙ/СОБЫТИЙ
 ======================================== */
 
-footer,
 .footer {
   position: relative;
   background: #050505;
-  color: var(--white);
+  color: var(--gray);
   padding: 40px 7% 25px;
   border-top: 5px solid var(--orange);
   text-align: center;
   font-size: 14px;
-  color: var(--gray);
 }
 
-/* ========================================
-МОБИЛЬНАЯ АДАПТАЦИЯ (RESPONSIVE)
-======================================== */
+.single-news {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.news-date {
+  display: inline-block;
+  background: var(--orange);
+  color: var(--black);
+  font-size: 12px;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+.news-content {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 30px;
+  color: var(--orange);
+  font-weight: bold;
+}
 
 @media (max-width: 900px) {
   .about-content,
@@ -754,7 +758,6 @@ footer,
     padding: 60px 5%;
   }
 
-  .hero h1,
   .hero-section h1 {
     font-size: 32px;
   }
