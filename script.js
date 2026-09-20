@@ -188,7 +188,7 @@ function editStat(statKey, numId, labelId) {
 }
 
 
-// ==================== 5. УПРАВЛЕНИЕ НОВОСТЯМИ ====================
+// ==================== 5. УПРАВЛЕНИЕ НОВОСТЯМИ (БАННЕРНЫЙ СТИЛЬ) ====================
 function loadNews() {
     if (!db) return;
 
@@ -208,16 +208,36 @@ function loadNews() {
             const id = doc.id;
             
             const card = document.createElement('article');
-            card.className = 'news-card';
+            
+            // Проверяем, есть ли картинка. Если нет — добавляем класс дефолтной заглушки
+            const hasImage = item.image && item.image.trim() !== '';
+            card.className = hasImage ? 'banner-card' : 'banner-card default-bg';
+            
+            if (hasImage) {
+                card.style.backgroundImage = `url('${item.image}')`;
+            }
+
+            // Рендерим HTML карточки-баннера
             card.innerHTML = `
-                <div class="news-date">${item.tag || 'НОВОСТИ'}</div>
-                <h3>${item.title}</h3>
-                <p>${item.text}</p>
-                <a href="news.html?id=${id}">Подробнее →</a>
+                <div class="banner-badge">${item.tag || 'НОВОСТИ'}</div>
                 
-                <div class="admin-only news-admin-actions">
-                    <button class="edit-btn" onclick="editNews('${id}', '${escapeHtml(item.title)}', '${escapeHtml(item.text)}', '${escapeHtml(item.tag || '')}')">✏️ Редактировать</button>
-                    <button class="delete-btn" onclick="deleteNews('${id}')">🗑️ Удалить</button>
+                ${!hasImage ? `
+                    <div class="banner-logo-placeholder">
+                        <span>🇰🇿</span>
+                    </div>
+                ` : ''}
+
+                <div class="banner-content" onclick="window.location.href='news.html?id=${id}'">
+                    <h3 class="banner-title">${item.title}</h3>
+                    <div class="banner-footer">
+                        <span class="banner-meta">Читать новость</span>
+                        <div class="banner-arrow">→</div>
+                    </div>
+                </div>
+                
+                <div class="admin-only news-admin-actions" style="position: absolute; bottom: 16px; left: 16px; z-index: 10;">
+                    <button class="edit-btn" onclick="event.stopPropagation(); editNews('${id}', '${escapeHtml(item.title)}', '${escapeHtml(item.text)}', '${escapeHtml(item.tag || '')}', '${escapeHtml(item.image || '')}')">✏️ Изменить</button>
+                    <button class="delete-btn" onclick="event.stopPropagation(); deleteNews('${id}')">🗑️ Удалить</button>
                 </div>
             `;
             container.appendChild(card);
@@ -229,27 +249,31 @@ function addNewsItem() {
     const title = prompt('Заголовок новости:');
     const text = prompt('Текст новости:');
     const tag = prompt('Тег (например: НОВОСТИ, СОРЕВНОВАНИЯ):', 'НОВОСТИ');
+    const image = prompt('Ссылка на картинку (оставьте пустым для фирменной заглушки):', '');
 
     if (title && text && db) {
         db.collection('news').add({
             title: title.trim(),
             text: text.trim(),
             tag: tag ? tag.trim() : 'НОВОСТИ',
+            image: image ? image.trim() : '',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => alert('Новость успешно добавлена!'));
     }
 }
 
-function editNews(id, oldTitle, oldText, oldTag) {
+function editNews(id, oldTitle, oldText, oldTag, oldImage) {
     const newTitle = prompt('Новый заголовок:', oldTitle);
     const newText = prompt('Новый текст:', oldText);
     const newTag = prompt('Новый тег:', oldTag);
+    const newImage = prompt('Новая ссылка на картинку:', oldImage);
 
     if (newTitle && newText && db) {
         db.collection('news').doc(id).update({
             title: newTitle.trim(),
             text: newText.trim(),
-            tag: newTag ? newTag.trim() : 'НОВОСТИ'
+            tag: newTag ? newTag.trim() : 'НОВОСТИ',
+            image: newImage ? newImage.trim() : ''
         });
     }
 }
@@ -261,7 +285,7 @@ function deleteNews(id) {
 }
 
 
-// ==================== 6. УПРАВЛЕНИЕ МЕРОПРИЯТИЯМИ ====================
+// ==================== 6. УПРАВЛЕНИЕ МЕРОПРИЯТИЯМИ (БАННЕРНЫЙ СТИЛЬ) ====================
 function loadEvents() {
     if (!db) return;
 
@@ -281,19 +305,34 @@ function loadEvents() {
             const id = doc.id;
 
             const card = document.createElement('article');
-            card.className = 'event-card';
+            
+            const hasImage = item.image && item.image.trim() !== '';
+            card.className = hasImage ? 'banner-card' : 'banner-card default-bg';
+            
+            if (hasImage) {
+                card.style.backgroundImage = `url('${item.image}')`;
+            }
+
             card.innerHTML = `
-                <div class="event-icon">${item.icon || '🏆'}</div>
-                <div class="event-content">
-                    <span class="event-status">${item.status || 'ПРЕДСТОЯЩЕЕ'}</span>
-                    <h3>${item.title}</h3>
-                    <p>${item.text}</p>
-                    <a href="event.html?id=${id}">Подробнее →</a>
-                    
-                    <div class="admin-only news-admin-actions">
-                        <button class="edit-btn" onclick="editEvent('${id}', '${escapeHtml(item.title)}', '${escapeHtml(item.text)}', '${escapeHtml(item.status || '')}')">✏️ Редактировать</button>
-                        <button class="delete-btn" onclick="deleteEvent('${id}')">🗑️ Удалить</button>
+                <div class="banner-badge">${item.status || 'ПРЕДСТОЯЩЕЕ'}</div>
+                
+                ${!hasImage ? `
+                    <div class="banner-logo-placeholder">
+                        <span>🏆</span>
                     </div>
+                ` : ''}
+
+                <div class="banner-content" onclick="window.location.href='event.html?id=${id}'">
+                    <h3 class="banner-title">${item.title}</h3>
+                    <div class="banner-footer">
+                        <span class="banner-meta">Подробнее о турнире</span>
+                        <div class="banner-arrow">→</div>
+                    </div>
+                </div>
+                
+                <div class="admin-only news-admin-actions" style="position: absolute; bottom: 16px; left: 16px; z-index: 10;">
+                    <button class="edit-btn" onclick="event.stopPropagation(); editEvent('${id}', '${escapeHtml(item.title)}', '${escapeHtml(item.text)}', '${escapeHtml(item.status || '')}', '${escapeHtml(item.image || '')}')">✏️ Изменить</button>
+                    <button class="delete-btn" onclick="event.stopPropagation(); deleteEvent('${id}')">🗑️ Удалить</button>
                 </div>
             `;
             container.appendChild(card);
@@ -304,29 +343,33 @@ function loadEvents() {
 function addEventItem() {
     const title = prompt('Название мероприятия:');
     const text = prompt('Описание мероприятия:');
-    const status = prompt('Статус (например: ПРЕДСТОЯЩЕЕ, МЕРОПРИЯТИЕ):', 'ПРЕДСТОЯЩЕЕ');
+    const status = prompt('Статус (например: ПРЕДСТОЯЩЕЕ, ТУРНИР):', 'ПРЕДСТОЯЩЕЕ');
+    const image = prompt('Ссылка на картинку (оставьте пустым для фирменной заглушки):', '');
 
     if (title && text && db) {
         db.collection('events').add({
             title: title.trim(),
             text: text.trim(),
             status: status ? status.trim() : 'ПРЕДСТОЯЩЕЕ',
+            image: image ? image.trim() : '',
             icon: '🏆',
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => alert('Мероприятие успешно добавлено!'));
     }
 }
 
-function editEvent(id, oldTitle, oldText, oldStatus) {
+function editEvent(id, oldTitle, oldText, oldStatus, oldImage) {
     const newTitle = prompt('Новое название:', oldTitle);
     const newText = prompt('Новый описание:', oldText);
     const newStatus = prompt('Новый статус:', oldStatus);
+    const newImage = prompt('Новая ссылка на картинку:', oldImage);
 
     if (newTitle && newText && db) {
         db.collection('events').doc(id).update({
             title: newTitle.trim(),
             text: newText.trim(),
-            status: newStatus ? newStatus.trim() : 'ПРЕДСТОЯЩЕЕ'
+            status: newStatus ? newStatus.trim() : 'ПРЕДСТОЯЩЕЕ',
+            image: newImage ? newImage.trim() : ''
         });
     }
 }
@@ -449,24 +492,4 @@ document.addEventListener("DOMContentLoaded", () => {
                     successMsg.textContent = 'Ваше сообщение успешно отправлено! Мы ответим вам в ближайшее время.';
                     questionForm.reset();
                 } else {
-                    alert('Произошла ошибка при отправке. Попробуйте еще раз позже.');
-                }
-            }).catch(error => {
-                alert('Ошибка соединения с сервером. Проверьте интернет.');
-            }).finally(() => {
-                if (submitBtn) submitBtn.disabled = false;
-            });
-        });
-    }
-});
-   
-// Вспомогательная функция безопасности для строк
-function escapeHtml(text) {
-    if (!text) return '';
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
+          
