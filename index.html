@@ -31,7 +31,7 @@
                 <a href="#news">Новости</a>
                 <a href="#events">Мероприятия</a>
                 <a href="#contacts">Контакты</a>
-                <!-- Скрытая кнопка входа для админа в самом конце навигации или незаметная -->
+                <!-- Скрытая кнопка входа для админа в самом конце навигации -->
                 <a href="#" onclick="openLoginModal(); return false;" style="font-size: 12px; opacity: 0.5;">🔒 Админ</a>
             </nav>
         </div>
@@ -190,19 +190,26 @@
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeLoginModal()">&times;</span>
-            <h3>Вход для Администратора</h3>
-            <form id="admin-login-form">
-                <div class="form-group">
-                    <input type="email" id="admin-email" placeholder="Email админа" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="admin-password" placeholder="Пароль" required>
-                </div>
-                <div id="login-error" class="error-msg" style="display:none;"></div>
-                <button type="submit" class="btn btn-primary full-width">Войти</button>
-            </form>
-            <div style="margin-top: 15px; text-align: center;">
-                <button type="button" class="admin-btn logout-btn" onclick="adminLogout()" style="font-size: 13px; padding: 6px 12px;">Выйти из аккаунта</button>
+            
+            <!-- Форма входа (скрывается или заменяется скриптом, либо видна если не авторизован) -->
+            <div id="login-form-container">
+                <h3 style="margin-bottom: 20px;">Вход для Администратора</h3>
+                <form id="admin-login-form">
+                    <div class="form-group">
+                        <input type="email" id="admin-email" placeholder="Email админа" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="admin-password" placeholder="Пароль" required>
+                    </div>
+                    <div id="login-error" class="error-msg" style="display:none; color: var(--red); margin-bottom: 10px; font-size: 13px;"></div>
+                    <button type="submit" class="btn btn-primary full-width">Войти</button>
+                </form>
+            </div>
+
+            <!-- Блок выхода, видимый ТОЛЬКО авторизованному администратору -->
+            <div class="admin-only" style="margin-top: 15px; text-align: center; display: none;">
+                <p style="margin-bottom: 15px; color: var(--orange); font-size: 14px;">Вы вошли как администратор</p>
+                <button type="button" class="btn btn-secondary full-width" onclick="adminLogout()" style="background: var(--red); border-color: var(--red); color: white;">Выйти из аккаунта</button>
             </div>
         </div>
     </div>
