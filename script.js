@@ -203,7 +203,7 @@ async function loadEventsPublic() {
 }
 
 // ==========================================
-// 4. ЗАГРУЗКА ОТДЕЛЬНОЙ СТРАНИЦЫ (NEWS.HTML / EVENTS.HTML)
+// 4. ЗАГРУЗКА ОТДЕЛЬНОЙ СТРАНИЦЫ
 // ==========================================
 async function loadSingleItemPage() {
     const urlParams = new URLSearchParams(window.location.search);
