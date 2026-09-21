@@ -5,8 +5,8 @@ const firebaseConfig = {
     projectId: "street-workout-federation",
     storageBucket: "street-workout-federation.firebasestorage.app",
     messagingSenderId: "281767473596",
-    appId: "1:281767473596:web:71c290af7a5fac1472fbb9",
-    measurementId: "G-ZEZBRRHKHJ"
+    appId: "1:281767473596:web:e4c311c1d81b2da5f3844f",
+    measurementId: "G-DQJDKLMR9"
 };
 
 // Инициализация Firebase 8.x
