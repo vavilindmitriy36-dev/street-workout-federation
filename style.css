@@ -53,47 +53,6 @@ section {
 АДМИН-ПАНЕЛЬ И МОДАЛЬНЫЕ ОКНА
 ======================================== */
 
-.admin-bar {
-  background: #111111;
-  color: #ffffff;
-  padding: 10px 7%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  border-bottom: 2px solid var(--orange);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-}
-
-.admin-bar-active {
-  background: var(--orange);
-  color: var(--black);
-  border-bottom: 2px solid var(--red);
-}
-
-.admin-btn {
-  background: var(--orange);
-  color: var(--black);
-  border: none;
-  padding: 6px 14px;
-  font-weight: bold;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: 0.2s;
-}
-
-.admin-bar-active .admin-btn {
-  background: var(--black);
-  color: var(--white);
-}
-
-.admin-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
 .admin-only {
   display: none !important;
 }
@@ -132,6 +91,17 @@ section {
 .add-btn:hover {
   background: var(--red);
   color: var(--white);
+}
+
+.admin-btn {
+  background: var(--orange);
+  color: var(--black);
+  border: none;
+  padding: 6px 14px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: 0.2s;
 }
 
 .modal {
@@ -256,19 +226,13 @@ HEADER / LOGO / NAV
   gap: 14px;
 }
 
-.logo-icon {
-  width: 55px;
+/* Стили для нового логотипа-картинки logo.png */
+.logo-img {
   height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--orange);
-  color: var(--black);
-  font-size: 20px;
-  font-weight: 900;
-  border-radius: 5px;
+  width: auto;
+  object-fit: contain;
   transform: skew(-8deg);
-  box-shadow: 5px 5px 0 var(--red);
+  filter: drop-shadow(5px 5px 0 var(--red));
 }
 
 .logo-text {
