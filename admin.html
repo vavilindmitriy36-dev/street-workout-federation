@@ -5,16 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Админ-панель — Федерация Street Workout Казахстан</title>
     
-    <!-- Подключение стилей -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Подключение Firebase 8.x SDK (совместимо со скриптами сайта) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body style="background: var(--black); color: var(--white); padding: 30px 20px;">
 
-    <!-- Подключение Firebase SDK (Модули v10+) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+    <div class="container" style="max-width: 900px;">
+        
+        <!-- Шапка админки -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--orange); padding-bottom: 15px;">
+            <div class="logo">
+                <img src="logo.png" alt="Logo" class="logo-img" style="height: 40px;">
+                <span style="font-weight: 900; font-size: 16px; margin-left: 10px;">АДМИН-ПАНЕЛЬ</span>
+            </div>
+            <a href="index.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">← На сайт</a>
+        </div>
 
+        <!-- Окно авторизации -->
+        <div id="auth-panel" class="contact-form-container" style="max-width: 400px; margin: 80px auto;">
+            <h3 style="margin-bottom: 20px; text-align: center;">Вход в систему</h3>
+            <form id="login-form" class="question-form">
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Email администратора" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Пароль" required>
+                </div>
+                <div id="login-error" class="error-msg" style="display:none; color: var(--red); font-size: 13px; margin-bottom: 10px;"></div>
+                <button type="submit" class="btn btn-primary full-width">Войти</button>
+            </form>
+        </div>
+
+        <!-- Основная панель управления (скрыта до входа) -->
+        <div id="admin-panel" style="display: none;">
+            
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                <button type="button" id="logout-btn" class="btn btn-secondary" style="background: var(--red); border-color: var(--red); color: white; padding: 8px 16px; font-size: 13px;">Выйти из аккаунта</button>
+            </div>
+
+            <!-- Добавление новости -->
+            <div class="contact-form-container" style="margin-bottom: 35px;">
+                <h3>Добавить новость</h3>
+                <form id="add-news-form" class="question-form">
+                    <div class="form-group"><input type="text" id="news-title" placeholder="Заголовок новости" required></div>
+                    <div class="form-group"><input type="text" id="news-tag" placeholder="Тег (например: НОВОСТИ)" value="НОВОСТИ"></div>
+                    <div class="form-group"><input type="text" id="news-image" placeholder="Ссылка на картинку (необязательно)"></div>
+                    <div class="form-group"><textarea id="news-text" rows="4" placeholder="Текст новости..." required></textarea></div>
+                    <button type="submit" class="btn btn-primary">Опубликовать новость</button>
+                </form>
+            </div>
+
+            <!-- Управление новостями -->
+            <div class="contact-form-container" style="margin-bottom: 35px;">
+                <h3>Список новостей</h3>
+                <div id="news-list" style="margin-top: 15px;">Загрузка...</div>
+            </div>
+
+            <!-- Добавление мероприятия -->
+            <div class="contact-form-container" style="margin-bottom: 35px;">
+                <h3>Добавить мероприятие</h3>
+                <form id="add-event-form" class="question-form">
+                    <div class="form-group"><input type="text" id="event-title" placeholder="Название мероприятия" required></div>
+                    <div class="form-group"><input type="text" id="event-status" placeholder="Статус (например: ПРЕДСТОЯЩЕЕ)" value="ПРЕДСТОЯЩЕЕ"></div>
+                    <div class="form-group"><input type="text" id="event-image" placeholder="Ссылка на картинку (необязательно)"></div>
+                    <div class="form-group"><textarea id="event-text" rows="4" placeholder="Описание мероприятия..." required></textarea></div>
+                    <button type="submit" class="btn btn-primary">Опубликовать мероприятие</button>
+                </form>
+            </div>
+
+            <!-- Управление мероприятиями -->
+            <div class="contact-form-container">
+                <h3>Список мероприятий</h3>
+                <div id="events-list" style="margin-top: 15px;">Загрузка...</div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Логика админ-панели -->
+    <script>
         const firebaseConfig = {
             apiKey: "AIzaSyAbIUmK6OS7Sd5jcDygCtxMgXi_Tznc56o",
             authDomain: "street-workout-federation.firebaseapp.com",
@@ -25,9 +98,11 @@
             measurementId: "G-ZEZBRRHKHJ"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
         document.addEventListener("DOMContentLoaded", () => {
             const authPanel = document.getElementById('auth-panel');
@@ -39,7 +114,7 @@
             const newsList = document.getElementById('news-list');
             const eventsList = document.getElementById('events-list');
 
-            onAuthStateChanged(auth, (user) => {
+            auth.onAuthStateChanged((user) => {
                 if (user) {
                     authPanel.style.display = 'none';
                     adminPanel.style.display = 'block';
@@ -55,16 +130,18 @@
                 e.preventDefault();
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
+                const errDiv = document.getElementById('login-error');
 
                 try {
-                    await signInWithEmailAndPassword(auth, email, password);
+                    await auth.signInWithEmailAndPassword(email, password);
                 } catch (error) {
-                    alert('Ошибка входа: ' + error.message);
+                    errDiv.style.display = 'block';
+                    errDiv.textContent = 'Ошибка входа: ' + error.message;
                 }
             });
 
             logoutBtn.addEventListener('click', () => {
-                signOut(auth);
+                auth.signOut();
             });
 
             // Добавление новости
@@ -76,18 +153,18 @@
                 const image = document.getElementById('news-image').value;
 
                 try {
-                    await addDoc(collection(db, "news"), {
+                    await db.collection("news").add({
                         title: title.trim(),
                         text: text.trim(),
                         tag: tag ? tag.trim() : 'НОВОСТИ',
                         image: image ? image.trim() : '',
-                        createdAt: serverTimestamp()
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     addNewsForm.reset();
                     alert('Новость успешно добавлена!');
                     loadNewsAdmin();
                 } catch (error) {
-                    alert('Ошибка при публикации новости: ' + error.message);
+                    alert('Ошибка: ' + error.message);
                 }
             });
 
@@ -100,175 +177,94 @@
                 const image = document.getElementById('event-image').value;
 
                 try {
-                    await addDoc(collection(db, "events"), {
+                    await db.collection("events").add({
                         title: title.trim(),
                         text: text.trim(),
                         status: status ? status.trim() : 'ПРЕДСТОЯЩЕЕ',
                         image: image ? image.trim() : '',
-                        createdAt: serverTimestamp()
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                     addEventForm.reset();
                     alert('Мероприятие успешно добавлено!');
                     loadEventsAdmin();
                 } catch (error) {
-                    alert('Ошибка при публикации мероприятия: ' + error.message);
+                    alert('Ошибка: ' + error.message);
                 }
             });
 
-            // Загрузка списка новостей для админки
+            // Загрузка новостей в админке
             async function loadNewsAdmin() {
                 newsList.innerHTML = '<p style="color: #888;">Загрузка...</p>';
                 try {
-                    const q = query(collection(db, "news"), orderBy("createdAt", "desc"));
-                    const querySnapshot = await getDocs(q);
-                    
-                    newsList.innerHTML = '';
-                    if (querySnapshot.empty) {
-                        newsList.innerHTML = '<p style="color: #888;">Нет добавленных новостей.</p>';
+                    const snapshot = await db.collection("news").orderBy("createdAt", "desc").get();
+                    if (snapshot.empty) {
+                        newsList.innerHTML = '<p style="color: #888;">Нет новостей.</p>';
                         return;
                     }
-
-                    querySnapshot.forEach((document) => {
-                        const data = document.data();
+                    newsList.innerHTML = '';
+                    snapshot.forEach((docItem) => {
+                        const data = docItem.data();
                         const item = document.createElement('div');
-                        item.style.cssText = "background: #181818; padding: 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;";
+                        item.style.cssText = "background: #181818; padding: 12px 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;";
                         item.innerHTML = `
                             <div>
-                                <strong style="color: white; font-size: 15px;">${escapeHtml(data.title)}</strong>
-                                <p style="color: #888; font-size: 13px; margin-top: 4px;">${escapeHtml(data.tag || 'НОВОСТИ')}</p>
+                                <strong style="color: white; font-size: 14px;">${escapeHtml(data.title)}</strong>
+                                <p style="color: #888; font-size: 12px; margin-top: 2px;">${escapeHtml(data.tag || 'НОВОСТИ')}</p>
                             </div>
-                            <button class="edit-btn" style="background: var(--red); color: white;" onclick="deleteItem('news', '${document.id}')">Удалить</button>
+                            <button class="edit-btn" style="background: var(--red); color: white;" onclick="deleteItem('news', '${docItem.id}')">Удалить</button>
                         `;
                         newsList.appendChild(item);
                     });
                 } catch (e) {
                     console.error(e);
-                    newsList.innerHTML = '<p style="color: var(--red);">Ошибка загрузки списка.</p>';
                 }
             }
 
-            // Загрузка списка мероприятий для админки
+            // Загрузка мероприятий в админке
             async function loadEventsAdmin() {
                 eventsList.innerHTML = '<p style="color: #888;">Загрузка...</p>';
                 try {
-                    const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
-                    const querySnapshot = await getDocs(q);
-                    
-                    eventsList.innerHTML = '';
-                    if (querySnapshot.empty) {
-                        eventsList.innerHTML = '<p style="color: #888;">Нет добавленных мероприятий.</p>';
+                    const snapshot = await db.collection("events").orderBy("createdAt", "desc").get();
+                    if (snapshot.empty) {
+                        eventsList.innerHTML = '<p style="color: #888;">Нет мероприятий.</p>';
                         return;
                     }
-
-                    querySnapshot.forEach((document) => {
-                        const data = document.data();
+                    eventsList.innerHTML = '';
+                    snapshot.forEach((docItem) => {
+                        const data = docItem.data();
                         const item = document.createElement('div');
-                        item.style.cssText = "background: #181818; padding: 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;";
+                        item.style.cssText = "background: #181818; padding: 12px 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;";
                         item.innerHTML = `
                             <div>
-                                <strong style="color: white; font-size: 15px;">${escapeHtml(data.title)}</strong>
-                                <p style="color: #888; font-size: 13px; margin-top: 4px;">${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</p>
+                                <strong style="color: white; font-size: 14px;">${escapeHtml(data.title)}</strong>
+                                <p style="color: #888; font-size: 12px; margin-top: 2px;">${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</p>
                             </div>
-                            <button class="edit-btn" style="background: var(--red); color: white;" onclick="deleteItem('events', '${document.id}')">Удалить</button>
+                            <button class="edit-btn" style="background: var(--red); color: white;" onclick="deleteItem('events', '${docItem.id}')">Удалить</button>
                         `;
                         eventsList.appendChild(item);
                     });
                 } catch (e) {
                     console.error(e);
-                    eventsList.innerHTML = '<p style="color: var(--red);">Ошибка загрузки списка.</p>';
                 }
             }
 
-            window.deleteItem = async function(colName, id) {
-                if (confirm("Вы уверены, что хотите удалить этот элемент?")) {
+            window.deleteItem = async function(col, id) {
+                if (confirm("Удалить этот элемент?")) {
                     try {
-                        await deleteDoc(doc(db, colName, id));
-                        alert("Успешно удалено!");
-                        if (colName === 'news') loadNewsAdmin();
-                        if (colName === 'events') loadEventsAdmin();
-                    } catch (error) {
-                        alert("Ошибка удаления: " + error.message);
+                        await db.collection(col).doc(id).delete();
+                        if (col === 'news') loadNewsAdmin();
+                        if (col === 'events') loadEventsAdmin();
+                    } catch (e) {
+                        alert('Ошибка удаления: ' + e.message);
                     }
                 }
             };
 
             function escapeHtml(text) {
                 if (!text) return '';
-                return text
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#039;");
+                return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
             }
         });
     </script>
-</head>
-<body style="background: var(--black); color: var(--white); padding: 40px 5%;">
-
-    <div class="container" style="max-width: 800px;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--orange); padding-bottom: 15px;">
-            <h1 style="color: var(--orange); font-size: 24px; text-transform: uppercase;">Панель Администратора</h1>
-            <a href="index.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">← На сайт</a>
-        </div>
-
-        <!-- Окно авторизации -->
-        <div id="auth-panel" class="contact-form-container" style="max-width: 450px; margin: 40px auto;">
-            <h3>Вход в систему</h3>
-            <form id="login-form" class="question-form">
-                <div class="form-group">
-                    <input type="email" id="email" placeholder="Email администратора" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="password" placeholder="Пароль" required>
-                </div>
-                <button type="submit" class="btn btn-primary full-width">Войти</button>
-            </form>
-        </div>
-
-        <!-- Панель управления -->
-        <div id="admin-panel" style="display: none;">
-            <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
-                <button id="logout-btn" class="edit-btn" style="background: var(--red); color: white;">Выйти из аккаунта</button>
-            </div>
-
-            <!-- Добавление новости -->
-            <div class="contact-form-container" style="margin-bottom: 35px;">
-                <h3>Добавить новость</h3>
-                <form id="add-news-form" class="question-form">
-                    <div class="form-group"><input type="text" id="news-title" placeholder="Заголовок новости" required></div>
-                    <div class="form-group"><input type="text" id="news-tag" placeholder="Тег (например: НОВОСТИ)"></div>
-                    <div class="form-group"><input type="text" id="news-image" placeholder="Ссылка на изображение"></div>
-                    <div class="form-group"><textarea id="news-text" rows="4" placeholder="Текст новости" required></textarea></div>
-                    <button type="submit" class="btn btn-primary">Опубликовать новость</button>
-                </form>
-            </div>
-
-            <!-- Список новостей -->
-            <div class="contact-form-container" style="margin-bottom: 35px;">
-                <h3>Управление новостями</h3>
-                <div id="news-list"></div>
-            </div>
-
-            <!-- Добавление мероприятия -->
-            <div class="contact-form-container" style="margin-bottom: 35px;">
-                <h3>Добавить мероприятие</h3>
-                <form id="add-event-form" class="question-form">
-                    <div class="form-group"><input type="text" id="event-title" placeholder="Название мероприятия" required></div>
-                    <div class="form-group"><input type="text" id="event-status" placeholder="Статус (например: ПРЕДСТОЯЩЕЕ)"></div>
-                    <div class="form-group"><input type="text" id="event-image" placeholder="Ссылка на изображение"></div>
-                    <div class="form-group"><textarea id="event-text" rows="4" placeholder="Описание мероприятия" required></textarea></div>
-                    <button type="submit" class="btn btn-primary">Опубликовать мероприятие</button>
-                </form>
-            </div>
-
-            <!-- Список мероприятий -->
-            <div class="contact-form-container">
-                <h3>Управление мероприятиями</h3>
-                <div id="events-list"></div>
-            </div>
-        </div>
-    </div>
-
 </body>
 </html>
