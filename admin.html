@@ -130,38 +130,20 @@
 
                     querySnapshot.forEach((document) => {
                         const data = document.data();
-                        const li = document.createElement('li');
-                        li.className = 'news-item';
-                        li.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222;";
-                        
-                        li.innerHTML = `
+                        const item = document.createElement('div');
+                        item.style.cssText = "background: #181818; padding: 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;";
+                        item.innerHTML = `
                             <div>
-                                <strong style="color: var(--orange);">${escapeHtml(data.title)}</strong>
-                                <p style="font-size: 13px; color: #aaa; margin-top: 4px;">Тег: ${escapeHtml(data.tag || 'НОВОСТИ')}</p>
+                                <strong style="color: white; font-size: 15px;">${escapeHtml(data.title)}</strong>
+                                <p style="color: #888; font-size: 13px; margin-top: 4px;">${escapeHtml(data.tag || 'НОВОСТИ')}</p>
                             </div>
+                            <button class="edit-btn" style="background: var(--red); color: white;" onclick="deleteItem('news', '${document.id}')">Удалить</button>
                         `;
-                        
-                        const deleteBtn = document.createElement('button');
-                        deleteBtn.className = 'delete-btn';
-                        deleteBtn.textContent = 'Удалить';
-                        deleteBtn.style.cssText = "background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;";
-                        
-                        deleteBtn.addEventListener('click', async () => {
-                            if (confirm("Удалить эту новость?")) {
-                                try {
-                                    await deleteDoc(doc(db, "news", document.id));
-                                    loadNewsAdmin();
-                                } catch (error) {
-                                    alert('Ошибка при удалении: ' + error.message);
-                                }
-                            }
-                        });
-
-                        li.appendChild(deleteBtn);
-                        newsList.appendChild(li);
+                        newsList.appendChild(item);
                     });
-                } catch (error) {
-                    console.error("Ошибка загрузки новостей: ", error);
+                } catch (e) {
+                    console.error(e);
+                    newsList.innerHTML = '<p style="color: var(--red);">Ошибка загрузки списка.</p>';
                 }
             }
 
@@ -180,38 +162,35 @@
 
                     querySnapshot.forEach((document) => {
                         const data = document.data();
-                        const li = document.createElement('li');
-                        li.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #222;";
-                        
-                        li.innerHTML = `
+                        const item = document.createElement('div');
+                        item.style.cssText = "background: #181818; padding: 15px; margin-bottom: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border: 1px solid #333;";
+                        item.innerHTML = `
                             <div>
-                                <strong style="color: var(--orange);">${escapeHtml(data.title)}</strong>
-                                <p style="font-size: 13px; color: #aaa; margin-top: 4px;">Статус: ${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</p>
+                                <strong style="color: white; font-size: 15px;">${escapeHtml(data.title)}</strong>
+                                <p style="color: #888; font-size: 13px; margin-top: 4px;">${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</p>
                             </div>
+                            <button class="edit-btn" style="background: var(--red); color: white;" onclick="deleteItem('events', '${document.id}')">Удалить</button>
                         `;
-                        
-                        const deleteBtn = document.createElement('button');
-                        deleteBtn.textContent = 'Удалить';
-                        deleteBtn.style.cssText = "background: var(--red); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;";
-                        
-                        deleteBtn.addEventListener('click', async () => {
-                            if (confirm("Удалить это мероприятие?")) {
-                                try {
-                                    await deleteDoc(doc(db, "events", document.id));
-                                    loadEventsAdmin();
-                                } catch (error) {
-                                    alert('Ошибка при удалении: ' + error.message);
-                                }
-                            }
-                        });
-
-                        li.appendChild(deleteBtn);
-                        eventsList.appendChild(li);
+                        eventsList.appendChild(item);
                     });
-                } catch (error) {
-                    console.error("Ошибка загрузки мероприятий: ", error);
+                } catch (e) {
+                    console.error(e);
+                    eventsList.innerHTML = '<p style="color: var(--red);">Ошибка загрузки списка.</p>';
                 }
             }
+
+            window.deleteItem = async function(colName, id) {
+                if (confirm("Вы уверены, что хотите удалить этот элемент?")) {
+                    try {
+                        await deleteDoc(doc(db, colName, id));
+                        alert("Успешно удалено!");
+                        if (colName === 'news') loadNewsAdmin();
+                        if (colName === 'events') loadEventsAdmin();
+                    } catch (error) {
+                        alert("Ошибка удаления: " + error.message);
+                    }
+                }
+            };
 
             function escapeHtml(text) {
                 if (!text) return '';
@@ -225,106 +204,69 @@
         });
     </script>
 </head>
-<body style="background: var(--black); color: var(--white);">
+<body style="background: var(--black); color: var(--white); padding: 40px 5%;">
 
-    <!-- ЭКРАН АВТОРИЗАЦИИ -->
-    <div id="auth-panel" class="container" style="max-width: 400px; margin: 100px auto; padding: 20px;">
-        <div class="contact-form-container" style="background: var(--black-2); border: 2px solid var(--orange); padding: 30px; border-radius: 6px;">
-            <h3 style="color: var(--orange); margin-bottom: 20px; text-transform: uppercase; text-align: center;">Вход в админ-панель</h3>
+    <div class="container" style="max-width: 800px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--orange); padding-bottom: 15px;">
+            <h1 style="color: var(--orange); font-size: 24px; text-transform: uppercase;">Панель Администратора</h1>
+            <a href="index.html" class="btn btn-secondary" style="padding: 8px 16px; font-size: 13px;">← На сайт</a>
+        </div>
+
+        <!-- Окно авторизации -->
+        <div id="auth-panel" class="contact-form-container" style="max-width: 450px; margin: 40px auto;">
+            <h3>Вход в систему</h3>
             <form id="login-form" class="question-form">
                 <div class="form-group">
-                    <label style="display:block; margin-bottom:5px; color:#aaa;">Email администратора</label>
-                    <input type="email" id="email" required style="width:100%; padding:12px; background:#181818; border:1px solid #333; color:white; border-radius:4px;">
+                    <input type="email" id="email" placeholder="Email администратора" required>
                 </div>
-                <div class="form-group" style="margin-top: 15px;">
-                    <label style="display:block; margin-bottom:5px; color:#aaa;">Пароль</label>
-                    <input type="password" id="password" required style="width:100%; padding:12px; background:#181818; border:1px solid #333; color:white; border-radius:4px;">
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Пароль" required>
                 </div>
-                <button type="submit" class="btn btn-primary" style="width:100%; margin-top:20px;">Войти в систему</button>
+                <button type="submit" class="btn btn-primary full-width">Войти</button>
             </form>
-            <div style="text-align: center; margin-top: 15px;">
-                <a href="index.html" style="color: var(--gray); font-size: 13px;">← На главную страницу сайта</a>
-            </div>
         </div>
-    </div>
 
-    <!-- ОСНОВНАЯ ПАНЕЛЬ УПРАВЛЕНИЯ -->
-    <div id="admin-panel" style="display: none;">
-        <!-- Шапка панели -->
-        <header class="header" style="padding: 20px 7%; display: flex; justify-content: space-between; align-items: center; background: var(--black-2); border-bottom: 3px solid var(--orange);">
-            <div class="logo">
-                <!-- Заменено на картинку logo.png с сохранением фирменных стилей -->
-                <img src="logo.png" alt="Logo" class="logo-img">
-                <div class="logo-text" style="margin-left: 10px;">
-                    <strong>SWF KAZAKHSTAN</strong>
-                    <span>АДМИН-ПАНЕЛЬ</span>
-                </div>
+        <!-- Панель управления -->
+        <div id="admin-panel" style="display: none;">
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 25px;">
+                <button id="logout-btn" class="edit-btn" style="background: var(--red); color: white;">Выйти из аккаунта</button>
             </div>
-            <div>
-                <a href="index.html" class="btn btn-secondary" style="margin-right: 10px; padding: 8px 16px; font-size: 13px;">На сайт</a>
-                <button id="logout-btn" class="delete-btn" style="background: var(--red); color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: bold; cursor: pointer;">Выйти</button>
-            </div>
-        </header>
 
-        <div class="container" style="max-width: 1000px; margin: 40px auto; padding: 0 20px;">
-            
-            <!-- БЛОК ДОБАВЛЕНИЯ НОВОСТИ -->
-            <div class="contact-form-container" style="background: var(--black-2); border: 1px solid #333; padding: 30px; border-radius: 6px; margin-bottom: 30px;">
-                <h3 style="color: var(--orange); margin-bottom: 20px; text-transform: uppercase;">Добавить новость (Баннер)</h3>
+            <!-- Добавление новости -->
+            <div class="contact-form-container" style="margin-bottom: 35px;">
+                <h3>Добавить новость</h3>
                 <form id="add-news-form" class="question-form">
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <input type="text" id="news-title" placeholder="Заголовок новости" required>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <textarea id="news-text" rows="3" placeholder="Полный текст новости..." required></textarea>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <input type="text" id="news-tag" placeholder="Тег (например: НОВОСТИ, СОРЕВНОВАНИЯ)" value="НОВОСТИ">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <input type="text" id="news-image" placeholder="Ссылка на картинку (оставьте пустой для фирменной заглушки)">
-                    </div>
+                    <div class="form-group"><input type="text" id="news-title" placeholder="Заголовок новости" required></div>
+                    <div class="form-group"><input type="text" id="news-tag" placeholder="Тег (например: НОВОСТИ)"></div>
+                    <div class="form-group"><input type="text" id="news-image" placeholder="Ссылка на изображение"></div>
+                    <div class="form-group"><textarea id="news-text" rows="4" placeholder="Текст новости" required></textarea></div>
                     <button type="submit" class="btn btn-primary">Опубликовать новость</button>
                 </form>
             </div>
 
-            <!-- БЛОК ДОБАВЛЕНИЯ МЕРОПРИЯТИЯ -->
-            <div class="contact-form-container" style="background: var(--black-2); border: 1px solid #333; padding: 30px; border-radius: 6px; margin-bottom: 40px;">
-                <h3 style="color: var(--orange); margin-bottom: 20px; text-transform: uppercase;">Добавить мероприятие / турнир</h3>
+            <!-- Список новостей -->
+            <div class="contact-form-container" style="margin-bottom: 35px;">
+                <h3>Управление новостями</h3>
+                <div id="news-list"></div>
+            </div>
+
+            <!-- Добавление мероприятия -->
+            <div class="contact-form-container" style="margin-bottom: 35px;">
+                <h3>Добавить мероприятие</h3>
                 <form id="add-event-form" class="question-form">
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <input type="text" id="event-title" placeholder="Название турнира / мероприятия" required>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <textarea id="event-text" rows="3" placeholder="Описание мероприятия..." required></textarea>
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <input type="text" id="event-status" placeholder="Статус (например: ПРЕДСТОЯЩЕЕ, СКОРО)" value="ПРЕДСТОЯЩЕЕ">
-                    </div>
-                    <div class="form-group" style="margin-bottom: 15px;">
-                        <input type="text" id="event-image" placeholder="Ссылка на картинку (оставьте пустой для фирменной заглушки)">
-                    </div>
+                    <div class="form-group"><input type="text" id="event-title" placeholder="Название мероприятия" required></div>
+                    <div class="form-group"><input type="text" id="event-status" placeholder="Статус (например: ПРЕДСТОЯЩЕЕ)"></div>
+                    <div class="form-group"><input type="text" id="event-image" placeholder="Ссылка на изображение"></div>
+                    <div class="form-group"><textarea id="event-text" rows="4" placeholder="Описание мероприятия" required></textarea></div>
                     <button type="submit" class="btn btn-primary">Опубликовать мероприятие</button>
                 </form>
             </div>
 
-            <!-- УПРАВЛЕНИЕ СУЩЕСТВУЮЩИМИ ЗАПИСЯМИ -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-                <div style="background: var(--black-2); padding: 25px; border-radius: 6px; border: 1px solid #333;">
-                    <h3 style="color: var(--white); margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid var(--orange); padding-bottom: 8px;">Список новостей</h3>
-                    <ul id="news-list" style="list-style: none; max-height: 350px; overflow-y: auto;">
-                        <!-- Загружается динамически -->
-                    </ul>
-                </div>
-
-                <div style="background: var(--black-2); padding: 25px; border-radius: 6px; border: 1px solid #333;">
-                    <h3 style="color: var(--white); margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid var(--orange); padding-bottom: 8px;">Список мероприятий</h3>
-                    <ul id="events-list" style="list-style: none; max-height: 350px; overflow-y: auto;">
-                        <!-- Загружается динамически -->
-                    </ul>
-                </div>
+            <!-- Список мероприятий -->
+            <div class="contact-form-container">
+                <h3>Управление мероприятиями</h3>
+                <div id="events-list"></div>
             </div>
-
         </div>
     </div>
 
