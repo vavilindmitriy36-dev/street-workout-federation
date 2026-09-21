@@ -11,23 +11,14 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 </head>
 <body>
-
-    <div id="admin-logged-out" class="admin-bar">
-        <span>Режим гостя</span>
-        <button class="admin-btn" onclick="openLoginModal()">Войти как админ</button>
-    </div>
-
-    <div id="admin-logged-in" class="admin-bar admin-bar-active" style="display: none;">
-        <span>Вы вошли как <strong>Администратор</strong></span>
-        <button class="admin-btn logout-btn" onclick="adminLogout()">Выйти</button>
-    </div>
 
     <header class="header">
         <div class="container header-container">
             <div class="logo">
-                <span class="logo-icon">🏋️‍♂️</span>
+                <img src="logo.png" alt="Street Workout Kazakhstan Logo" class="logo-img">
                 <span class="logo-text">
                     <strong>STREET WORKOUT KAZAKHSTAN</strong>
                     <span>FEDERATION</span>
@@ -40,6 +31,8 @@
                 <a href="#news">Новости</a>
                 <a href="#events">Мероприятия</a>
                 <a href="#contacts">Контакты</a>
+                <!-- Скрытая кнопка входа для админа в самом конце навигации или незаметная -->
+                <a href="#" onclick="openLoginModal(); return false;" style="font-size: 12px; opacity: 0.5;">🔒 Админ</a>
             </nav>
         </div>
     </header>
@@ -115,7 +108,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Последние Новости</h2>
-                <button class="admin-only add-btn" onclick="addNewsItem()">➕ Добавить новость</button>
+                <button class="admin-only add-btn" onclick="openAddNewsModal()">➕ Добавить новость</button>
             </div>
             
             <div id="news-container" class="news-grid">
@@ -128,7 +121,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Мероприятия и Турниры</h2>
-                <button class="admin-only add-btn" onclick="addEventItem()">➕ Добавить событие</button>
+                <button class="admin-only add-btn" onclick="openAddEventModal()">➕ Добавить событие</button>
             </div>
 
             <div id="events-container" class="events-grid">
@@ -193,6 +186,7 @@
         </div>
     </footer>
 
+    <!-- Модальное окно входа администратора -->
     <div id="login-modal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeLoginModal()">&times;</span>
@@ -206,6 +200,59 @@
                 </div>
                 <div id="login-error" class="error-msg" style="display:none;"></div>
                 <button type="submit" class="btn btn-primary full-width">Войти</button>
+            </form>
+            <div style="margin-top: 15px; text-align: center;">
+                <button type="button" class="admin-btn logout-btn" onclick="adminLogout()" style="font-size: 13px; padding: 6px 12px;">Выйти из аккаунта</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления новости (с загрузкой файла) -->
+    <div id="news-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeNewsModal()">&times;</span>
+            <h3>Добавить новость</h3>
+            <form id="add-news-form">
+                <div class="form-group">
+                    <input type="text" id="news-title-input" placeholder="Заголовок новости" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="news-desc-input" rows="4" placeholder="Текст новости..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label style="font-size: 13px; color: #666; display: block; margin-bottom: 5px;">Картинка новости:</label>
+                    <input type="file" id="news-file-input" accept="image/*" required>
+                </div>
+                <div id="news-upload-progress" style="display:none; margin-bottom: 10px; font-size: 13px; color: var(--orange);">Загрузка картинки...</div>
+                <button type="submit" class="btn btn-primary full-width">Опубликовать новость</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно добавления мероприятия (с загрузкой файла) -->
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeEventModal()">&times;</span>
+            <h3>Добавить мероприятие</h3>
+            <form id="add-event-form">
+                <div class="form-group">
+                    <input type="text" id="event-title-input" placeholder="Название мероприятия" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="event-date-input" placeholder="Дата и время (например: 25 Октября, 14:00)" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="event-location-input" placeholder="Место проведения (город, площадка)" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="event-desc-input" rows="3" placeholder="Описание события..." required></textarea>
+                </div>
+                <div class="form-group">
+                    <label style="font-size: 13px; color: #666; display: block; margin-bottom: 5px;">Картинка мероприятия:</label>
+                    <input type="file" id="event-file-input" accept="image/*" required>
+                </div>
+                <div id="event-upload-progress" style="display:none; margin-bottom: 10px; font-size: 13px; color: var(--orange);">Загрузка картинки...</div>
+                <button type="submit" class="btn btn-primary full-width">Создать мероприятие</button>
             </form>
         </div>
     </div>
