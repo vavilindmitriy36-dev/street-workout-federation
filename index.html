@@ -31,8 +31,6 @@
                 <a href="#news">Новости</a>
                 <a href="#events">Мероприятия</a>
                 <a href="#contacts">Контакты</a>
-                <!-- Скрытая кнопка входа для админа в самом конце навигации -->
-                <a href="#" onclick="openLoginModal(); return false;" style="font-size: 12px; opacity: 0.5;">🔒 Админ</a>
             </nav>
         </div>
     </header>
@@ -40,11 +38,7 @@
     <section id="hero" class="hero-section">
         <div class="container hero-container">
             <h1 id="hero-title-text">Федерация Street Workout Казахстана</h1>
-            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'hero', 'title', 'hero-title-text')">✏️ Изменить заголовок</button>
-            
             <p id="hero-desc-text" class="hero-description">Развиваем уличный спорт, объединяем атлетов и проводим турниры по всей стране!</p>
-            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'hero', 'description', 'hero-desc-text')">✏️ Изменить описание</button>
-            
             <div class="hero-buttons">
                 <a href="#events" class="btn btn-primary">Ближайшие события</a>
                 <a href="#contacts" class="btn btn-secondary">Задать вопрос</a>
@@ -55,23 +49,16 @@
     <section id="about" class="section">
         <div class="container">
             <h2 id="about-title-text" class="section-title">О Нашей Федерации</h2>
-            <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'title', 'about-title-text')">✏️ Изменить заголовок</button>
-
             <div class="about-content">
                 <div class="about-text-wrapper">
                     <p id="about-p1-text">Казахстанская Федерация Street Workout занимается популяризацией здорового образа жизни, воркаута и силовых дисциплин среди молодежи и взрослых.</p>
-                    <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p1', 'about-p1-text')">✏️ Изменить текст 1</button>
-
                     <p id="about-p2-text" style="margin-top: 15px;">Наша цель — строительство доступных спортивных площадок и организация профессиональных чемпионатов международного уровня.</p>
-                    <button class="admin-only edit-btn" onclick="editDocText('site_content', 'about', 'p2', 'about-p2-text')" style="margin-top: 10px;">✏️ Изменить текст 2</button>
                 </div>
-
                 <div class="about-photo-card" style="margin-top: 30px; border-radius: 16px; overflow: hidden; border: 2px solid var(--orange); box-shadow: 0 10px 30px rgba(0,0,0,0.15); position: relative;">
                     <img id="team-photo-img" src="team.jpg" alt="Команда Федерации Street Workout Казахстан" style="width: 100%; height: auto; display: block; object-fit: cover;">
                     <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 15px 20px; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); color: white; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">
                         🇰🇿 Команда Федерации Street Workout Казахстан
                     </div>
-                    <button class="admin-only edit-btn" style="position: absolute; top: 15px; right: 15px;" onclick="editTeamPhoto()">✏️ Изменить фото</button>
                 </div>
             </div>
         </div>
@@ -81,25 +68,18 @@
         <div class="container">
             <h2 class="section-title">Наши Достижения</h2>
             <div class="stats-grid">
-                
                 <div class="stat-card">
                     <div id="stat1-num" class="stat-num">15+</div>
                     <div id="stat1-label" class="stat-label">Городов участников</div>
-                    <button class="admin-only edit-btn" onclick="editStat('stat1', 'stat1-num', 'stat1-label')">✏️ Изменить</button>
                 </div>
-
                 <div class="stat-card">
                     <div id="stat2-num" class="stat-num">5000+</div>
                     <div id="stat2-label" class="stat-label">Атлетов по стране</div>
-                    <button class="admin-only edit-btn" onclick="editStat('stat2', 'stat2-num', 'stat2-label')">✏️ Изменить</button>
                 </div>
-
                 <div class="stat-card">
                     <div id="stat3-num" class="stat-num">50+</div>
                     <div id="stat3-label" class="stat-label">Проведенных кубков</div>
-                    <button class="admin-only edit-btn" onclick="editStat('stat3', 'stat3-num', 'stat3-label')">✏️ Изменить</button>
                 </div>
-
             </div>
         </div>
     </section>
@@ -108,9 +88,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Последние Новости</h2>
-                <button class="admin-only add-btn" onclick="openAddNewsModal()">➕ Добавить новость</button>
             </div>
-            
             <div id="news-container" class="news-grid">
                 <p class="section-description" style="grid-column: 1/-1;">Загрузка новостей...</p>
             </div>
@@ -121,9 +99,7 @@
         <div class="container">
             <div class="section-header">
                 <h2 class="section-title">Мероприятия и Турниры</h2>
-                <button class="admin-only add-btn" onclick="openAddEventModal()">➕ Добавить событие</button>
             </div>
-
             <div id="events-container" class="events-grid">
                 <p class="section-description" style="grid-column: 1/-1;">Загрузка событий...</p>
             </div>
@@ -132,51 +108,25 @@
 
     <section id="contacts" class="section">
         <div class="container contacts-grid">
-            
             <div class="contact-info">
                 <h2>Контакты</h2>
                 <p>Свяжитесь с нами по любым вопросам сотрудничества и мероприятий.</p>
-                
                 <ul class="contact-list">
-                    <li>
-                        <strong>📍 Адрес:</strong> 
-                        <span id="contact-address-text">Республика Казахстан, г. Уральск</span>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'address', 'contact-address-text')">✏️</button>
-                    </li>
-                    <li>
-                        <strong>📞 Телефон:</strong> 
-                        <span id="contact-phone-text">+7 (700) 000-00-00</span>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'phone', 'contact-phone-text')">✏️</button>
-                    </li>
-                    <li>
-                        <strong>✉️ Email:</strong> 
-                        <span id="contact-email-text">info@streetworkout.kz</span>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'email', 'contact-email-text')">✏️</button>
-                    </li>
-                    <li>
-                        <strong>🌐 Соцсети:</strong> 
-                        <span id="contact-social-text">@streetworkout_kz</span>
-                        <button class="admin-only edit-btn" onclick="editDocText('site_content', 'contacts', 'social', 'contact-social-text')">✏️</button>
-                    </li>
+                    <li><strong>📍 Адрес:</strong> <span id="contact-address-text">Республика Казахстан, г. Уральск</span></li>
+                    <li><strong>📞 Телефон:</strong> <span id="contact-phone-text">+7 (700) 000-00-00</span></li>
+                    <li><strong>✉️ Email:</strong> <span id="contact-email-text">info@streetworkout.kz</span></li>
+                    <li><strong>🌐 Соцсети:</strong> <span id="contact-social-text">@streetworkout_kz</span></li>
                 </ul>
             </div>
-
             <div class="contact-form-container">
                 <h3>Задать вопрос</h3>
                 <form action="https://formspree.io/f/xbgldrbk" method="POST" class="question-form">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Ваше имя" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Ваш Email" required>
-                    </div>
-                    <div class="form-group">
-                        <textarea id="question" name="message" rows="4" placeholder="Ваш вопрос..." required></textarea>
-                    </div>
+                    <div class="form-group"><input type="text" id="name" name="name" placeholder="Ваше имя" required></div>
+                    <div class="form-group"><input type="email" id="email" name="email" placeholder="Ваш Email" required></div>
+                    <div class="form-group"><textarea id="question" name="message" rows="4" placeholder="Ваш вопрос..." required></textarea></div>
                     <button type="submit" class="btn btn-primary">Отправить сообщение</button>
                 </form>
             </div>
-
         </div>
     </section>
 
@@ -185,84 +135,6 @@
             <p>&copy; 2026 Street Workout Federation Kazakhstan. Все права защищены.</p>
         </div>
     </footer>
-
-    <!-- Модальное окно входа администратора -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeLoginModal()">&times;</span>
-            
-            <!-- Форма входа (скрывается или заменяется скриптом, либо видна если не авторизован) -->
-            <div id="login-form-container">
-                <h3 style="margin-bottom: 20px;">Вход для Администратора</h3>
-                <form id="admin-login-form">
-                    <div class="form-group">
-                        <input type="email" id="admin-email" placeholder="Email админа" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" id="admin-password" placeholder="Пароль" required>
-                    </div>
-                    <div id="login-error" class="error-msg" style="display:none; color: var(--red); margin-bottom: 10px; font-size: 13px;"></div>
-                    <button type="submit" class="btn btn-primary full-width">Войти</button>
-                </form>
-            </div>
-
-            <!-- Блок выхода, видимый ТОЛЬКО авторизованному администратору -->
-            <div class="admin-only" style="margin-top: 15px; text-align: center; display: none;">
-                <p style="margin-bottom: 15px; color: var(--orange); font-size: 14px;">Вы вошли как администратор</p>
-                <button type="button" class="btn btn-secondary full-width" onclick="adminLogout()" style="background: var(--red); border-color: var(--red); color: white;">Выйти из аккаунта</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Модальное окно добавления новости (с загрузкой файла) -->
-    <div id="news-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeNewsModal()">&times;</span>
-            <h3>Добавить новость</h3>
-            <form id="add-news-form">
-                <div class="form-group">
-                    <input type="text" id="news-title-input" placeholder="Заголовок новости" required>
-                </div>
-                <div class="form-group">
-                    <textarea id="news-desc-input" rows="4" placeholder="Текст новости..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label style="font-size: 13px; color: #666; display: block; margin-bottom: 5px;">Картинка новости:</label>
-                    <input type="file" id="news-file-input" accept="image/*" required>
-                </div>
-                <div id="news-upload-progress" style="display:none; margin-bottom: 10px; font-size: 13px; color: var(--orange);">Загрузка картинки...</div>
-                <button type="submit" class="btn btn-primary full-width">Опубликовать новость</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Модальное окно добавления мероприятия (с загрузкой файла) -->
-    <div id="event-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeEventModal()">&times;</span>
-            <h3>Добавить мероприятие</h3>
-            <form id="add-event-form">
-                <div class="form-group">
-                    <input type="text" id="event-title-input" placeholder="Название мероприятия" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="event-date-input" placeholder="Дата и время (например: 25 Октября, 14:00)" required>
-                </div>
-                <div class="form-group">
-                    <input type="text" id="event-location-input" placeholder="Место проведения (город, площадка)" required>
-                </div>
-                <div class="form-group">
-                    <textarea id="event-desc-input" rows="3" placeholder="Описание события..." required></textarea>
-                </div>
-                <div class="form-group">
-                    <label style="font-size: 13px; color: #666; display: block; margin-bottom: 5px;">Картинка мероприятия:</label>
-                    <input type="file" id="event-file-input" accept="image/*" required>
-                </div>
-                <div id="event-upload-progress" style="display:none; margin-bottom: 10px; font-size: 13px; color: var(--orange);">Загрузка картинки...</div>
-                <button type="submit" class="btn btn-primary full-width">Создать мероприятие</button>
-            </form>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
