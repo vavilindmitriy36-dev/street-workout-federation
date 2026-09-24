@@ -1,4 +1,3 @@
-// Конфигурация Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAbIUmK6OS7Sd5jcDygCtxMgXi_Tznc56o",
     authDomain: "street-workout-federation.firebaseapp.com",
@@ -9,211 +8,104 @@ const firebaseConfig = {
     measurementId: "G-DQJDKLMR9"
 };
 
-// Инициализация Firebase 8.x
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
 const db = firebase.firestore();
 
 document.addEventListener("DOMContentLoaded", () => {
-    loadSiteContent();
-    loadStats();
-    loadNewsPublic();
-    loadEventsPublic();
-    loadSingleItemPage();
-    setupContactForm();
+    loadDynamicContent();
 });
 
-// ==========================================
-// 1. ДИНАМИЧЕСКАЯ ЗАГРУЗКА НОВОСТЕЙ
-// ==========================================
-async function loadNewsPublic() {
-    const container = document.getElementById('news-container');
-    if (!container) return;
-
+async function loadDynamicContent() {
     try {
-        const querySnapshot = await db.collection("news").orderBy("createdAt", "desc").get();
-
-        if (querySnapshot.empty) {
-            container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center;">Пока нет добавленных новостей.</p>';
-            return;
-        }
-
-        container.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const docId = doc.id;
-            const imageUrl = data.image ? data.image : 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80';
-            
-            const card = document.createElement('div');
-            card.className = 'news-card';
-            card.innerHTML = `
-                <div style="position: relative; overflow: hidden; height: 200px; cursor: pointer;" onclick="location.href='news.html?id=${docId}'">
-                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:100%; object-fit:cover;">
-                    <span style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.tag || 'НОВОСТИ')}</span>
-                </div>
-                <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
-                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px; cursor: pointer;" onclick="location.href='news.html?id=${docId}'">${escapeHtml(data.title)}</h3>
-                    <p style="color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">${escapeHtml(data.text)}</p>
-                    <a href="news.html?id=${docId}" style="color: var(--orange); font-size: 14px; font-weight: bold; margin-bottom: 10px; display: inline-block;">Читать далее →</a>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-
-    } catch (error) {
-        console.error("Ошибка загрузки новостей:", error);
-        container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center; color: var(--red);">Ошибка загрузки новостей.</p>';
-    }
-}
-
-// ==========================================
-// 2. ДИНАМИЧЕСКАЯ ЗАГРУЗКА МЕРОПРИЯТИЙ
-// ==========================================
-async function loadEventsPublic() {
-    const container = document.getElementById('events-container');
-    if (!container) return;
-
-    try {
-        const querySnapshot = await db.collection("events").orderBy("createdAt", "desc").get();
-
-        if (querySnapshot.empty) {
-            container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center;">Пока нет предстоящих мероприятий.</p>';
-            return;
-        }
-
-        container.innerHTML = '';
-        querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            const docId = doc.id;
-            const imageUrl = data.image ? data.image : 'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80';
-
-            const card = document.createElement('div');
-            card.className = 'event-card';
-            card.innerHTML = `
-                <div style="position: relative; overflow: hidden; height: 200px; cursor: pointer;" onclick="location.href='events.html?id=${docId}'">
-                    <img src="${escapeHtml(imageUrl)}" alt="${escapeHtml(data.title)}" style="width:100%; height:100%; object-fit:cover;">
-                    <span style="position: absolute; top: 15px; left: 15px; background: var(--orange); color: black; padding: 4px 10px; font-weight: bold; font-size: 12px; border-radius: 4px;">${escapeHtml(data.status || 'ПРЕДСТОЯЩЕЕ')}</span>
-                </div>
-                <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1;">
-                    <h3 style="color: white; margin-bottom: 10px; font-size: 18px; cursor: pointer;" onclick="location.href='events.html?id=${docId}'">${escapeHtml(data.title)}</h3>
-                    <p style="color: #aaa; font-size: 14px; line-height: 1.5; margin-bottom: 15px; flex-grow: 1;">${escapeHtml(data.text)}</p>
-                    <a href="events.html?id=${docId}" style="color: var(--orange); font-size: 14px; font-weight: bold; margin-bottom: 10px; display: inline-block;">Подробнее →</a>
-                </div>
-            `;
-            container.appendChild(card);
-        });
-
-    } catch (error) {
-        console.error("Ошибка загрузки мероприятий:", error);
-        container.innerHTML = '<p class="section-description" style="grid-column: 1/-1; text-align: center; color: var(--red);">Ошибка загрузки мероприятий.</p>';
-    }
-}
-
-// ==========================================
-// 3. ЗАГРУЗКА ОТДЕЛЬНОЙ СТРАНИЦЫ
-// ==========================================
-async function loadSingleItemPage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id');
-    if (!id) return;
-
-    if (window.location.pathname.includes('news.html')) {
-        try {
-            const doc = await db.collection("news").doc(id).get();
-            if (doc.exists) {
-                const data = doc.data();
-                document.getElementById('news-title').innerText = data.title;
-                document.getElementById('news-tag').innerText = data.tag || 'НОВОСТИ';
-                document.getElementById('news-content-box').innerHTML = `<p>${escapeHtml(data.text).replace(/\n/g, '<br>')}</p>`;
-                if (data.image) {
-                    document.getElementById('news-image-container').innerHTML = `<img src="${escapeHtml(data.image)}" alt="${escapeHtml(data.title)}" style="width:100%; max-height:400px; object-fit:cover; border-radius:8px;">`;
-                }
-            } else {
-                document.getElementById('news-title').innerText = "Новость не найдена";
-                document.getElementById('news-content-box').innerHTML = "<p>Запрашиваемая новость была удалена или не существует.</p>";
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    } else if (window.location.pathname.includes('events.html')) {
-        try {
-            const doc = await db.collection("events").doc(id).get();
-            if (doc.exists) {
-                const data = doc.data();
-                document.getElementById('event-title').innerText = data.title;
-                document.getElementById('event-status').innerText = data.status || 'ПРЕДСТОЯЩЕЕ';
-                document.getElementById('event-content-box').innerHTML = `<p>${escapeHtml(data.text).replace(/\n/g, '<br>')}</p>`;
-                if (data.image) {
-                    document.getElementById('event-image-container').innerHTML = `<img src="${escapeHtml(data.image)}" alt="${escapeHtml(data.title)}" style="width:100%; max-height:400px; object-fit:cover; border-radius:8px;">`;
-                }
-            } else {
-                document.getElementById('event-title').innerText = "Мероприятие не найдено";
-                document.getElementById('event-content-box').innerHTML = "<p>Запрашиваемое мероприятие было удалено или не существует.</p>";
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-}
-
-// ==========================================
-// 4. ЗАГРУЗКА КОНТЕНТА САЙТА И СТАТИСТИКИ
-// ==========================================
-async function loadSiteContent() {
-    try {
+        // 1. Загрузка контента для секции "О нас" и "Контакты" (если редактировались через админку)
         const aboutDoc = await db.collection("site_content").doc("about").get();
         if (aboutDoc.exists) {
             const data = aboutDoc.data();
-            if (data.title) document.getElementById('about-title-text').innerText = data.title;
-            if (data.p1) document.getElementById('about-p1-text').innerText = data.p1;
-            if (data.p2) document.getElementById('about-p2-text').innerText = data.p2;
+            const aboutWrapper = document.querySelector(".about-text-wrapper");
+            if (aboutWrapper && data.p1) {
+                aboutWrapper.innerHTML = `
+                    <h3 style="color: var(--orange); margin-bottom: 10px;">${data.title || ''}</h3>
+                    <p style="margin-bottom: 15px;">${data.p1}</p>
+                    <p>${data.p2 || ''}</p>
+                `;
+            }
         }
 
         const contactsDoc = await db.collection("site_content").doc("contacts").get();
         if (contactsDoc.exists) {
             const data = contactsDoc.data();
-            if (data.address) document.getElementById('contact-address-text').innerText = data.address;
-            if (data.phone) document.getElementById('contact-phone-text').innerText = data.phone;
-            if (data.email) document.getElementById('contact-email-text').innerText = data.email;
+            const phoneEl = document.querySelector(".contact-list li:nth-child(1) span");
+            const emailEl = document.querySelector(".contact-list li:nth-child(2) span");
+            if (phoneEl && data.phone) phoneEl.innerText = data.phone;
+            if (emailEl && data.email) emailEl.innerText = data.email;
         }
-    } catch (error) {
-        console.error("Ошибка загрузки контента сайта:", error);
-    }
-}
 
-async function loadStats() {
-    for (let i = 1; i <= 3; i++) {
-        try {
-            const doc = await db.collection("site_content").doc(`stat${i}`).get();
-            if (doc.exists) {
-                const data = doc.data();
-                if (data.num) document.getElementById(`stat${i}-num`).innerText = data.num;
-                if (data.label) document.getElementById(`stat${i}-label`).innerText = data.label;
+        // 2. Загрузка участников и тренеров из коллекции "members"
+        const membersContainer = document.getElementById("members-container");
+        if (membersContainer) {
+            const membersSnapshot = await db.collection("members").orderBy("createdAt", "desc").get();
+            if (!membersSnapshot.empty) {
+                membersContainer.innerHTML = "";
+                membersSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    membersContainer.innerHTML += `
+                        <div class="member-card">
+                            <div class="member-img-wrap">
+                                <img src="${data.image || ''}" alt="${data.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Workout'">
+                            </div>
+                            <div class="member-content">
+                                <h3 class="member-title">${data.name}</h3>
+                                <div class="member-role">${data.role}</div>
+                                <p class="member-desc">${data.description}</p>
+                            </div>
+                        </div>
+                    `;
+                });
             }
-        } catch (e) {
-            console.error(e);
         }
+
+        // 3. Загрузка мероприятий из коллекции "events"
+        const eventsContainer = document.getElementById("events-container");
+        if (eventsContainer) {
+            const eventsSnapshot = await db.collection("events").orderBy("createdAt", "desc").get();
+            if (!eventsSnapshot.empty) {
+                eventsContainer.innerHTML = "";
+                eventsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    eventsContainer.innerHTML += `
+                        <div class="event-card">
+                            <span class="member-role">${data.status || 'ПРЕДСТОЯЩЕЕ'}</span>
+                            <h3 class="member-title" style="margin-top: 5px;">${data.title}</h3>
+                            <p class="member-desc" style="margin-top: 8px;">${data.text}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+        // 4. Загрузка новостей из коллекции "news"
+        const newsContainer = document.getElementById("news-container");
+        if (newsContainer) {
+            const newsSnapshot = await db.collection("news").orderBy("createdAt", "desc").get();
+            if (!newsSnapshot.empty) {
+                newsContainer.innerHTML = "";
+                newsSnapshot.forEach(doc => {
+                    const data = doc.data();
+                    newsContainer.innerHTML += `
+                        <div class="news-card">
+                            ${data.image ? `<div class="member-img-wrap" style="height: 180px; margin-bottom: 15px; border-radius: 4px;"><img src="${data.image}" alt="News"></div>` : ''}
+                            <span class="member-role">${data.tag || 'НОВОСТИ'}</span>
+                            <h3 class="member-title" style="margin-top: 5px;">${data.title}</h3>
+                            <p class="member-desc" style="margin-top: 8px;">${data.text}</p>
+                        </div>
+                    `;
+                });
+            }
+        }
+
+    } catch (e) {
+        console.error("Ошибка при загрузке данных с Firestore:", e);
     }
 }
-
-function setupContactForm() {
-    const form = document.getElementById('questionForm');
-    if (!form) return;
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        alert('Спасибо! Ваше сообщение отправлено. Тренер свяжется с вами.');
-        form.reset();
-    });
-}
-
-function escapeHtml(text) {
-    if (!text) return '';
-    return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
