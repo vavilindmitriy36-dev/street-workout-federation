@@ -65,6 +65,11 @@ document.addEventListener("DOMContentLoaded", () => {
         saveGeneralBtn.addEventListener("click", saveGeneralContent);
     }
 
+    const saveMemberBtn = document.getElementById("saveMemberBtn");
+    if (saveMemberBtn) {
+        saveMemberBtn.addEventListener("click", saveMember);
+    }
+
     const saveNewsBtn = document.getElementById("saveNewsBtn");
     if (saveNewsBtn) {
         saveNewsBtn.addEventListener("click", saveNews);
@@ -115,6 +120,36 @@ async function saveGeneralContent() {
         alert("Изменения успешно сохранены!");
     } catch (e) {
         alert("Ошибка сохранения: " + e.message);
+    }
+}
+
+// Функция сохранения участника / тренера
+async function saveMember() {
+    const name = document.getElementById("memberNameInput").value.trim();
+    const role = document.getElementById("memberRoleInput").value.trim();
+    const image = document.getElementById("memberImgInput").value.trim();
+    const description = document.getElementById("memberDescInput").value.trim();
+
+    if (!name || !role || !image || !description) {
+        alert("Заполните все поля для участника/тренера!");
+        return;
+    }
+
+    try {
+        await db.collection("members").add({
+            name,
+            role,
+            image,
+            description,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("Участник/тренер успешно добавлен!");
+        document.getElementById("memberNameInput").value = "";
+        document.getElementById("memberRoleInput").value = "";
+        document.getElementById("memberImgInput").value = "";
+        document.getElementById("memberDescInput").value = "";
+    } catch (e) {
+        alert("Ошибка: " + e.message);
     }
 }
 
@@ -170,4 +205,3 @@ async function saveEvent() {
         alert("Ошибка: " + e.message);
     }
 }
-
