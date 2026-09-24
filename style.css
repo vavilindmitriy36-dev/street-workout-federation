@@ -1,3 +1,8 @@
+/* ========================================
+STREET WORKOUT FEDERATION KAZAKHSTAN
+BLACK / ORANGE / WHITE / RED
+======================================== */
+
 :root {
   --black: #080808;
   --black-2: #111111;
@@ -49,7 +54,7 @@ section {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: #111;
+  background: #111111;
   border-bottom: 3px solid var(--orange);
   padding: 15px 5%;
 }
@@ -71,7 +76,7 @@ section {
 }
 
 .logo-img {
-  height: 40px;
+  height: 45px;
   width: auto;
   object-fit: contain;
 }
@@ -83,7 +88,7 @@ section {
 
 .logo-text strong {
   color: #fff;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 900;
   letter-spacing: 1px;
 }
@@ -112,98 +117,20 @@ section {
   color: var(--orange);
 }
 
-/* HERO СЕКЦИЯ */
+/* ЧИСТАЯ HERO СЕКЦИЯ (ТОЛЬКО КАРТИНКА С РЕБЯТАМИ БЕЗ НАДПИСЕЙ И КНОПОК) */
 .hero-section {
   position: relative;
-  min-height: 70vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 80px 20px;
+  width: 100%;
+  height: 45vh;
+  min-height: 280px;
+  max-height: 400px;
   background: url('team.jpg') no-repeat center center / cover;
-  color: var(--white);
-}
-
-.hero-bg-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(8, 8, 8, 0.78);
-  z-index: 1;
-}
-
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 800px;
-}
-
-.hero-section h1 {
-  font-size: clamp(28px, 4.5vw, 52px);
-  font-weight: 900;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-  line-height: 1.2;
-  color: #ffffff;
-}
-
-.hero-description {
-  font-size: 17px;
-  color: #cccccc;
-  margin-bottom: 30px;
-  line-height: 1.6;
-}
-
-.hero-buttons {
-  display: flex;
-  gap: 15px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 12px 25px;
-  font-weight: 900;
-  text-transform: uppercase;
-  border-radius: 4px;
-  transition: 0.2s;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.btn-primary {
-  background: var(--orange);
-  color: var(--black);
-}
-
-.btn-primary:hover {
-  background: var(--orange-light);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--white);
-  border: 2px solid var(--orange);
-}
-
-.btn-secondary:hover {
-  background: var(--orange);
-  color: var(--black);
-}
-
-.full-width {
-  width: 100%;
+  overflow: hidden;
 }
 
 /* ЗАГОЛОВКИ СЕКЦИЙ */
 .section-title {
+  position: relative;
   text-align: center;
   font-size: 32px;
   font-weight: 900;
@@ -296,6 +223,16 @@ section {
   gap: 20px;
 }
 
+.news-card,
+.event-card {
+  background: var(--black-2);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+}
+
 .events-section {
   background: var(--light);
 }
@@ -370,6 +307,33 @@ section {
 .question-form input:focus,
 .question-form textarea:focus {
   border-color: var(--orange);
+}
+
+/* КНОПКИ И ФОРМЫ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 25px;
+  font-weight: 900;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--orange);
+  color: var(--black);
+}
+
+.btn-primary:hover {
+  background: var(--orange-light);
+}
+
+.full-width {
+  width: 100%;
 }
 
 /* АДМИНКА И МОДАЛКИ */
