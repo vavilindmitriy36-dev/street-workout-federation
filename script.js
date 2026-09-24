@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadDynamicContent() {
     try {
-        // 1. Загрузка контента для секции "О нас" и "Контакты" (если редактировались через админку)
+        // 1. Загрузка контента для секции "О нас" и "Контакты"
         const aboutDoc = await db.collection("site_content").doc("about").get();
         if (aboutDoc.exists) {
             const data = aboutDoc.data();
