@@ -42,7 +42,7 @@ async function loadDynamicContent() {
             if (emailEl && data.email) emailEl.innerText = data.email;
         }
 
-        // 2. Загрузка участников и тренеров из коллекции "members"
+        // 2. Загрузка участников и тренеров (в ширину с кнопкой «Подробнее»)
         const membersContainer = document.getElementById("members-container");
         if (membersContainer) {
             const membersSnapshot = await db.collection("members").orderBy("createdAt", "desc").get();
@@ -59,6 +59,7 @@ async function loadDynamicContent() {
                                 <h3 class="member-title">${data.name}</h3>
                                 <div class="member-role">${data.role}</div>
                                 <p class="member-desc">${data.description}</p>
+                                <button class="btn-details" onclick="openMemberModal('${encodeURIComponent(data.name)}', '${encodeURIComponent(data.role)}', '${encodeURIComponent(data.description)}', '${encodeURIComponent(data.image || '')}')">Подробнее</button>
                             </div>
                         </div>
                     `;
@@ -109,3 +110,33 @@ async function loadDynamicContent() {
         console.error("Ошибка при загрузке данных с Firestore:", e);
     }
 }
+
+// Функция открытия модального окна с полным текстом
+function openMemberModal(name, role, desc, image) {
+    let modal = document.getElementById("customWorkoutModal");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "customWorkoutModal";
+        modal.className = "workout-modal";
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+        <div class="workout-modal-content">
+            <button class="modal-close" onclick="document.getElementById('customWorkoutModal').style.display='none'">✕</button>
+            ${image ? `<img src="${decodeURIComponent(image)}" style="width:100%; height:180px; object-fit:cover; border-radius:8px; margin-bottom:15px;" alt="">` : ''}
+            <div style="color: var(--orange); font-size: 12px; text-transform: uppercase; font-weight: 600; margin-bottom: 5px;">${decodeURIComponent(role)}</div>
+            <h2 style="font-size: 20px; margin-bottom: 10px;">${decodeURIComponent(name)}</h2>
+            <p style="font-size: 14px; color: #ccc; line-height: 1.5; white-space: pre-wrap;">${decodeURIComponent(desc)}</p>
+        </div>
+    `;
+    modal.style.display = "flex";
+}
+
+// Закрытие модального окна при клике на темный фон вокруг него
+window.addEventListener("click", (e) => {
+    const modal = document.getElementById("customWorkoutModal");
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
+});
