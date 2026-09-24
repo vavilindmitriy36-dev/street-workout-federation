@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Федерация Street Workout Казахстана</title>
+    <title>Федерация Street Workout Казахстана — Уральск</title>
     <link rel="stylesheet" href="style.css">
     
     <!-- Firebase SDK 8.x -->
@@ -13,7 +13,7 @@
 </head>
 <body>
 
-    <!-- ШАПКА САЙТА -->
+    <!-- ШАПКА САЙТА (Без кнопки Вход) -->
     <header class="header">
         <div class="header-container">
             <div class="logo">
@@ -26,12 +26,11 @@
             <nav class="nav">
                 <a href="#about">О нас</a>
                 <a href="#schedule">Расписание</a>
-                <a href="#trainers">Тренеры</a>
+                <a href="#trainer">Тренер</a>
                 <a href="#gallery">Галерея</a>
                 <a href="#events">Мероприятия</a>
                 <a href="#news">Новости</a>
                 <a href="#contacts">Контакты</a>
-                <a href="admin.html" style="color: var(--orange);">🔑 Вход</a>
             </nav>
         </div>
     </header>
@@ -45,8 +44,8 @@
             <h2 class="section-title" id="about-title-text">О нашей федерации</h2>
             <p class="section-description">Сила духа, здоровье нации и развитие молодежного движения</p>
             <div class="about-text-wrapper">
-                <p id="about-p1-text" style="margin-bottom: 15px;">Федерация Street Workout Казахстана является официальным объединением атлетов, энтузиастов и профессионалов уличного спорта. Мы стремимся сделать тренировки доступными для каждого, пропагандируем здоровый образ жизни и развиваем спортивную инфраструктуру в городах и селах страны.</p>
-                <p id="about-p2-text">Наши спортсмены регулярно представляют Казахстан на международных аренах, устанавливают рекорды и вдохновляют тысячи людей своим примером. Присоединяйся к нашему движению!</p>
+                <p id="about-p1-text" style="margin-bottom: 15px;">Федерация Street Workout Казахстана является официальным объединением атлетов, энтузиастов и профессионалов уличного спорта в Уральске. Мы стремимся сделать тренировки доступными для каждого, пропагандируем здоровый образ жизни и развиваем спортивную инфраструктуру.</p>
+                <p id="about-p2-text">Наши спортсмены регулярно представляют регион на республиканских аренах, устанавливают рекорды и вдохновляют тысячи людей своим примером. Присоединяйся к нашему движению!</p>
             </div>
         </div>
     </section>
@@ -76,23 +75,19 @@
         </div>
     </section>
 
-    <!-- НАШИ ТРЕНЕРЫ -->
-    <section id="trainers">
+    <!-- ЕДИНСТВЕННЫЙ ТРЕНЕР: ЮРИЙ КИЧАТОВ -->
+    <section id="trainer">
         <div class="container">
-            <h2 class="section-title">Наши тренеры</h2>
-            <p class="section-description">Профессиональные атлеты с многолетним опытом</p>
-            <div class="trainers-grid">
-                <div class="trainer-card">
-                    <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=500&q=80" alt="Тренер">
-                    <h3>Дмитрий Вавилин</h3>
-                    <p class="trainer-role">Главный тренер / Основатель</p>
-                    <p>Мастер спорта по воркауту, стаж тренировок более 10 лет.</p>
-                </div>
-                <div class="trainer-card">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="Тренер">
-                    <h3>Алексей Смирнов</h3>
-                    <p class="trainer-role">Тренер по фристайлу</p>
-                    <p>Многократный победитель региональных баттлов и соревнований.</p>
+            <h2 class="section-title">Наш тренер</h2>
+            <p class="section-description">Руководитель и наставник</p>
+            
+            <div class="trainer-single-card">
+                <!-- Замените 'yuriy.jpg' на реальное имя файла фото Юрия, когда загрузите его в проект -->
+                <img src="yuriy.jpg" alt="Юрий Кичатов" onerror="this.src='https://images.unsplash.com/photo-1566492031773-4f4e44671857?auto=format&fit=crop&w=600&q=80'">
+                <div class="trainer-info">
+                    <h3>Юрий Кичатов</h3>
+                    <p class="trainer-role">Руководитель ЗКОФ Street Workout / Главный тренер</p>
+                    <p>Победитель республиканского турнира <strong>Tartyl Fest</strong> в Уральске (40 подтягиваний в категории от 30 лет). Практик, доказывающий личным примером, что спорт доступен в любом возрасте. Активный популяризатор уличной культуры и наставник молодежи.</p>
                 </div>
             </div>
         </div>
@@ -102,11 +97,10 @@
     <section id="gallery" style="background: var(--light);">
         <div class="container">
             <h2 class="section-title">Галерея</h2>
-            <p class="section-description">Яркие моменты с наших тренировок и соревнований</p>
+            <p class="section-description">Атмосфера наших тренировок и соревнований</p>
             <div class="gallery-grid">
                 <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Workout"></div>
                 <div class="gallery-item"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80" alt="Workout"></div>
-                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Workout"></div>
             </div>
         </div>
     </section>
@@ -117,16 +111,16 @@
             <h2 class="section-title">Федерация в цифрах</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <span class="stat-num" id="stat1-num">17</span>
-                    <span class="stat-label" id="stat1-label">Областей и городов</span>
+                    <span class="stat-num" id="stat1-num">ЗКО</span>
+                    <span class="stat-label" id="stat1-label">Западно-Казахстанская область</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-num" id="stat2-num">150+</span>
-                    <span class="stat-label" id="stat2-label">Соревнований в год</span>
+                    <span class="stat-num" id="stat2-num">40</span>
+                    <span class="stat-label" id="stat2-label">Рекорд Tartyl Fest (подтягивания)</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-num" id="stat3-num">50,000+</span>
-                    <span class="stat-label" id="stat3-label">Участников движения</span>
+                    <span class="stat-num" id="stat3-num">100+</span>
+                    <span class="stat-label" id="stat3-label">Активных атлетов</span>
                 </div>
             </div>
         </div>
@@ -178,14 +172,15 @@
                         </a>
                     </div>
                 </div>
-                <!-- Интерактивная карта 2GIS (Фрейм) -->
-                <div style="border-radius: 8px; overflow: hidden; border: 1px solid #333; height: 350px;">
-                    <iframe 
-                        src="https://widgets.2gis.com/widget?type=firms&id=70030076149206687&m=51.3615,49.9234/16" 
-                        width="100%" 
-                        height="100%" 
-                        frameborder="0">
-                    </iframe>
+                
+                <!-- Красивый блок 2GIS вместо падающего фрейма -->
+                <div class="gis-banner">
+                    <span class="gis-icon">🗺️</span>
+                    <h3>Мы на карте 2GIS</h3>
+                    <p>Нажмите кнопку ниже, чтобы проложить точный маршрут до нашей площадки в Уральске.</p>
+                    <a href="https://2gis.kz/uralsk/geo/70030076149206687" target="_blank" class="btn btn-primary">
+                        Открыть в приложении 2GIS
+                    </a>
                 </div>
             </div>
         </div>
