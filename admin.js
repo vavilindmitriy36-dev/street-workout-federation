@@ -52,6 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("authScreen").style.display = "none";
             document.getElementById("dashboardScreen").style.display = "block";
             loadAdminData();
+            loadAdminMembers();
+            loadAdminNews();
+            loadAdminEvents();
         } else {
             document.getElementById("authScreen").style.display = "flex";
             document.getElementById("dashboardScreen").style.display = "none";
@@ -214,6 +217,7 @@ async function saveMember() {
         document.getElementById("memberRoleInput").value = "";
         document.getElementById("memberImgFile").value = "";
         document.getElementById("memberDescInput").value = "";
+        loadAdminMembers(); // Обновляем список в админке
     } catch (e) {
         alert("Ошибка: " + e.message);
     }
@@ -241,6 +245,7 @@ async function saveNews() {
         document.getElementById("newsTitleInput").value = "";
         document.getElementById("newsDescInput").value = "";
         document.getElementById("newsImgFile").value = "";
+        loadAdminNews(); // Обновляем список в админке
     } catch (e) {
         alert("Ошибка: " + e.message);
     }
@@ -267,7 +272,78 @@ async function saveEvent() {
         document.getElementById("eventTitleInput").value = "";
         document.getElementById("eventDateInput").value = "";
         document.getElementById("eventDescInput").value = "";
+        loadAdminEvents(); // Обновляем список в админке
     } catch (e) {
         alert("Ошибка: " + e.message);
+    }
+}
+
+// --- УПРАВЛЕНИЕ СПИСКАМИ И УДАЛЕНИЕ ИЗ АДМИНКИ ---
+
+async function loadAdminMembers() {
+    let container = document.getElementById("admin-members-list");
+    if (!container) return;
+    try {
+        const snapshot = await db.collection("members").orderBy("createdAt", "desc").get();
+        container.innerHTML = snapshot.empty ? "<p style='color:#777; font-size:13px;'>Нет участников</p>" : "";
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            container.innerHTML += `
+                <div id="admin-card-${doc.id}" style="display: flex; justify-content: space-between; align-items: center; background: #222; padding: 10px 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 8px;">
+                    <span style="font-size: 14px;">${data.name} <b style="color: var(--orange); font-size: 12px;">(${data.role})</b></span>
+                    <button onclick="deleteAdminItem('members', '${doc.id}')" style="background: #ff3333; color: #fff; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Удалить</button>
+                </div>
+            `;
+        });
+    } catch (e) { console.error(e); }
+}
+
+async function loadAdminNews() {
+    let container = document.getElementById("admin-news-list");
+    if (!container) return;
+    try {
+        const snapshot = await db.collection("news").orderBy("createdAt", "desc").get();
+        container.innerHTML = snapshot.empty ? "<p style='color:#777; font-size:13px;'>Нет новостей</p>" : "";
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            container.innerHTML += `
+                <div id="admin-card-${doc.id}" style="display: flex; justify-content: space-between; align-items: center; background: #222; padding: 10px 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 8px;">
+                    <span style="font-size: 14px; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${data.title}</span>
+                    <button onclick="deleteAdminItem('news', '${doc.id}')" style="background: #ff3333; color: #fff; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Удалить</button>
+                </div>
+            `;
+        });
+    } catch (e) { console.error(e); }
+}
+
+async function loadAdminEvents() {
+    let container = document.getElementById("admin-events-list");
+    if (!container) return;
+    try {
+        const snapshot = await db.collection("events").orderBy("createdAt", "desc").get();
+        container.innerHTML = snapshot.empty ? "<p style='color:#777; font-size:13px;'>Нет мероприятий</p>" : "";
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            container.innerHTML += `
+                <div id="admin-card-${doc.id}" style="display: flex; justify-content: space-between; align-items: center; background: #222; padding: 10px 15px; border-radius: 6px; border: 1px solid #333; margin-bottom: 8px;">
+                    <span style="font-size: 14px;">${data.title}</span>
+                    <button onclick="deleteAdminItem('events', '${doc.id}')" style="background: #ff3333; color: #fff; border: none; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 12px;">Удалить</button>
+                </div>
+            `;
+        });
+    } catch (e) { console.error(e); }
+}
+
+async function deleteAdminItem(collectionName, docId) {
+    if (confirm("Вы действительно хотите удалить этот элемент?")) {
+        try {
+            await db.collection(collectionName).doc(docId).delete();
+            const el = document.getElementById(`admin-card-${docId}`);
+            if (el) el.remove();
+            alert("Успешно удалено!");
+        } catch (error) {
+            console.error("Ошибка удаления: ", error);
+            alert("Не удалось удалить элемент.");
+        }
     }
 }
