@@ -512,3 +512,49 @@ section {
     font-size: 26px;
   }
 }
+/* Современный и аккуратный вид полей ввода в админке */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    background: #1e1e1e !important; /* Темный глубокий фон */
+    color: #ffffff !important;      /* Белый и четкий текст */
+    border: 1px solid #444444 !important; /* Аккуратная тонкая рамка */
+    padding: 12px 14px !important;
+    border-radius: 8px !important;    /* Скругленные углы */
+    font-size: 15px !important;
+    font-family: inherit;
+    outline: none !important;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+/* Эффект при нажатии/фокусе на поле ввода */
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+    background: #252525 !important;
+    border-color: var(--orange, #ff6600) !important; /* Подсветка фирменным цветом */
+    box-shadow: 0 0 8px rgba(255, 102, 0, 0.3);
+}
+
+/* Цвет текста-подсказки (плейсхолдера) */
+input::placeholder,
+textarea::placeholder {
+    color: #888888 !important;
+    font-weight: 400;
+}
+
+/* Красивые подписи к полям */
+.form-group label {
+    display: block;
+    color: #dddddd;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
