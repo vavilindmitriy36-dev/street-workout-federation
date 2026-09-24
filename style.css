@@ -120,7 +120,7 @@ section {
   min-height: 220px;
   max-height: 320px;
   background: #080808 url('team.jpg') no-repeat center center;
-  background-size: contain;
+  background-size: cover;
   overflow: hidden;
 }
 
@@ -377,6 +377,46 @@ section {
   margin-bottom: 10px;
 }
 
+/* СТРАНИЦЫ НОВОСТЕЙ И СОБЫТИЙ (SINGLE) */
+.single-news {
+  background: var(--black-2);
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid #333;
+  color: #fff;
+  margin: 40px 0;
+}
+
+.news-date {
+  display: inline-block;
+  background: var(--orange);
+  color: var(--black);
+  padding: 4px 10px;
+  font-weight: bold;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+}
+
+.news-content {
+  color: #ddd;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.back-button {
+  display: inline-block;
+  margin-top: 25px;
+  color: var(--orange);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
 /* ФУТЕР */
 .footer {
   background: #050505;
@@ -387,6 +427,7 @@ section {
   font-size: 13px;
 }
 
+/* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ ЭКРАНОВ */
 @media (max-width: 768px) {
   .header-container {
     flex-direction: column;
@@ -402,5 +443,8 @@ section {
   }
   section {
     padding: 50px 5%;
+  }
+  .section-title {
+    font-size: 26px;
   }
 }
