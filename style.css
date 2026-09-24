@@ -1,8 +1,3 @@
-/* ========================================
-STREET WORKOUT FEDERATION KAZAKHSTAN
-BLACK / ORANGE / WHITE / RED
-======================================== */
-
 :root {
   --black: #080808;
   --black-2: #111111;
@@ -49,7 +44,7 @@ section {
   margin: 0 auto;
 }
 
-/* ШАПКА И НАВИГАЦИЯ */
+/* СТАРАЯ ШАПКА И НАВИГАЦИЯ */
 .header {
   position: sticky;
   top: 0;
@@ -117,7 +112,7 @@ section {
   color: var(--orange);
 }
 
-/* ЧИСТАЯ HERO СЕКЦИЯ (ТОЛЬКО КАРТИНКА С РЕБЯТАМИ БЕЗ НАДПИСЕЙ И КНОПОК) */
+/* ЧИСТАЯ ФОТОГРАФИЯ БЕЗ КАКИХ-ЛИБО НАДПИСЕЙ И ЗАТЕМНЕНИЙ */
 .hero-section {
   position: relative;
   width: 100%;
@@ -221,16 +216,6 @@ section {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
-}
-
-.news-card,
-.event-card {
-  background: var(--black-2);
-  border-radius: 8px;
-  overflow: hidden;
-  border: 1px solid #333;
-  display: flex;
-  flex-direction: column;
 }
 
 .events-section {
