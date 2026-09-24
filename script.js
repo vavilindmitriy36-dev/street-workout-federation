@@ -148,7 +148,7 @@ async function loadSingleItemPage() {
                 }
             } else {
                 document.getElementById('event-title').innerText = "Мероприятие не найдено";
-                document.getElementById('event-content-box').innerHTML = "<p>Запрашиваемое мероприятие было удалена или не существует.</p>";
+                document.getElementById('event-content-box').innerHTML = "<p>Запрашиваемое мероприятие была удалена или не существует.</p>";
             }
         } catch (e) {
             console.error(e);
@@ -185,15 +185,22 @@ async function loadSiteContent() {
             if (data.social) document.getElementById('contact-social-text').innerText = data.social;
         }
 
-        // Устанавливаем фото команды из Firebase на фон шапки
-        const photoDoc = await db.collection("site_content").doc("team_photo").get();
-        if (photoDoc.exists && photoDoc.data().url) {
-            const heroSection = document.getElementById('hero');
-            if (heroSection) {
-                heroSection.style.backgroundImage = `url('${photoDoc.data().url}')`;
-                heroSection.style.backgroundSize = 'cover';
-                heroSection.style.backgroundPosition = 'center';
+        // Установка фото команды на фон шапки сайта с приоритетом и стилями !important
+        const heroSection = document.getElementById('hero');
+        if (heroSection) {
+            let imageUrl = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80';
+            try {
+                const photoDoc = await db.collection("site_content").doc("team_photo").get();
+                if (photoDoc.exists && photoDoc.data().url) {
+                    imageUrl = photoDoc.data().url;
+                }
+            } catch (err) {
+                console.log("Ошибка загрузки фото команды, используется резервное");
             }
+            
+            heroSection.style.setProperty('background-image', `url('${imageUrl}')`, 'important');
+            heroSection.style.setProperty('background-size', 'cover', 'important');
+            heroSection.style.setProperty('background-position', 'center', 'important');
         }
     } catch (error) {
         console.error("Ошибка загрузки контента сайта:", error);
