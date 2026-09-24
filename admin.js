@@ -14,7 +14,6 @@ if (!firebase.apps.length) {
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-// Задайте свой секретный ПИН-код здесь (например, "1234" или любой другой)
 const SECRET_PIN = "1234"; 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -59,26 +58,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Кнопки сохранения данных
+    // Кнопки сохранения
     const saveGeneralBtn = document.getElementById("saveGeneralBtn");
-    if (saveGeneralBtn) {
-        saveGeneralBtn.addEventListener("click", saveGeneralContent);
-    }
+    if (saveGeneralBtn) saveGeneralBtn.addEventListener("click", saveGeneralContent);
+
+    const saveScheduleBtn = document.getElementById("saveScheduleBtn");
+    if (saveScheduleBtn) saveScheduleBtn.addEventListener("click", saveSchedule);
+
+    const saveStudentBtn = document.getElementById("saveStudentBtn");
+    if (saveStudentBtn) saveStudentBtn.addEventListener("click", saveStudent);
 
     const saveMemberBtn = document.getElementById("saveMemberBtn");
-    if (saveMemberBtn) {
-        saveMemberBtn.addEventListener("click", saveMember);
-    }
+    if (saveMemberBtn) saveMemberBtn.addEventListener("click", saveMember);
 
     const saveNewsBtn = document.getElementById("saveNewsBtn");
-    if (saveNewsBtn) {
-        saveNewsBtn.addEventListener("click", saveNews);
-    }
+    if (saveNewsBtn) saveNewsBtn.addEventListener("click", saveNews);
 
     const saveEventBtn = document.getElementById("saveEventBtn");
-    if (saveEventBtn) {
-        saveEventBtn.addEventListener("click", saveEvent);
-    }
+    if (saveEventBtn) saveEventBtn.addEventListener("click", saveEvent);
 });
 
 async function loadAdminData() {
@@ -123,7 +120,63 @@ async function saveGeneralContent() {
     }
 }
 
-// Функция сохранения участника / тренера
+// Сохранение расписания тренировок в коллекцию "schedules"
+async function saveSchedule() {
+    const day = document.getElementById("scheduleDayInput").value.trim();
+    const time = document.getElementById("scheduleTimeInput").value.trim();
+    const desc = document.getElementById("scheduleDescInput").value.trim();
+
+    if (!day || !time) {
+        alert("Заполните день недели и время тренировки!");
+        return;
+    }
+
+    try {
+        await db.collection("schedules").add({
+            day,
+            time,
+            desc,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("Расписание успешно добавлено!");
+        document.getElementById("scheduleDayInput").value = "";
+        document.getElementById("scheduleTimeInput").value = "";
+        document.getElementById("scheduleDescInput").value = "";
+    } catch (e) {
+        alert("Ошибка: " + e.message);
+    }
+}
+
+// Сохранение учащегося в коллекцию "students"
+async function saveStudent() {
+    const name = document.getElementById("studentNameInput").value.trim();
+    const role = document.getElementById("studentRoleInput").value.trim();
+    const image = document.getElementById("studentImgInput").value.trim();
+    const description = document.getElementById("studentDescInput").value.trim();
+
+    if (!name || !role) {
+        alert("Заполните ФИО и достижение учащегося!");
+        return;
+    }
+
+    try {
+        await db.collection("students").add({
+            name,
+            role,
+            image,
+            description,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        alert("Учащийся успешно добавлен!");
+        document.getElementById("studentNameInput").value = "";
+        document.getElementById("studentRoleInput").value = "";
+        document.getElementById("studentImgInput").value = "";
+        document.getElementById("studentDescInput").value = "";
+    } catch (e) {
+        alert("Ошибка: " + e.message);
+    }
+}
+
 async function saveMember() {
     const name = document.getElementById("memberNameInput").value.trim();
     const role = document.getElementById("memberRoleInput").value.trim();
