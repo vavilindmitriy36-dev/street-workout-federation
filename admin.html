@@ -49,7 +49,17 @@
             <button class="btn btn-primary" id="saveGeneralBtn" style="margin-top: 10px;">Сохранить изменения</button>
         </div>
 
-        <!-- 2. ДОБАВЛЕНИЕ НОВОСТЕЙ -->
+        <!-- 2. ДОБАВЛЕНИЕ УЧАСТНИКОВ И ТРЕНЕРОВ (НОВЫЙ БЛОК) -->
+        <div class="contact-form-container" style="margin-bottom: 30px;">
+            <h3 style="color: var(--orange); margin-bottom: 15px;">Добавить участника или тренера</h3>
+            <div class="form-group"><input type="text" id="memberNameInput" placeholder="ФИО (например: Юрий Кичатов)"></div>
+            <div class="form-group"><input type="text" id="memberRoleInput" placeholder="Роль / Стаж (например: Главный тренер / Стаж 5 лет)"></div>
+            <div class="form-group"><input type="text" id="memberImgInput" placeholder="Ссылка на фото (URL)"></div>
+            <div class="form-group"><textarea id="memberDescInput" rows="3" placeholder="Описание, достижения, рекорды..."></textarea></div>
+            <button class="btn btn-primary" id="saveMemberBtn">Добавить в раздел</button>
+        </div>
+
+        <!-- 3. ДОБАВЛЕНИЕ НОВОСТЕЙ -->
         <div class="contact-form-container" style="margin-bottom: 30px;">
             <h3 style="color: var(--orange); margin-bottom: 15px;">Добавить новость</h3>
             <div class="form-group"><input type="text" id="newsTitleInput" placeholder="Заголовок новости"></div>
@@ -58,7 +68,7 @@
             <button class="btn btn-primary" id="saveNewsBtn">Опубликовать новость</button>
         </div>
 
-        <!-- 3. ДОБАВЛЕНИЕ МЕРОПРИЯТИЙ -->
+        <!-- 4. ДОБАВЛЕНИЕ МЕРОПРИЯТИЙ -->
         <div class="contact-form-container" style="margin-bottom: 30px;">
             <h3 style="color: var(--orange); margin-bottom: 15px;">Добавить мероприятие</h3>
             <div class="form-group"><input type="text" id="eventTitleInput" placeholder="Название турнира"></div>
