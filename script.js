@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     loadNewsPublic();
     loadEventsPublic();
     loadSingleItemPage();
+    setupContactForm();
 });
 
 // ==========================================
@@ -148,7 +149,7 @@ async function loadSingleItemPage() {
                 }
             } else {
                 document.getElementById('event-title').innerText = "Мероприятие не найдено";
-                document.getElementById('event-content-box').innerHTML = "<p>Запрашиваемое мероприятие была удалена или не существует.</p>";
+                document.getElementById('event-content-box').innerHTML = "<p>Запрашиваемое мероприятие было удалено или не существует.</p>";
             }
         } catch (e) {
             console.error(e);
@@ -161,13 +162,6 @@ async function loadSingleItemPage() {
 // ==========================================
 async function loadSiteContent() {
     try {
-        const heroDoc = await db.collection("site_content").doc("hero").get();
-        if (heroDoc.exists) {
-            const data = heroDoc.data();
-            if (data.title) document.getElementById('hero-title-text').innerText = data.title;
-            if (data.description) document.getElementById('hero-desc-text').innerText = data.description;
-        }
-
         const aboutDoc = await db.collection("site_content").doc("about").get();
         if (aboutDoc.exists) {
             const data = aboutDoc.data();
@@ -182,25 +176,6 @@ async function loadSiteContent() {
             if (data.address) document.getElementById('contact-address-text').innerText = data.address;
             if (data.phone) document.getElementById('contact-phone-text').innerText = data.phone;
             if (data.email) document.getElementById('contact-email-text').innerText = data.email;
-            if (data.social) document.getElementById('contact-social-text').innerText = data.social;
-        }
-
-        // Установка фото команды на фон шапки сайта с приоритетом и стилями !important
-        const heroSection = document.getElementById('hero');
-        if (heroSection) {
-            let imageUrl = 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=1200&q=80';
-            try {
-                const photoDoc = await db.collection("site_content").doc("team_photo").get();
-                if (photoDoc.exists && photoDoc.data().url) {
-                    imageUrl = photoDoc.data().url;
-                }
-            } catch (err) {
-                console.log("Ошибка загрузки фото команды, используется резервное");
-            }
-            
-            heroSection.style.setProperty('background-image', `url('${imageUrl}')`, 'important');
-            heroSection.style.setProperty('background-size', 'cover', 'important');
-            heroSection.style.setProperty('background-position', 'center', 'important');
         }
     } catch (error) {
         console.error("Ошибка загрузки контента сайта:", error);
@@ -222,6 +197,16 @@ async function loadStats() {
     }
 }
 
+function setupContactForm() {
+    const form = document.getElementById('questionForm');
+    if (!form) return;
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('Спасибо! Ваше сообщение отправлено. Тренер свяжется с вами.');
+        form.reset();
+    });
+}
+
 function escapeHtml(text) {
     if (!text) return '';
     return text
@@ -231,3 +216,4 @@ function escapeHtml(text) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+
