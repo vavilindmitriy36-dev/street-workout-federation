@@ -13,21 +13,24 @@
 </head>
 <body style="background: var(--black); color: #fff;">
 
-    <!-- ЭКРАН АВТОРИЗАЦИИ (ЗАЩИЩЕННЫЙ ВХОД ЧЕРЕЗ FIREBASE AUTH) -->
+    <!-- ЭКРАН АВТОРИЗАЦИИ (Email + Пароль + Секретный ПИН-код) -->
     <div id="authScreen" style="display: flex; height: 100vh; align-items: center; justify-content: center; padding: 20px;">
         <div class="modal-content" style="display: block; max-width: 400px; width: 100%;">
             <h3 style="margin-bottom: 20px; color: var(--orange);">Вход для тренера</h3>
-            <div class="form-group"><input type="email" id="adminEmail" placeholder="Email тренера"></div>
+            <div class="form-group"><input type="email" id="adminEmail" placeholder="vavilindmitriy36@gmail.com" value="vavilindmitriy36@gmail.com"></div>
             <div class="form-group"><input type="password" id="adminPassword" placeholder="Пароль"></div>
+            <!-- Поле для двухэтапной проверки (ПИН-код) -->
+            <div class="form-group"><input type="password" id="adminPin" placeholder="Секретный ПИН-код"></div>
+            
             <div class="error-msg" id="loginError" style="color: var(--red); margin-bottom: 10px; font-size: 13px;"></div>
             <button class="btn btn-primary full-width" id="adminLoginBtn">Войти в панель</button>
             <div style="margin-top: 15px; text-align: center;">
-                <a href="index.html" style="color: var(--gray); font-size: 13px;">← На главную сайт</a>
+                <a href="index.html" style="color: var(--gray); font-size: 13px;">← На главный сайт</a>
             </div>
         </div>
     </div>
 
-    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ (СКРЫТА, ДОСТУПНА ТОЛЬКО ПОСЛЕ АВТОРИЗАЦИИ) -->
+    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ (СКРЫТА, ДОСТУПНА ПОСЛЕ УСПЕШНОГО ВХОДА) -->
     <div id="dashboardScreen" style="display: none; padding: 40px 5%; max-width: 900px; margin: 0 auto;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--orange); padding-bottom: 15px;">
             <h2>Управление сайтом</h2>
