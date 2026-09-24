@@ -9,6 +9,7 @@
     <!-- Firebase SDK 8.x -->
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 </head>
 <body>
 
@@ -31,19 +32,18 @@
         </div>
     </header>
 
-    <!-- ГЛАВНОЕ ФОТО (ВМЕЩАЕТСЯ ЦЕЛИКОМ, БЕЗ ОБРЕЗКИ) -->
+    <!-- ГЛАВНОЕ ФОТО -->
     <section class="hero-section"></section>
 
     <!-- СЕКЦИЯ О НАС -->
     <section id="about">
         <div class="container">
-            <h2 class="section-title" id="about-title-text">О нашей федерации</h2>
+            <h2 class="section-title" id="site-about-title">О нашей федерации</h2>
             <p class="section-description">Сила духа, здоровье нации и развитие молодежного движения</p>
             <div class="about-text-wrapper">
-                <p id="about-p1-text" style="margin-bottom: 15px;">Федерация Street Workout Казахстана является официальным объединением атлетов, энтузиастов и профессионалов уличного спорта. Мы стремимся сделать тренировки доступными для каждого, пропагандируем здоровый образ жизни и развиваем спортивную инфраструктуру в городах и селах страны.</p>
-                <p id="about-p2-text">Наши спортсмены регулярно представляют Казахстан на международных аренах, устанавливают рекорды и вдохновляют тысячи людей своим примером. Присоединяйся к нашему движению!</p>
+                <p id="site-about-p1" style="margin-bottom: 15px;">Федерация Street Workout Казахстана является официальным объединением атлетов, энтузиастов и профессионалов уличного спорта. Мы стремимся сделать тренировки доступными для каждого, пропагандируем здоровый образ жизни и развиваем спортивную инфраструктуру в городах и селах страны.</p>
+                <p id="site-about-p2">Наши спортсмены регулярно представляют Казахстан на международных аренах, устанавливают рекорды и вдохновляют тысячи людей своим примером. Присоединяйся к нашему движению!</p>
             </div>
-            <button class="edit-btn admin-only" onclick="openModal('aboutModal')">Редактировать "О нас"</button>
         </div>
     </section>
 
@@ -53,16 +53,16 @@
             <h2 class="section-title">Федерация в цифрах</h2>
             <div class="stats-grid">
                 <div class="stat-card">
-                    <span class="stat-num" id="stat-1-num">17</span>
-                    <span class="stat-label" id="stat-1-label">Областей и городов</span>
+                    <span class="stat-num" id="site-stat-1">17</span>
+                    <span class="stat-label">Областей и городов</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-num" id="stat-2-num">150+</span>
-                    <span class="stat-label" id="stat-2-label">Соревнований в год</span>
+                    <span class="stat-num" id="site-stat-2">150+</span>
+                    <span class="stat-label">Соревнований в год</span>
                 </div>
                 <div class="stat-card">
-                    <span class="stat-num" id="stat-3-num">50,000+</span>
-                    <span class="stat-label" id="stat-3-label">Участников движения</span>
+                    <span class="stat-num" id="site-stat-3">50,000+</span>
+                    <span class="stat-label">Участников движения</span>
                 </div>
             </div>
         </div>
@@ -76,7 +76,6 @@
                     <h2 class="section-title" style="text-align: left; margin-bottom: 5px;">Мероприятия</h2>
                     <p style="color: var(--text-gray);">Участвуйте в турнирах, мастер-классах и фестивалях</p>
                 </div>
-                <button class="add-btn admin-only" onclick="openModal('addEventModal')">+ Добавить событие</button>
             </div>
             <div id="events-container" class="events-grid"></div>
         </div>
@@ -90,7 +89,6 @@
                     <h2 class="section-title" style="text-align: left; margin-bottom: 5px;">Новости</h2>
                     <p style="color: var(--text-gray);">Последние события и достижения федерации</p>
                 </div>
-                <button class="add-btn admin-only" onclick="openModal('addNewsModal')">+ Добавить новость</button>
             </div>
             <div id="news-container" class="news-grid"></div>
         </div>
@@ -104,12 +102,11 @@
             <div class="contacts-grid">
                 <div class="contact-info">
                     <h3 style="color: var(--orange); margin-bottom: 15px; text-transform: uppercase;">Наши координаты</h3>
-                    <p id="contact-address-text">г. Астана, ул. Кажымукана, 12А</p>
+                    <p id="site-contact-address">г. Астана, ул. Кажымукана, 12А</p>
                     <ul class="contact-list">
-                        <li><strong>Телефон:</strong> <span id="contact-phone-text">+7 (701) 000-00-00</span></li>
-                        <li><strong>Email:</strong> <span id="contact-email-text">info@workout.kz</span></li>
+                        <li><strong>Телефон:</strong> <span id="site-contact-phone">+7 (701) 000-00-00</span></li>
+                        <li><strong>Email:</strong> <span id="site-contact-email">info@workout.kz</span></li>
                     </ul>
-                    <button class="edit-btn admin-only" style="margin-top: 20px;" onclick="openModal('contactsModal')">Редактировать контакты</button>
                 </div>
                 <div class="contact-form-container">
                     <h3>Задать вопрос</h3>
@@ -128,66 +125,9 @@
     <footer class="footer">
         <p>&copy; 2026 Федерация Street Workout Казахстана. Все права защищены.</p>
         <div style="margin-top: 15px;">
-            <button id="adminLoginBtn" class="admin-btn" style="font-size: 11px; padding: 4px 10px;">Вход для админа</button>
-            <button id="adminLogoutBtn" class="admin-btn admin-only" style="font-size: 11px; padding: 4px 10px; background: var(--red); color: white;">Выйти</button>
+            <a href="admin.html" style="color: var(--orange); font-size: 12px; text-decoration: underline;">Панель управления тренера</a>
         </div>
     </footer>
-
-    <!-- МОДАЛЬНЫЕ ОКНА АДМИНКИ -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
-            <h3>Вход в панель админа</h3>
-            <div class="form-group"><input type="email" id="adminEmail" placeholder="Email"></div>
-            <div class="form-group"><input type="password" id="adminPassword" placeholder="Пароль"></div>
-            <div class="error-msg" id="loginError"></div>
-            <button class="btn btn-primary full-width" id="submitLoginBtn">Войти</button>
-        </div>
-    </div>
-
-    <div id="aboutModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('aboutModal')">&times;</span>
-            <h3>Редактировать "О нас"</h3>
-            <div class="form-group"><input type="text" id="editAboutTitle" placeholder="Заголовок"></div>
-            <div class="form-group"><textarea id="editAboutP1" rows="3" placeholder="Параграф 1"></textarea></div>
-            <div class="form-group"><textarea id="editAboutP2" rows="3" placeholder="Параграф 2"></textarea></div>
-            <button class="btn btn-primary full-width" id="saveAboutBtn">Сохранить</button>
-        </div>
-    </div>
-
-    <div id="addNewsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('addNewsModal')">&times;</span>
-            <h3>Добавить новость</h3>
-            <div class="form-group"><input type="text" id="newsTitle" placeholder="Заголовок новости"></div>
-            <div class="form-group"><textarea id="newsDesc" rows="4" placeholder="Текст новости"></textarea></div>
-            <div class="form-group"><input type="text" id="newsImg" placeholder="Ссылка на картинку (URL)"></div>
-            <button class="btn btn-primary full-width" id="saveNewsBtn">Опубликовать</button>
-        </div>
-    </div>
-
-    <div id="addEventModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('addEventModal')">&times;</span>
-            <h3>Добавить событие</h3>
-            <div class="form-group"><input type="text" id="eventTitle" placeholder="Название турнира/события"></div>
-            <div class="form-group"><input type="text" id="eventDate" placeholder="Дата (например: 15 июля 2026)"></div>
-            <div class="form-group"><textarea id="eventDesc" rows="3" placeholder="Описание события"></textarea></div>
-            <button class="btn btn-primary full-width" id="saveEventBtn">Добавить</button>
-        </div>
-    </div>
-
-    <div id="contactsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('contactsModal')">&times;</span>
-            <h3>Редактировать контакты</h3>
-            <div class="form-group"><input type="text" id="editAddress" placeholder="Адрес"></div>
-            <div class="form-group"><input type="text" id="editPhone" placeholder="Телефон"></div>
-            <div class="form-group"><input type="text" id="editEmail" placeholder="Email"></div>
-            <button class="btn btn-primary full-width" id="saveContactsBtn">Сохранить</button>
-        </div>
-    </div>
 
     <script src="script.js"></script>
 </body>
