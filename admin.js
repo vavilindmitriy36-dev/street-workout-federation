@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Кнопки сохранения
     const saveGeneralBtn = document.getElementById("saveGeneralBtn");
     if (saveGeneralBtn) saveGeneralBtn.addEventListener("click", saveGeneralContent);
 
@@ -120,7 +119,6 @@ async function saveGeneralContent() {
     }
 }
 
-// Сохранение расписания тренировок в коллекцию "schedules"
 async function saveSchedule() {
     const day = document.getElementById("scheduleDayInput").value.trim();
     const time = document.getElementById("scheduleTimeInput").value.trim();
@@ -147,11 +145,25 @@ async function saveSchedule() {
     }
 }
 
-// Сохранение учащегося в коллекцию "students"
+// Вспомогательная функция для конвертации файла в картинку
+function convertFileToBase64(fileInputId) {
+    return new Promise((resolve, reject) => {
+        const fileInput = document.getElementById(fileInputId);
+        if (!fileInput || fileInput.files.length === 0) {
+            resolve("");
+            return;
+        }
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
+    });
+}
+
 async function saveStudent() {
     const name = document.getElementById("studentNameInput").value.trim();
     const role = document.getElementById("studentRoleInput").value.trim();
-    const image = document.getElementById("studentImgInput").value.trim();
     const description = document.getElementById("studentDescInput").value.trim();
 
     if (!name || !role) {
@@ -160,6 +172,7 @@ async function saveStudent() {
     }
 
     try {
+        const image = await convertFileToBase64("studentImgFile");
         await db.collection("students").add({
             name,
             role,
@@ -170,7 +183,7 @@ async function saveStudent() {
         alert("Учащийся успешно добавлен!");
         document.getElementById("studentNameInput").value = "";
         document.getElementById("studentRoleInput").value = "";
-        document.getElementById("studentImgInput").value = "";
+        document.getElementById("studentImgFile").value = "";
         document.getElementById("studentDescInput").value = "";
     } catch (e) {
         alert("Ошибка: " + e.message);
@@ -180,15 +193,15 @@ async function saveStudent() {
 async function saveMember() {
     const name = document.getElementById("memberNameInput").value.trim();
     const role = document.getElementById("memberRoleInput").value.trim();
-    const image = document.getElementById("memberImgInput").value.trim();
     const description = document.getElementById("memberDescInput").value.trim();
 
-    if (!name || !role || !image || !description) {
-        alert("Заполните все поля для участника/тренера!");
+    if (!name || !role || !description) {
+        alert("Заполните основные поля для участника/тренера!");
         return;
     }
 
     try {
+        const image = await convertFileToBase64("memberImgFile");
         await db.collection("members").add({
             name,
             role,
@@ -199,7 +212,7 @@ async function saveMember() {
         alert("Участник/тренер успешно добавлен!");
         document.getElementById("memberNameInput").value = "";
         document.getElementById("memberRoleInput").value = "";
-        document.getElementById("memberImgInput").value = "";
+        document.getElementById("memberImgFile").value = "";
         document.getElementById("memberDescInput").value = "";
     } catch (e) {
         alert("Ошибка: " + e.message);
@@ -209,7 +222,6 @@ async function saveMember() {
 async function saveNews() {
     const title = document.getElementById("newsTitleInput").value.trim();
     const text = document.getElementById("newsDescInput").value.trim();
-    const image = document.getElementById("newsImgInput").value.trim();
 
     if (!title || !text) {
         alert("Заполните заголовок и текст новости!");
@@ -217,6 +229,7 @@ async function saveNews() {
     }
 
     try {
+        const image = await convertFileToBase64("newsImgFile");
         await db.collection("news").add({
             title,
             text,
@@ -227,7 +240,7 @@ async function saveNews() {
         alert("Новость успешно опубликована!");
         document.getElementById("newsTitleInput").value = "";
         document.getElementById("newsDescInput").value = "";
-        document.getElementById("newsImgInput").value = "";
+        document.getElementById("newsImgFile").value = "";
     } catch (e) {
         alert("Ошибка: " + e.message);
     }
