@@ -62,7 +62,10 @@
             <h3 style="color: var(--orange); margin-bottom: 15px;">Добавить информацию об учащемся</h3>
             <div class="form-group"><input type="text" id="studentNameInput" placeholder="ФИО учащегося"></div>
             <div class="form-group"><input type="text" id="studentRoleInput" placeholder="Достижение / Статус (например: Победитель турнира, 1 разряд)"></div>
-            <div class="form-group"><input type="text" id="studentImgInput" placeholder="Ссылка на фото (URL)"></div>
+            <div class="form-group">
+                <label style="color: #bbb; font-size: 13px;">Фотография учащегося:</label>
+                <input type="file" id="studentImgFile" accept="image/*" style="padding: 8px;">
+            </div>
             <div class="form-group"><textarea id="studentDescInput" rows="3" placeholder="Информация об успехах, прогрессе..."></textarea></div>
             <button class="btn btn-primary" id="saveStudentBtn">Добавить учащегося</button>
         </div>
@@ -72,7 +75,10 @@
             <h3 style="color: var(--orange); margin-bottom: 15px;">Добавить участника или тренера</h3>
             <div class="form-group"><input type="text" id="memberNameInput" placeholder="ФИО (например: Юрий Кичатов)"></div>
             <div class="form-group"><input type="text" id="memberRoleInput" placeholder="Роль / Стаж (например: Главный тренер)"></div>
-            <div class="form-group"><input type="text" id="memberImgInput" placeholder="Ссылка на фото (URL)"></div>
+            <div class="form-group">
+                <label style="color: #bbb; font-size: 13px;">Фотография участника/тренера:</label>
+                <input type="file" id="memberImgFile" accept="image/*" style="padding: 8px;">
+            </div>
             <div class="form-group"><textarea id="memberDescInput" rows="3" placeholder="Описание, достижения..."></textarea></div>
             <button class="btn btn-primary" id="saveMemberBtn">Добавить в раздел</button>
         </div>
@@ -82,7 +88,10 @@
             <h3 style="color: var(--orange); margin-bottom: 15px;">Добавить новость</h3>
             <div class="form-group"><input type="text" id="newsTitleInput" placeholder="Заголовок новости"></div>
             <div class="form-group"><textarea id="newsDescInput" rows="3" placeholder="Текст новости"></textarea></div>
-            <div class="form-group"><input type="text" id="newsImgInput" placeholder="Ссылка на картинку (URL)"></div>
+            <div class="form-group">
+                <label style="color: #bbb; font-size: 13px;">Картинка для новости:</label>
+                <input type="file" id="newsImgFile" accept="image/*" style="padding: 8px;">
+            </div>
             <button class="btn btn-primary" id="saveNewsBtn">Опубликовать новость</button>
         </div>
 
