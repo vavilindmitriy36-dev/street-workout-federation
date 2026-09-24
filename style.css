@@ -97,8 +97,9 @@ section {
 
 .nav {
   display: flex;
-  gap: 20px;
+  gap: 18px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 .nav a {
@@ -168,6 +169,106 @@ section {
   font-size: 16px;
   line-height: 1.7;
   color: #333;
+}
+
+/* РАСПИСАНИЕ */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.schedule-card {
+  background: var(--black-2);
+  border: 1px solid #222;
+  border-top: 4px solid var(--orange);
+  padding: 25px;
+  border-radius: 6px;
+}
+
+.schedule-card h3 {
+  color: var(--orange);
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.schedule-card .time {
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.schedule-card .desc {
+  color: #aaa;
+  font-size: 14px;
+}
+
+/* ТРЕНЕРЫ */
+.trainers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.trainer-card {
+  background: var(--light);
+  border-radius: 8px;
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 20px;
+  border: 1px solid #ddd;
+}
+
+.trainer-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.trainer-card h3 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+
+.trainer-role {
+  color: var(--orange);
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.trainer-card p {
+  padding: 0 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* ГАЛЕРЕЯ */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.gallery-item {
+  height: 220px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+.gallery-item img:hover {
+  transform: scale(1.05);
 }
 
 /* СТАТИСТИКА */
@@ -246,7 +347,7 @@ section {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
-  align-items: start;
+  align-items: center;
 }
 
 .contact-info p {
@@ -268,40 +369,33 @@ section {
   color: var(--orange);
 }
 
-.contact-form-container {
-  background: var(--black-2);
-  padding: 25px;
-  border-radius: 8px;
-  border: 1px solid #222;
-}
-
-.contact-form-container h3 {
-  color: var(--orange);
-  margin-bottom: 15px;
-  text-transform: uppercase;
-  font-size: 16px;
-}
-
-.question-form {
+/* ПЛАВАЮЩИЕ КНОПКИ */
+.floating-socials {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  z-index: 999;
 }
 
-.question-form input,
-.question-form textarea {
-  width: 100%;
-  padding: 12px;
-  background: #181818;
-  border: 1px solid #333;
-  color: var(--white);
-  border-radius: 4px;
-  outline: none;
+.social-btn {
+  width: 50px;
+  height: 50px;
+  background: var(--orange);
+  color: #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  transition: 0.2s;
 }
 
-.question-form input:focus,
-.question-form textarea:focus {
-  border-color: var(--orange);
+.social-btn:hover {
+  transform: scale(1.1);
 }
 
 /* КНОПКИ И ФОРМЫ */
@@ -342,81 +436,6 @@ section {
   width: 100%;
 }
 
-.modal-content {
-  background: var(--black-2);
-  border: 2px solid var(--orange);
-  padding: 25px;
-  border-radius: 8px;
-  color: #fff;
-}
-
-.form-group {
-  margin-bottom: 12px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 12px;
-  color: var(--gray);
-  margin-bottom: 4px;
-}
-
-.form-group input, .form-group textarea {
-  width: 100%;
-  padding: 10px;
-  background: #1e1e1e;
-  border: 1px solid #333;
-  color: #fff;
-  border-radius: 4px;
-  outline: none;
-}
-
-.error-msg {
-  color: var(--red);
-  font-size: 12px;
-  margin-bottom: 10px;
-}
-
-/* СТРАНИЦЫ НОВОСТЕЙ И СОБЫТИЙ (SINGLE) */
-.single-news {
-  background: var(--black-2);
-  padding: 30px;
-  border-radius: 8px;
-  border: 1px solid #333;
-  color: #fff;
-  margin: 40px 0;
-}
-
-.news-date {
-  display: inline-block;
-  background: var(--orange);
-  color: var(--black);
-  padding: 4px 10px;
-  font-weight: bold;
-  font-size: 12px;
-  border-radius: 4px;
-  margin-bottom: 15px;
-  text-transform: uppercase;
-}
-
-.news-content {
-  color: #ddd;
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-.back-button {
-  display: inline-block;
-  margin-top: 25px;
-  color: var(--orange);
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.back-button:hover {
-  text-decoration: underline;
-}
-
 /* ФУТЕР */
 .footer {
   background: #050505;
@@ -427,7 +446,7 @@ section {
   font-size: 13px;
 }
 
-/* АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ ЭКРАНОВ */
+/* АДАПТИВНОСТЬ */
 @media (max-width: 768px) {
   .header-container {
     flex-direction: column;
