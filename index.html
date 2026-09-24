@@ -25,9 +25,13 @@
             </div>
             <nav class="nav">
                 <a href="#about">О нас</a>
+                <a href="#schedule">Расписание</a>
+                <a href="#trainers">Тренеры</a>
+                <a href="#gallery">Галерея</a>
                 <a href="#events">Мероприятия</a>
                 <a href="#news">Новости</a>
                 <a href="#contacts">Контакты</a>
+                <a href="admin.html" style="color: var(--orange);">🔑 Вход</a>
             </nav>
         </div>
     </header>
@@ -43,6 +47,66 @@
             <div class="about-text-wrapper">
                 <p id="about-p1-text" style="margin-bottom: 15px;">Федерация Street Workout Казахстана является официальным объединением атлетов, энтузиастов и профессионалов уличного спорта. Мы стремимся сделать тренировки доступными для каждого, пропагандируем здоровый образ жизни и развиваем спортивную инфраструктуру в городах и селах страны.</p>
                 <p id="about-p2-text">Наши спортсмены регулярно представляют Казахстан на международных аренах, устанавливают рекорды и вдохновляют тысячи людей своим примером. Присоединяйся к нашему движению!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- РАСПИСАНИЕ ТРЕНИРОВОК -->
+    <section id="schedule" style="background: var(--black); color: var(--white);">
+        <div class="container">
+            <h2 class="section-title" style="color: var(--white);">Расписание тренировок</h2>
+            <p class="section-description">Выбирайте удобное время и присоединяйтесь к занятиям</p>
+            <div class="schedule-grid">
+                <div class="schedule-card">
+                    <h3>Понедельник / Среда / Пятница</h3>
+                    <p class="time">18:00 – 20:00</p>
+                    <p class="desc">Общая группа (Силовая база, элементы на турниках и брусьях)</p>
+                </div>
+                <div class="schedule-card">
+                    <h3>Вторник / Четверг</h3>
+                    <p class="time">17:30 – 19:00</p>
+                    <p class="desc">Младшая группа / Начинающие</p>
+                </div>
+                <div class="schedule-card">
+                    <h3>Суббота</h3>
+                    <p class="time">11:00 – 13:00</p>
+                    <p class="desc">Открытая командная тренировка и ОФП</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- НАШИ ТРЕНЕРЫ -->
+    <section id="trainers">
+        <div class="container">
+            <h2 class="section-title">Наши тренеры</h2>
+            <p class="section-description">Профессиональные атлеты с многолетним опытом</p>
+            <div class="trainers-grid">
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=500&q=80" alt="Тренер">
+                    <h3>Дмитрий Вавилин</h3>
+                    <p class="trainer-role">Главный тренер / Основатель</p>
+                    <p>Мастер спорта по воркауту, стаж тренировок более 10 лет.</p>
+                </div>
+                <div class="trainer-card">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=500&q=80" alt="Тренер">
+                    <h3>Алексей Смирнов</h3>
+                    <p class="trainer-role">Тренер по фристайлу</p>
+                    <p>Многократный победитель региональных баттлов и соревнований.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ГАЛЕРЕЯ -->
+    <section id="gallery" style="background: var(--light);">
+        <div class="container">
+            <h2 class="section-title">Галерея</h2>
+            <p class="section-description">Яркие моменты с наших тренировок и соревнований</p>
+            <div class="gallery-grid">
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=600&q=80" alt="Workout"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?auto=format&fit=crop&w=600&q=80" alt="Workout"></div>
+                <div class="gallery-item"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=600&q=80" alt="Workout"></div>
             </div>
         </div>
     </section>
@@ -94,7 +158,7 @@
         </div>
     </section>
 
-    <!-- КОНТАКТЫ -->
+    <!-- КОНТАКТЫ И 2GIS -->
     <section id="contacts">
         <div class="container">
             <h2 class="section-title">Контакты</h2>
@@ -102,26 +166,38 @@
             <div class="contacts-grid">
                 <div class="contact-info">
                     <h3 style="color: var(--orange); margin-bottom: 15px; text-transform: uppercase;">Наши координаты</h3>
-                    <p id="contact-address-text">г. Астана, ул. Кажымукана, 12А</p>
+                    <p id="contact-address-text">г. Уральск</p>
                     <ul class="contact-list">
                         <li><strong>Телефон:</strong> <span id="contact-phone-text">+7 (701) 000-00-00</span></li>
                         <li><strong>Email:</strong> <span id="contact-email-text">info@workout.kz</span></li>
                     </ul>
+                    <!-- Кнопка 2GIS -->
+                    <div style="margin-top: 25px;">
+                        <a href="https://2gis.kz/uralsk/geo/70030076149206687" target="_blank" class="btn btn-secondary" style="border-color: var(--orange); color: var(--white);">
+                            📍 Открыть точку в 2GIS
+                        </a>
+                    </div>
                 </div>
-                <div class="contact-form-container">
-                    <h3>Задать вопрос</h3>
-                    <form class="question-form" id="questionForm">
-                        <input type="text" placeholder="Ваше имя" required>
-                        <input type="tel" placeholder="Ваш телефон" required>
-                        <textarea rows="4" placeholder="Ваше сообщение..." required></textarea>
-                        <button type="submit" class="btn btn-primary full-width" style="padding: 12px;">Отправить</button>
-                    </form>
+                <!-- Интерактивная карта 2GIS (Фрейм) -->
+                <div style="border-radius: 8px; overflow: hidden; border: 1px solid #333; height: 350px;">
+                    <iframe 
+                        src="https://widgets.2gis.com/widget?type=firms&id=70030076149206687&m=51.3615,49.9234/16" 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0">
+                    </iframe>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ФУТЕР (Кнопка входа удалена) -->
+    <!-- ПЛАВАЮЩИЕ КНОПКИ МЕССЕНДЖЕРОВ -->
+    <div class="floating-socials">
+        <a href="https://wa.me/" target="_blank" class="social-btn whatsapp" title="Написать в WhatsApp">💬</a>
+        <a href="https://t.me/" target="_blank" class="social-btn telegram" title="Написать в Telegram">✈️</a>
+    </div>
+
+    <!-- ФУТЕР -->
     <footer class="footer">
         <p>&copy; 2026 Федерация Street Workout Казахстана. Все права защищены.</p>
     </footer>
