@@ -22,6 +22,12 @@
                     <span>КАЗАХСТАН</span>
                 </div>
             </div>
+            <nav class="nav">
+                <a href="#about">О нас</a>
+                <a href="#events">Мероприятия</a>
+                <a href="#news">Новости</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
         </div>
     </header>
 
@@ -29,11 +35,11 @@
     <section class="hero-section">
         <div class="hero-bg-overlay"></div>
         <div class="hero-content">
-            <h1 id="hero-title-text">ФЕДЕРАЦИЯ STREET WORKOUT КАЗАХСТАНА</h1>
-            <p id="hero-desc-text" class="hero-description">Развиваем уличный спорт, объединяем атлетов, строим площадки и проводим масштабные турниры по всей республике!</p>
+            <h1 id="hero-title-text">Федерация Street Workout Казахстана</h1>
+            <p id="hero-desc-text" class="hero-description">Развиваем уличный спорт, объединяем атлетов и проводим масштабные турниры по всей стране!</p>
             <div class="hero-buttons">
                 <a href="#events" class="btn btn-primary">Ближайшие события</a>
-                <a href="#contacts" class="btn btn-secondary">Связаться с нами</a>
+                <a href="#contacts" class="btn btn-secondary">Задать вопрос</a>
             </div>
         </div>
     </section>
@@ -82,9 +88,7 @@
                 </div>
                 <button class="add-btn admin-only" onclick="openModal('addEventModal')">+ Добавить событие</button>
             </div>
-            <div id="events-container" class="events-grid">
-                <!-- Динамические карточки мероприятий из Firebase -->
-            </div>
+            <div id="events-container" class="events-grid"></div>
         </div>
     </section>
 
@@ -98,9 +102,7 @@
                 </div>
                 <button class="add-btn admin-only" onclick="openModal('addNewsModal')">+ Добавить новость</button>
             </div>
-            <div id="news-container" class="news-grid">
-                <!-- Динамические карточки новостей из Firebase -->
-            </div>
+            <div id="news-container" class="news-grid"></div>
         </div>
     </section>
 
@@ -146,90 +148,57 @@
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('loginModal')">&times;</span>
             <h3>Вход в панель админа</h3>
-            <div class="form-group">
-                <input type="email" id="adminEmail" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <input type="password" id="adminPassword" placeholder="Пароль">
-            </div>
+            <div class="form-group"><input type="email" id="adminEmail" placeholder="Email"></div>
+            <div class="form-group"><input type="password" id="adminPassword" placeholder="Пароль"></div>
             <div class="error-msg" id="loginError"></div>
             <button class="btn btn-primary full-width" id="submitLoginBtn">Войти</button>
         </div>
     </div>
 
-    <!-- Модалка редактирования О нас -->
     <div id="aboutModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('aboutModal')">&times;</span>
             <h3>Редактировать "О нас"</h3>
-            <div class="form-group">
-                <input type="text" id="editAboutTitle" placeholder="Заголовок">
-            </div>
-            <div class="form-group">
-                <textarea id="editAboutP1" rows="3" placeholder="Параграф 1"></textarea>
-            </div>
-            <div class="form-group">
-                <textarea id="editAboutP2" rows="3" placeholder="Параграф 2"></textarea>
-            </div>
+            <div class="form-group"><input type="text" id="editAboutTitle" placeholder="Заголовок"></div>
+            <div class="form-group"><textarea id="editAboutP1" rows="3" placeholder="Параграф 1"></textarea></div>
+            <div class="form-group"><textarea id="editAboutP2" rows="3" placeholder="Параграф 2"></textarea></div>
             <button class="btn btn-primary full-width" id="saveAboutBtn">Сохранить</button>
         </div>
     </div>
 
-    <!-- Модалка добавления новости -->
     <div id="addNewsModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('addNewsModal')">&times;</span>
             <h3>Добавить новость</h3>
-            <div class="form-group">
-                <input type="text" id="newsTitle" placeholder="Заголовок новости">
-            </div>
-            <div class="form-group">
-                <textarea id="newsDesc" rows="4" placeholder="Текст новости"></textarea>
-            </div>
-            <div class="form-group">
-                <input type="text" id="newsImg" placeholder="Ссылка на картинку (URL)">
-            </div>
+            <div class="form-group"><input type="text" id="newsTitle" placeholder="Заголовок новости"></div>
+            <div class="form-group"><textarea id="newsDesc" rows="4" placeholder="Текст новости"></textarea></div>
+            <div class="form-group"><input type="text" id="newsImg" placeholder="Ссылка на картинку (URL)"></div>
             <button class="btn btn-primary full-width" id="saveNewsBtn">Опубликовать</button>
         </div>
     </div>
 
-    <!-- Модалка добавления события -->
     <div id="addEventModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('addEventModal')">&times;</span>
             <h3>Добавить событие</h3>
-            <div class="form-group">
-                <input type="text" id="eventTitle" placeholder="Название турнира/события">
-            </div>
-            <div class="form-group">
-                <input type="text" id="eventDate" placeholder="Дата (например: 15 июля 2026)">
-            </div>
-            <div class="form-group">
-                <textarea id="eventDesc" rows="3" placeholder="Описание события"></textarea>
-            </div>
+            <div class="form-group"><input type="text" id="eventTitle" placeholder="Название турнира/события"></div>
+            <div class="form-group"><input type="text" id="eventDate" placeholder="Дата (например: 15 июля 2026)"></div>
+            <div class="form-group"><textarea id="eventDesc" rows="3" placeholder="Описание события"></textarea></div>
             <button class="btn btn-primary full-width" id="saveEventBtn">Добавить</button>
         </div>
     </div>
 
-    <!-- Модалка редактирования контактов -->
     <div id="contactsModal" class="modal">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('contactsModal')">&times;</span>
             <h3>Редактировать контакты</h3>
-            <div class="form-group">
-                <input type="text" id="editAddress" placeholder="Адрес">
-            </div>
-            <div class="form-group">
-                <input type="text" id="editPhone" placeholder="Телефон">
-            </div>
-            <div class="form-group">
-                <input type="text" id="editEmail" placeholder="Email">
-            </div>
+            <div class="form-group"><input type="text" id="editAddress" placeholder="Адрес"></div>
+            <div class="form-group"><input type="text" id="editPhone" placeholder="Телефон"></div>
+            <div class="form-group"><input type="text" id="editEmail" placeholder="Email"></div>
             <button class="btn btn-primary full-width" id="saveContactsBtn">Сохранить</button>
         </div>
     </div>
 
-    <!-- Основной скрипт сайта и логика Firebase -->
     <script src="script.js"></script>
 </body>
 </html>
