@@ -185,12 +185,14 @@ async function loadSiteContent() {
             if (data.social) document.getElementById('contact-social-text').innerText = data.social;
         }
 
-        // Устанавливаем фотографию команды из Firebase прямо на фон шапки сайта (hero-section)
+        // Устанавливаем фото команды из Firebase на фон шапки
         const photoDoc = await db.collection("site_content").doc("team_photo").get();
         if (photoDoc.exists && photoDoc.data().url) {
             const heroSection = document.getElementById('hero');
             if (heroSection) {
                 heroSection.style.backgroundImage = `url('${photoDoc.data().url}')`;
+                heroSection.style.backgroundSize = 'cover';
+                heroSection.style.backgroundPosition = 'center';
             }
         }
     } catch (error) {
