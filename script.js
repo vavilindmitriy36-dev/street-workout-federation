@@ -42,7 +42,7 @@ async function loadDynamicContent() {
             if (emailEl && data.email) emailEl.innerText = data.email;
         }
 
-        // 2. Загрузка участников и тренеров (в ширину с кнопкой «Подробнее»)
+        // 2. Загрузка участников и тренеров (в ширину, с кнопкой «Подробнее» и кнопкой удаления)
         const membersContainer = document.getElementById("members-container");
         if (membersContainer) {
             const membersSnapshot = await db.collection("members").orderBy("createdAt", "desc").get();
@@ -51,7 +51,7 @@ async function loadDynamicContent() {
                 membersSnapshot.forEach(doc => {
                     const data = doc.data();
                     membersContainer.innerHTML += `
-                        <div class="member-card">
+                        <div class="member-card" id="card-${doc.id}">
                             <div class="member-img-wrap">
                                 <img src="${data.image || ''}" alt="${data.name}" onerror="this.src='https://via.placeholder.com/300x300?text=Workout'">
                             </div>
@@ -59,7 +59,10 @@ async function loadDynamicContent() {
                                 <h3 class="member-title">${data.name}</h3>
                                 <div class="member-role">${data.role}</div>
                                 <p class="member-desc">${data.description}</p>
-                                <button class="btn-details" onclick="openMemberModal('${encodeURIComponent(data.name)}', '${encodeURIComponent(data.role)}', '${encodeURIComponent(data.description)}', '${encodeURIComponent(data.image || '')}')">Подробнее</button>
+                                <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap;">
+                                    <button class="btn-details" onclick="openMemberModal('${encodeURIComponent(data.name)}', '${encodeURIComponent(data.role)}', '${encodeURIComponent(data.description)}', '${encodeURIComponent(data.image || '')}')">Подробнее</button>
+                                    <button onclick="deleteCard('members', '${doc.id}')" style="background: transparent; border: 1px solid #ff3333; color: #ff3333; padding: 6px 14px; font-size: 12px; border-radius: 6px; cursor: pointer; transition: all 0.2s;">Удалить</button>
+                                </div>
                             </div>
                         </div>
                     `;
@@ -108,6 +111,23 @@ async function loadDynamicContent() {
 
     } catch (e) {
         console.error("Ошибка при загрузке данных с Firestore:", e);
+    }
+}
+
+// Функция удаления карточки из Firebase
+async function deleteCard(collectionName, docId) {
+    if (confirm("Вы уверены, что хотите удалить эту карточку?")) {
+        try {
+            await db.collection(collectionName).doc(docId).delete();
+            const cardElement = document.getElementById(`card-${docId}`);
+            if (cardElement) {
+                cardElement.remove();
+            }
+            alert("Карточка успешно удалена!");
+        } catch (error) {
+            console.error("Ошибка при удалении: ", error);
+            alert("Не удалось удалить карточку.");
+        }
     }
 }
 
