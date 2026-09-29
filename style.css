@@ -205,82 +205,67 @@ section {
   font-size: 14px;
 }
 
-/* РАЗДЕЛ УЧАСТНИКИ И ТРЕНЕРЫ (Строго по размеру, без вылетов) */
+/* РАЗДЕЛ УЧАСТНИКИ И ТРЕНЕРЫ */
 .members-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
 }
 
 .member-card {
-  display: flex;
-  flex-direction: row;
-  background: #161616;
-  border: 1px solid #262626;
-  border-radius: 12px;
+  background: var(--black-2, #111);
+  border: 1px solid #333;
+  border-radius: 8px;
   overflow: hidden;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ИЗМЕНЕННЫЙ БЛОК ДЛЯ ВЕРТИКАЛЬНЫХ ФОТО БЕЗ ОБРЕЗКИ */
+/* ИСПРАВЛЕННЫЙ БЛОК ДЛЯ ВЕРТИКАЛЬНЫХ ФОТО БЕЗ ОБРЕЗКИ */
 .member-img-wrap {
-  width: 160px;
-  height: 220px;
-  flex-shrink: 0;
+  width: 100%;
+  height: 420px; /* Увеличена высота под вертикальные постеры */
   overflow: hidden;
   position: relative;
-  background: #0a0a0a;
+  background: #000000; /* Черный фон по бокам, если фото узкое */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Эффект стильной размытой подложки на пустых местах */
-.member-img-wrap::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: var(--bg-img);
-  background-size: cover;
-  background-position: center;
-  filter: blur(12px);
-  opacity: 0.35;
-}
-
 .member-img-wrap img {
-  position: relative;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Картинка вмещается целиком, ничего не обрезается */
-  z-index: 1;
+  object-fit: contain; /* Картинка вмещается целиком без обрезок */
+  object-position: center;
 }
 
 .member-content {
-  padding: 15px 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
   flex-grow: 1;
 }
 
 .member-title {
+  color: var(--white, #fff);
   font-size: 18px;
-  color: #fff;
-  margin-bottom: 4px;
-}
-
-.member-role {
-  font-size: 12px;
-  color: var(--orange, #ff6600);
-  text-transform: uppercase;
-  font-weight: 600;
   margin-bottom: 8px;
 }
 
+.member-role {
+  color: var(--orange, #ff6a00);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
 .member-desc {
-  font-size: 13px;
-  color: #aaaaaa;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  color: #bbb;
+  font-size: 14px;
+  line-height: 1.4;
   margin-bottom: 12px;
 }
 
@@ -294,6 +279,7 @@ section {
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s;
+  align-self: flex-start;
 }
 
 .btn-details:hover {
@@ -398,7 +384,6 @@ section {
 }
 
 .contacts-grid {
-  display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 40px;
   align-items: center;
@@ -528,7 +513,7 @@ section {
   font-size: 13px;
 }
 
-/* Поля ввода в админке */
+/* Поля ввода */
 input[type="text"],
 input[type="email"],
 input[type="password"],
@@ -571,7 +556,7 @@ textarea::placeholder {
     margin-bottom: 4px;
 }
 
-/* Модальное окно для полного текста */
+/* Модальное окно */
 .workout-modal {
     display: none;
     position: fixed;
@@ -623,12 +608,7 @@ textarea::placeholder {
 }
 
 @media (max-width: 600px) {
-    .member-card {
-        flex-direction: column;
-        align-items: stretch;
-    }
     .member-img-wrap {
-        width: 100%;
-        height: 280px; /* Увеличили высоту для мобилок, чтобы вертикальные фото выглядели идеально */
+        height: 380px;
     }
 }
