@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Галерея — Street Workout Казахстан</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Шапка сайта (такая же, как везде) -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Logo" class="logo-img">
+                <div class="logo-text">
+                    <strong>STREET WORKOUT</strong>
+                    <span>КАЗАХСТАН</span>
+                </div>
+            </a>
+            <nav class="nav">
+                <a href="index.html#about">О нас</a>
+                <a href="index.html#schedule">Расписание</a>
+                <a href="index.html">Участники</a>
+                <a href="gallery.html" style="color: var(--orange);">Галерея</a>
+                <a href="index.html#events">Мероприятия</a>
+                <a href="index.html#contacts">Контакты</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Секция галереи -->
+    <section>
+        <div class="container">
+            <h2 class="section-title">Галерея</h2>
+            <p class="section-description">Фотографии с наших тренировок, соревнований и мероприятий</p>
+            
+            <!-- Сюда JavaScript автоматически загрузит все фото из админки -->
+            <div class="gallery-grid" id="full-gallery-container">
+                <!-- Фотки подгрузятся сами -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <p>&copy; 2026 Street Workout Казахстан. Все права защищены.</p>
+    </footer>
+
+    <!-- Скрипт автоматической загрузки галереи из памяти админки -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const container = document.getElementById("full-gallery-container");
+            const STORAGE_KEY = "sw_custom_gallery";
+            
+            // Базовые фото, если админка еще пустая
+            const defaultPhotos = ["team.jpg"];
+            
+            let photos = JSON.parse(localStorage.getItem(STORAGE_KEY)) || defaultPhotos;
+
+            container.innerHTML = "";
+            photos.forEach(src => {
+                const item = document.createElement("div");
+                item.className = "gallery-item";
+                item.innerHTML = `<img src="${src}" alt="Workout Photo">`;
+                container.appendChild(item);
+            });
+        });
+    </script>
+</body>
+</html>
